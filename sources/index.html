@@ -2,7 +2,16 @@
 <html>
 	<head>
 		<title>BoxUsers</title>
-		<script type="text/javascript" src="jsFile.js"></script>
+		<script type="text/javascript">
+			const port = '3000'
+			const URL = 'localhost:' + port
+
+			const URIs = {
+				index: URL,
+				login: URL + '/login',
+				register: URL + '/register',
+			}
+		</script>
 	</head>
 	
 	<body>
@@ -10,8 +19,7 @@
 		<script type="text/javascript">
 			// document.write('<a href="https://www.google.com">Vamo ver no que dá</a>')
 			for (var key in URIs) {
-				document.write('<a href="' + URIs[key] + '">' + key + '</a><br/>')
-
+				console.log('<a href="' + URIs[key] + '">' + key + '</a><br/>')
 			}
 		</script>
 	</body>
