@@ -1,10 +1,10 @@
 {
   "name": "boxusers",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple plataform with basic functions for a user system",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
