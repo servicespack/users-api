@@ -8,14 +8,19 @@
 		<h1>Register - BoxUsers</h1>
 		<br>
 		
-		<form method="POST" action="validator">
+		<form method="post" action="validator">
 			<b>Name:</b><br>
 			<input type="text" name="name"><br>
+			
 			<b>E-mail:</b><br>
 			<input type="text" name="email"><br>
-			<b>Age:</b><br>
-			<input type="text" name="age"><br><br>
-			<input type="submit" value="Validate">
+
+			<b>Birth:</b><br>
+			<input type="number" name="month" min="1" max="12" placeholder="Month">
+			<input type="number" name="day" min="1" max="31" placeholder="Day">
+			<input type="number" name="year" placeholder="Year"><br><br>
+			
+			<input type="submit" value="Register">
 		</form>
 
 	</body>

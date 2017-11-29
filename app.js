@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser')
 const express = require('express')
 const fs = require('fs')
 const mongoose = require('mongoose')
@@ -8,16 +9,24 @@ db.on('error', console.error.bind(console, 'Erro na conexão do banco de dados')
 db.once('open', () => {
 	const userSchema = mongoose.Schema({
 		name: String,
-		age: Number,
-		email: String
+		email: String, // Validar
+		birth: {
+			month: Number,
+			day: Number,
+			year: Number
+		} //Validar.
 	})
 
 	User = mongoose.model('User', userSchema)
 })
 
 const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+	extended: true
+}))
 
-app.all('/', (req, res) => {
+app.get('/', (req, res) => {
 	fs.readFile('sources/index.html', 'utf-8', (err, data) => {
 		if (err)
 			res.send(err)
@@ -37,21 +46,23 @@ app.get('/register', (req, res) => {
 
 app.post('/validator', (req, res) => {
 
-	//Em manutenção
-
-	res.send('Em manutenção')
+	// res.send(req.params):
 
 	const newUser = {
 		name: req.param('name'),
 		email: req.param('email'),
-		age: req.param('age')
+		birth: {
+			month: req.param('month'),
+			day: req.param('day'),
+			year: req.param('year')
+		}
 	}
 
-	new User(newUser).save((err) => {
+	new User(newUser).save((err, user) => {
 		if(err) {
-			res.send('erro')
+			res.send(err)
 		} else {
-			res.send('funcionou')
+			res.json(user)
 		}
 	})
 })

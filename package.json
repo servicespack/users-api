@@ -1,7 +1,7 @@
 {
   "name": "boxusers",
   "version": "1.0.0",
-  "description": "Simple plataform with basic functions for a user system",
+  "description": "Simple plataform with basic functions for a users system",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gabrielrufino/BoxUsers#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "mongoose": "^4.13.5"
   }
