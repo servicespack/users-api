@@ -10,17 +10,28 @@
 		
 		<form method="post" action="validator">
 			<b>Name:</b><br>
-			<input type="text" name="name"><br>
+			<input type="text" name="name"><br><br>
 			
 			<b>E-mail:</b><br>
-			<input type="text" name="email"><br>
+			<input type="text" name="email"><br><br>
 
 			<b>Birth:</b><br>
-			<input type="number" name="month" min="1" max="12" placeholder="Month">
-			<input type="number" name="day" min="1" max="31" placeholder="Day">
-			<input type="number" name="year" placeholder="Year"><br><br>
-			
+			<input type="date" name="birth"><br><br>
+		
+			<b>Profile:</b><br>
+			<input type="radio" name="privacy" value="public" checked> public <br>
+			<input type="radio" name="privacy" value="private"> private <br><br>
+
+			<hr>
+			<b>Username:</b>
+			<input type="text" name="username"><br><br>
+
+			<b>Password:</b>
+			<input type="password" name="password"><br><br>
+			<hr>
+
 			<input type="submit" value="Register">
+			<input type="reset" value="Reset">
 		</form>
 
 	</body>

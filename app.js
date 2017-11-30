@@ -3,21 +3,25 @@ const express = require('express')
 const fs = require('fs')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/boxusers')
 const db = mongoose.connection
-db.on('error', console.error.bind(console, 'Erro na conexão do banco de dados'))
+db.on('error', console.error)
 db.once('open', () => {
+	console.log("[Connected to the database]")
+
 	const userSchema = mongoose.Schema({
 		name: String,
 		email: String, // Validar
-		birth: {
-			month: Number,
-			day: Number,
-			year: Number
-		} //Validar.
+		birth: Date,
+		private: Boolean,
+		username: String,
+		password: String
 	})
 
 	User = mongoose.model('User', userSchema)
+})
+
+mongoose.connect('mongodb://localhost/boxusers', (err) => {
+	console.log("Erro na conectar ao banco de dados", err)
 })
 
 const app = express()
@@ -47,19 +51,16 @@ app.get('/register', (req, res) => {
 
 app.post('/validator', (req, res) => {
 
-	// res.send(req.params):
-
-	const newUser = {
+	const newUser = new User({
 		name: req.param('name'),
 		email: req.param('email'),
-		birth: {
-			month: req.param('month'),
-			day: req.param('day'),
-			year: req.param('year')
-		}
-	}
+		birth: req.param('birth'),
+		private: (req.param('privacy') === 'private')?true:false,
+		username: req.param('username'),
+		password: req.param('password') 
+	})
 
-	new User(newUser).save((err, user) => {
+	newUser.save((err, user) => {
 		if(err) {
 			res.send(err)
 		} else {
@@ -79,6 +80,27 @@ app.get('/login', (req, res) => {
 
 app.get('/wait', (req, res) => {
 	res.send('Tratar login')	
+})
+
+app.get('/API', (req, res) => {
+	User.find({private: false}, (err, users) => {
+		if (!err)
+			res.json(users)
+		else
+			res.send('Erro')
+	})
+})
+
+
+app.get('/API/:username', (req, res) => {
+	Username = req.param('username')
+	
+	User.find({'username': Username}, (err, user) => {
+		if (user[0].private === false)
+			res.json(user)
+		else
+			res.send('Private user')
+	})
 })
 
 const port = 3000
