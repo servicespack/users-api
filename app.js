@@ -44,6 +44,7 @@ app.get('/register', (req, res) => {
 	})
 })
 
+
 app.post('/validator', (req, res) => {
 
 	// res.send(req.params):
@@ -67,6 +68,18 @@ app.post('/validator', (req, res) => {
 	})
 })
 
+app.get('/login', (req, res) => {
+	fs.readFile('sources/login.html', 'utf-8', (err, data) => {
+		if (err)
+			res.send(err)
+		else 
+			res.send(data)
+	})
+})
+
+app.get('/wait', (req, res) => {
+	res.send('Tratar login')	
+})
 
 const port = 3000
 app.listen(port, () => {
