@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const express = require('express')
 const fs = require('fs')
+const functions = require('./functions/functions.js')
 const mongoose = require('mongoose')
 
 const db = mongoose.connection
@@ -12,6 +13,7 @@ db.once('open', () => {
 		name: String,
 		email: String, // Validar
 		birth: Date,
+		age: Number,
 		private: Boolean,
 		username: String,
 		password: String
@@ -21,7 +23,8 @@ db.once('open', () => {
 })
 
 mongoose.connect('mongodb://localhost/boxusers', (err) => {
-	console.log("Erro na conectar ao banco de dados", err)
+	if (err)
+		console.log("Erro na conectar ao banco de dados", err)
 })
 
 const app = express()
@@ -55,10 +58,40 @@ app.post('/validator', (req, res) => {
 		name: req.param('name'),
 		email: req.param('email'),
 		birth: req.param('birth'),
+		// age: functions.age(...);
 		private: (req.param('privacy') === 'private')?true:false,
 		username: req.param('username'),
 		password: req.param('password') 
 	})
+
+	/*	Erros ainda não encontrados.
+	// ------------------- Inspection -------------------
+
+	var warnings = []
+
+	User.findOne({'email': newUser.email}, (err, user) => {
+		if (!err)
+			if (Object.keys(user).length) {
+				warnings.push('E-mail')
+			}
+		else
+			console.log(err)
+	})
+
+	User.findOne({'username': newUser.username}, (err, user) => {
+		if (!err)
+			if (Object.keys(user).length) {
+				warnings.push('Username')
+			}
+		else
+			console.log(err)
+
+	if (warnings.length)
+		res.json(warnings)
+	})
+
+	// --------------------------------------------------
+	*/
 
 	newUser.save((err, user) => {
 		if(err) {
@@ -69,6 +102,8 @@ app.post('/validator', (req, res) => {
 	})
 })
 
+//Implementar atualização de usuários
+
 app.get('/login', (req, res) => {
 	fs.readFile('sources/login.html', 'utf-8', (err, data) => {
 		if (err)
@@ -78,30 +113,26 @@ app.get('/login', (req, res) => {
 	})
 })
 
-app.get('/wait', (req, res) => {
-	res.send('Tratar login')	
-})
-
 app.get('/API', (req, res) => {
 	User.find({private: false}, (err, users) => {
 		if (!err)
 			res.json(users)
 		else
-			res.send('Erro')
+			res.send(err)
 	})
 })
-
 
 app.get('/API/:username', (req, res) => {
-	Username = req.param('username')
+	username = req.param('username')
 	
-	User.find({'username': Username}, (err, user) => {
-		if (user[0].private === false)
-			res.json(user)
+	User.findOne({'username': username}, (err, user) => {
+		if (!err)
+			(user.private ==- true)?res.send('Private user'):res.json(user)
 		else
-			res.send('Private user')
+			res.send(err)
 	})
 })
+
 
 const port = 3000
 app.listen(port, () => {
