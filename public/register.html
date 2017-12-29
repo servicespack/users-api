@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>UBox - Register</title>
+	
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="icon" type="image/png" href="img/favicon.png">
+	</head>
+	
+	<body>
+		<div id="back">
+			<header>
+				<h1>UBox - Register</h1>
+			</header>
+
+			<nav id="menu">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="login">Login</a></li>
+					<li><a href="register">Register</a></li>
+					<li><a href="API">API</a></li>
+				</ul>
+			</nav>
+			
+			<form method="post" action="validator">
+				<b>Name:</b><br>
+				<input type="text" name="name"><br><br>
+				
+				<b>E-mail:</b><br>
+				<input type="text" name="email"><br><br>
+
+				<b>Birth:</b><br>
+				<input type="date" name="birth"><br><br>
+			
+				<b>Profile:</b><br>
+				<input type="radio" name="privacy" value="public" checked> public <br>
+				<input type="radio" name="privacy" value="private"> private <br><br>
+
+				<hr>
+				<b>Username:</b>
+				<input type="text" name="username"><br><br>
+
+				<b>Password:</b>
+				<input type="password" name="password"><br><br>
+				<hr>
+
+				<input type="submit" value="Register">
+				<input type="reset" value="Reset">
+			</form>
+		</div>
+	</body>
+</html>
