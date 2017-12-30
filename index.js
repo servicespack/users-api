@@ -1,34 +1,8 @@
 const app = require('./app')
+const db = require('./db')
 const fs = require('fs')
 const functions = require('./functions/functions.js')
-const mongoose = require('mongoose')
 const validator = require('validator')
-
-const db = mongoose.connection
-db.on('error', console.error)
-db.once('open', () => {
-	console.log("[index.js: Connected to the database]")
-
-	const userSchema = mongoose.Schema({
-		name: String,
-		email: String, // Validar
-		birth: Date,
-		age: Number,
-		private: Boolean,
-		username: String,
-		password: String
-	})
-
-	User = mongoose.model('User', userSchema)
-})
-
-const uri = 'mongodb://localhost/boxusers'
-mongoose.connect(uri, (err) => {
-	if (err)
-		console.log("[mongoose: Erro ao conectar à " + uri + ": " + err + "]")
-	else
-		console.log("[mongoose: Conexão à " + uri + " estabelecida]")
-})
 
 app.get('/', (req, res) => {
 	fs.readFile('public/index.html', 'utf-8', (err, data) => {
@@ -48,14 +22,13 @@ app.get('/register', (req, res) => {
 	})
 })
 
-
 app.post('/validator', (req, res) => {
 
-	const newUser = new User({
+	const newUser = new db.User({
 		name: req.param('name'),
-		email: req.param('email'),
-		birth: req.param('birth'),
+		birthday: req.param('birthday'),
 		// age: functions.age(...);
+		email: req.param('email'),
 		private: (req.param('privacy') === 'private')?true:false,
 		username: req.param('username'),
 		password: req.param('password')
@@ -111,7 +84,7 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/API', (req, res) => {
-	User.find({private: false}, (err, users) => {
+	db.User.find({private: false}, (err, users) => {
 		if (!err)
 			res.json(users)
 		else
@@ -122,7 +95,7 @@ app.get('/API', (req, res) => {
 app.get('/API/:username', (req, res) => {
 	username = req.param('username')
 	
-	User.findOne({'username': username}, (err, user) => {
+	db.User.findOne({'username': username}, (err, user) => {
 		if (!err)
 			(user.private ==- true)?res.send('Private user'):res.json(user)
 		else
