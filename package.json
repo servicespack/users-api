@@ -1,5 +1,5 @@
 {
-  "name": "boxusers",
+  "name": "ubox",
   "version": "1.0.0",
   "description": "Simple plataform with basic functions for a users system",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabrielrufino/BoxUsers.git"
+    "url": "git+https://github.com/gabrielrufino/UBox.git"
   },
   "author": "Gabriel Rufino",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gabrielrufino/BoxUsers/issues"
+    "url": "https://github.com/gabrielrufino/UBox/issues"
   },
-  "homepage": "https://github.com/gabrielrufino/BoxUsers#readme",
+  "homepage": "https://github.com/gabrielrufino/UBox#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
