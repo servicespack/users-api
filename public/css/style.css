@@ -13,18 +13,26 @@
 	View: https://coolors.co/eff4ff-8c89d1-5258a1-212d57-132242;
 */
 
-body {
-	background-color: #8C89D1;
-	font-family: 'Exo', sans-serif;
-	color: #132242;
-}
-
 a {
 	text-decoration: none;	
 }
 
 a:hover {
 	color: #5258A1;
+}
+
+body {
+	background-color: #8C89D1;
+	font-family: 'Exo', sans-serif;
+	color: #132242;
+}
+
+header {
+	text-align: center;
+}
+
+input {
+	border-radius: 6px;
 }
 
 div#back {
@@ -38,12 +46,15 @@ div#back {
 	margin-right: auto;
 }
 
-header {
+form#login {
+	background-color: #8C89D1;
+	border-radius: 4px;
+	padding: 8px;
 	text-align: center;
 }
 
-input {
-	border-radius: 4px;
+form#login input {
+	margin: 8px;
 }
 
 nav#menu ul {

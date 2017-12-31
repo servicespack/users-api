@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const uri = 'mongodb://localhost/boxusers'
+const uri = 'mongodb://localhost/ubox'
 mongoose.connect(uri, (err) => {
 	if (err)
 		console.log("[db.js: Erro ao conectar à " + uri + ": " + err + "]")
@@ -11,7 +11,7 @@ mongoose.connect(uri, (err) => {
 const db = mongoose.connection
 db.on('error', console.error)
 db.once('open', () => {
-	console.log("[index.js: Connected to the database]")
+	console.log("[db.js: Connected to the database]")
 
 	const userSchema = mongoose.Schema({
 		name: String,
