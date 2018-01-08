@@ -4,7 +4,8 @@
   "description": "Simple plataform with basic functions for a users system",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "nodemon": "nodemon index.js"
   },
   "repository": {
     "type": "git",

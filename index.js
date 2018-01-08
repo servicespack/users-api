@@ -25,13 +25,13 @@ app.get('/register', (req, res) => {
 app.post('/newuser', (req, res) => {
 
 	const newUser = new db.User({
-		name: req.param('name'),
-		birthday: req.param('birthday'),
+		name: req.body.name,
+		birthday: req.body.birthday,
 		// age: functions.calcAge(req.param('birthday'), Date()),
-		email: req.param('email'),
-		private: (req.param('privacy') === 'private')?true:false,
-		username: req.param('username'),
-		password: req.param('password')
+		email: req.body.email,
+		private: (req.body.privacy === 'private')?true:false,
+		username: req.body.username,
+		password: req.body.password
 	})
 
 
@@ -95,8 +95,8 @@ app.get('/login', (req, res) => {
 
 app.post('/wait', (req, res) => {
 	const query = {
-		username: req.param('username'),
-		password: req.param('password')
+		username: req.body.username,
+		password: req.body.password
 	}
 
 	db.User.findOne(query, (err, user) => {
@@ -125,7 +125,7 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:username', (req, res) => {
 	const query = {
-		username: req.param('username')
+		username: req.params.username
 	}
 	
 	db.User.findOne(query, std.blockedFields, (err, user) => {
