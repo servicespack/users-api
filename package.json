@@ -12,7 +12,7 @@
     "url": "git+https://github.com/gabrielrufino/UBox.git"
   },
   "author": "Gabriel Rufino",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gabrielrufino/UBox/issues"
   },
@@ -20,7 +20,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mongoose": "^4.13.5",
+    "mongoose": "^5.0.4",
     "validator": "^9.2.0"
   }
 }
