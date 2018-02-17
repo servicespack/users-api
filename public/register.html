@@ -19,19 +19,19 @@
 					<li><a href="/">Home</a></li>
 					<li><a href="login">Login</a></li>
 					<li><a href="register">Register</a></li>
-					<li><a href="users">Public users</a></li>
+					<li><a href="api">API</a></li>
 				</ul>
 			</nav>
 			
 			<form method="post" action="newuser">
 				<b>Name:</b><br>
-				<input type="text" name="name"><br><br>
+				<input type="text" name="name" required="required"<br><br>
 				
 				<b>E-mail:</b><br>
-				<input type="text" name="email"><br><br>
+				<input type="email" name="email" required="required"><br><br>
 
 				<b>Birth:</b><br>
-				<input type="date" name="birthday"><br><br>
+				<input type="date" name="birthday" required="required"><br><br>
 			
 				<b>Profile:</b><br>
 				<input type="radio" name="privacy" value="public" checked> public <br>
@@ -39,10 +39,10 @@
 
 				<hr>
 				<b>Username:</b>
-				<input type="text" name="username"><br><br>
+				<input type="text" name="username" required="required"><br><br>
 
 				<b>Password:</b>
-				<input type="password" name="password"><br><br>
+				<input type="password" name="password" required="required"><br><br>
 				<hr>
 
 				<input type="submit" value="Register">
