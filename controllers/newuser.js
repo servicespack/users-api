@@ -1,4 +1,3 @@
-const fs = require('fs')
 const mongoose = require('mongoose')
 const User = require('../models/user')
 
@@ -44,18 +43,8 @@ module.exports = (req, res) => {
 
 	newUser.save((err, user) => {
 		if(err)
-			fs.readFile('public/error.html', 'utf8', (err, data) => {
-				if (err)
-					res.send(err)
-				else
-					res.send(data)
-			})
+			res.render('error')
 		else
-			fs.readFile('public/registered.html', 'utf8', (err, data) => {
-				if (err)
-					res.send(err)
-				else
-					res.send(data)
-			})
+			res.render('registered')
 	})
 }
