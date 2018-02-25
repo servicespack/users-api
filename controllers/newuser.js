@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const User = require('../models/user')
+const User = require('../models/user') // Import the User model
 
 module.exports = (req, res) => {
-    const newUser = new User({
+    const newUser = new User({ // Get register data (POST Method)
 		name: req.body.name,
         birthday: req.body.birthday,
     	email: req.body.email,
@@ -41,10 +41,10 @@ module.exports = (req, res) => {
 	// --------------------------------------------------
 	*/
 
-	newUser.save((err, user) => {
+	newUser.save((err, user) => { // Tries save the new user
 		if(err)
-			res.render('error')
+			res.render('error') // Render the error view (../views/error.ejs)
 		else
-			res.render('registered')
+			res.render('registered') // Render the registered view (../views/registered.ejs)
 	})
 }

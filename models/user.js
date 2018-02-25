@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({ // Required fields for a user
     name: String,
 	birthday: Date,
 	email: String,
@@ -9,5 +9,5 @@ const userSchema = mongoose.Schema({
 	password: String  
 })
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema) // Bind userSchema with the User model
 module.exports = User
