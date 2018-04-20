@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const loginController = require('../controllers/login') // Importing login controller (../controllers/login.js)
+const loginController = require('../controllers/login')
 
-router.get('/', loginController) // Set index controller
+router.get('/', loginController)
 
 module.exports = router

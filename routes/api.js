@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const apiController = require('../controllers/api') // Importing api controller (../controllers/api.js)
+const apiController = require('../controllers/api')
 
-router.get('/', apiController.allUsers) // Controller for all users
-router.get('/:username', apiController.thisUser) // Controller for one user
-
+router.get('/', apiController.getUsers)
+router.get('/:username', apiController.getOneUser)
 
 module.exports = router

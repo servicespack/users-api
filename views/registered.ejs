@@ -1,29 +1,14 @@
 <!DOCTYPE html>
 
 <html lang="en">
-	<head>
-		<title>UBox - Registered</title>
-		
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="icon" type="image/png" href="img/favicon.png">
-	</head>
+	<%- include('./modules/head') %>
 	
 	<body>
 		<div id="back">
-			<header>
-				<h1>UBox - Wellcome</h1>
-			</header>
+			<%- include('./modules/header') %>
+			<%- include('./modules/nav') %>
 
-			<nav id="menu">
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="login">Login</a></li>
-					<li><a href="register">Register</a></li>
-					<li><a href="api">API</a></li>
-				</ul>
-			</nav>
-
-			<p>We have a new registered user. Wellcome! :D</p>
+			<p>We have a new user. Wellcome! :D</p>
 		</div>
 	</body>
 </html>

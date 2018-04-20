@@ -13,6 +13,12 @@
 	View: https://coolors.co/eff4ff-8c89d1-5258a1-212d57-132242;
 */
 
+body {
+	background-color: #8C89D1;
+	font-family: 'Exo', sans-serif;
+	color: #132242;
+}
+
 a {
 	text-decoration: none;	
 }
@@ -21,11 +27,6 @@ a:hover {
 	color: #5258A1;
 }
 
-body {
-	background-color: #8C89D1;
-	font-family: 'Exo', sans-serif;
-	color: #132242;
-}
 
 header {
 	text-align: center;

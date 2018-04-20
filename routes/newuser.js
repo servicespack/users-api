@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const newuserController = require('../controllers/newuser') // Importing newuser controller (../controllers/newuser.js)
+const newuserController = require('../controllers/newuser')
 
-router.post('/', newuserController) // Set newuser controller
+router.post('/', newuserController)
+
 module.exports = router
