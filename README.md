@@ -32,4 +32,3 @@ Access http://localhost:3000! UBox is ready.
 ## LICENSE
 
 The MIT License (MIT)
-
