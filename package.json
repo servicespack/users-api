@@ -1,10 +1,10 @@
 {
   "name": "ubox",
-  "version": "1.0.0",
-  "description": "Simple plataform with basic functions for a users system",
+  "version": "2.0.0",
+  "description": "A simple and intuitive user system",
   "main": "index.js",
   "scripts": {
-    "test": "start mongod && nodemon index.js",
+    "test": "echo nothing",
     "start": "node index.js"
   },
   "repository": {
@@ -23,5 +23,8 @@
     "express": "^4.16.2",
     "mongoose": "^5.0.4",
     "validator": "^9.2.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
   }
 }

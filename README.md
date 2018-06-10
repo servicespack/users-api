@@ -1,12 +1,34 @@
-# BoxUsers
+# UBox
 
-Simple plataform with basic functions for a users system
+A simple and intuitive user system
 
 ## Install
 
-git clone https://github.com/gabrielrufino/UBox/<br>
-cd UBox<br>
-npm install<br>
-npm start
+<strong>Exec:</strong>
+<pre>
+git clone https://github.com/gabrielrufino/UBox/
+cd UBox
+npm install
+</pre>
 
-We are considering that the machine has installed: Node.js and MongoDB
+## Start MongoDB
+
+### Windows
+
+<strong>Exec:</strong>
+<pre>
+mongod
+</pre>
+
+## UBox Ready!
+
+<strong>Exec:</strong>
+<pre>
+npm start
+</pre>
+
+Access http://localhost:3000! UBox is ready.
+
+## LICENSE
+
+The MIT License (MIT)
