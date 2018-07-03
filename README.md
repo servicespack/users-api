@@ -1,23 +1,13 @@
 # UBox
 
-A simple and intuitive user system
+A simple and intuitive users API
 
 ## Install
 
-<strong>Exec:</strong>
 <pre>
 git clone https://github.com/gabrielrufino/UBox/
 cd UBox
 npm install
-</pre>
-
-## Start MongoDB
-
-### Windows
-
-<strong>Exec:</strong>
-<pre>
-mongod
 </pre>
 
 ## UBox Ready!

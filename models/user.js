@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
   },
   private: {
     type: Boolean,
-    required: true
+    default: false
   },
   username: {
     type: String,

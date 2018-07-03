@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/ubox')
-
 const db = mongoose.connection
+
+const database = process.env.DATABASE || 'mongodb://localhost/ubox'
+mongoose.connect(database)
+
 db.on('error', console.error)
 db.once('open', () => {
   console.log('[db.js: Connected to the database]')
