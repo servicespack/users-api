@@ -1,9 +1,12 @@
+const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
 const controller = {}
 
 controller.get = (req, res) => {
+  console.log('GET /users')
+
   const query = {
     private: false
   }
@@ -18,13 +21,13 @@ controller.get = (req, res) => {
 }
 
 controller.post = (req, res) => {
-  const newUser = new User({
-    name: req.body.name,
-    birthday: req.body.birthday,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password
-  })
+  console.log('POST /users')
+
+  const password = req.body.password
+  const salt = bcrypt.genSaltSync(10)
+  req.body.password = bcrypt.hashSync(password, salt)
+
+  const newUser = new User(req.body)
 
   newUser.save((err, user) => {
     if (err) {

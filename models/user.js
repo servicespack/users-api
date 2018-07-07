@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     lowercase: true
   },
   private: {
@@ -24,9 +25,14 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
+  },
+  createdAt: {
+    type: Date,
+    default: Date()
   }
 })
 
-const User = mongoose.model('User', userSchema) // Bind userSchema with the User model
+const User = mongoose.model('User', userSchema)
 module.exports = User
