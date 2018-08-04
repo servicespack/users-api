@@ -15,13 +15,10 @@ const userSchema = mongoose.Schema({
     type: Date,
     required: true
   },
-  private: {
-    type: Boolean,
-    default: false
-  },
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
