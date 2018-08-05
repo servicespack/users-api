@@ -12,15 +12,16 @@ npm install
 
 ## Setup your database
 
-You must create a <pre>.env</pre> file in your root directory to set up an important environment variables: <strong>DATABASE</strong>.
+You must create a <code>.env</code> file in your root directory to set up an important environment variables: <strong>DATABASE</strong>.
 
 Some like that:
 <pre>
 # UBox/.env
+
 DATABASE=mongodb://localhost/ubox
 </pre>
 
-<small>You can define others environment variables. See below!</small>
+<em>You can define others environment variables. <a href="#env-variables">See below</a>!</em>
 
 ## UBox Ready!
 
