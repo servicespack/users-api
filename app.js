@@ -13,12 +13,12 @@ app.use(bodyParser.urlencoded({
 const router = {
   index: require('./routes/index'),
   users: require('./routes/users'),
-  authenticate: require('./routes/authenticate')
+  auth: require('./routes/auth')
 }
 
 // ---------- routes Settings ----------
 app.use('/', router.index)
 app.use('/users', router.users)
-app.use('/authenticate', router.authenticate)
+app.use('/auth', router.auth)
 
 module.exports = app
