@@ -62,8 +62,7 @@ controller.post = async (req, res) => {
       res.status(400)
       res.json({ err })
     } else {
-      res.status(200)
-      res.json(user)
+      return res.status(201).json(user)
     }
   })
 }
