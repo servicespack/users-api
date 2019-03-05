@@ -69,4 +69,17 @@ controller.post = async (req, res) => {
   })
 }
 
+controller.delete = async (req, res) => {
+  const user = User.findById(req.params.id)
+
+  if (!user) {
+    return res.status(404).json({
+      'error': 'User not found'
+    })
+  }
+
+  await user.delete()
+  return res.status(204).json({})
+}
+
 module.exports = controller
