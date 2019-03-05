@@ -20,7 +20,15 @@ controller.get = (req, res) => {
 }
 
 controller.getOne = async (req, res) => {
-  return await User.findById(req.params.id)
+  const user = await User.findById(req.params.id)
+
+  if (!user) {
+    return res.status(404).json({
+      'error': 'User not found'
+    })
+  }
+
+  return res.status(200).json(user)
 }
 
 controller.post = async (req, res) => {
