@@ -1,5 +1,6 @@
-const bcrypt    = require('bcryptjs')
-const mongoose  = require('mongoose')
+const bcrypt   = require('bcryptjs')
+const mongoose = require('mongoose')
+const validate = require('validate.js')
 
 const User       = mongoose.model('User')
 const controller = {}
