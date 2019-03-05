@@ -29,6 +29,30 @@ controller.post = async (req, res) => {
     password: req.body.password
   }
 
+  const constraints = {
+    name: {
+      presence: true
+    },
+    email: {
+      presence: true,
+      email: true
+    },
+    username: {
+      presence: true
+    },
+    password: {
+      presence: true,
+      length: {
+        minimum: 8
+      }
+    }
+  }
+
+  const errors = validate(data, constraints)
+  if (errors) {
+    return res.status(400).json(validate(data, constraints))
+  }
+
   const salt    = bcrypt.genSaltSync(10)
   data.password = bcrypt.hashSync(data.password, salt)
 
