@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const db = mongoose.connection
+const db       = mongoose.connection
 
 const DB_USER = process.env.DB_USER || ''
 const DB_PASS = process.env.DB_PASS || ''
