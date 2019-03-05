@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+const jwt      = require('jsonwebtoken')
+const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
-const User = mongoose.model('User')
+const User     = mongoose.model('User')
 
 const controller = {}
 const secret = process.env.SECRET
