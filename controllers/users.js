@@ -21,31 +21,15 @@ controller.get = (req, res) => {
 }
 
 controller.post = async (req, res) => {
-  const data = {} // Will receive all the valid user's data
+  const data = {
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+    password: req.body.password
+  }
 
-  /**
-   * User's data without validation
-   */
-  data.name = req.body.name // GET the User's name
-
-  /**
-   * Email validation
-   */
-  const email = req.body.email // GET the User's email
-  data.email = email
-
-  /**
-   * Username validation
-   */
-  const username = req.body.username
-  data.username = username // GET the User's username
-
-  /**
-   * Password validation
-   */
-  const password = req.body.password // GET the User's password
-  const salt = bcrypt.genSaltSync(10)
-  data.password = bcrypt.hashSync(password, salt)
+  const salt    = bcrypt.genSaltSync(10)
+  data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
   newUser.save((err, user) => {
