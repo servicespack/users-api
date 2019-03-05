@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const db = mongoose.connection
 
 const database = process.env.DATABASE || 'mongodb://localhost/ubox'
-mongoose.connect(database)
+mongoose.connect(database, { useNewUrlParser: true })
 
 db.on('error', console.error)
 db.once('open', () => {
