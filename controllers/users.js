@@ -70,7 +70,7 @@ controller.post = async (req, res) => {
 }
 
 controller.delete = async (req, res) => {
-  const user = User.findById(req.params.id)
+  const user = await User.findById(req.params.id)
 
   if (!user) {
     return res.status(404).json({
