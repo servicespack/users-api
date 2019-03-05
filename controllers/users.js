@@ -59,8 +59,7 @@ controller.post = async (req, res) => {
   const newUser = new User(data)
   newUser.save((err, user) => {
     if (err) {
-      res.status(400)
-      res.json({ err })
+      return res.status(400).json({ err })
     } else {
       return res.status(201).json(user)
     }
