@@ -5,18 +5,11 @@ const validate = require('validate.js')
 const User       = mongoose.model('User')
 const controller = {}
 
-controller.get = (req, res) => {
+controller.get = async (req, res) => {
   const query = {}
+  const users = await User.find(query)
 
-  User.find(query, (err, users) => {
-    if (err) {
-      res.status(400)
-      res.json({ err })
-    } else {
-      res.status(200)
-      res.json(users)
-    }
-  })
+  return res.status(200).json(users)
 }
 
 controller.getOne = async (req, res) => {
