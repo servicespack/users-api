@@ -11,10 +11,6 @@ const userSchema = mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  birthday: {
-    type: Date,
-    required: true
-  },
   username: {
     type: String,
     required: true,
@@ -25,11 +21,15 @@ const userSchema = mongoose.Schema({
     required: true,
     select: false
   },
-  createdAt: {
+  created_at: {
+    type: Date,
+    default: Date()
+  },
+  updated_at: {
     type: Date,
     default: Date()
   }
 })
 
-const User = mongoose.model('User', userSchema)
+const User     = mongoose.model('User', userSchema)
 module.exports = User
