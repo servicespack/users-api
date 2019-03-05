@@ -1,5 +1,5 @@
-require('dotenv').config() // Load environment variables
-require('./db') // Start database and load models
+require('dotenv').config()
+require('./db')
 
 const app = require('./app')
 
