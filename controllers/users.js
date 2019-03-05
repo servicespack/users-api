@@ -19,6 +19,10 @@ controller.get = (req, res) => {
   })
 }
 
+controller.getOne = async (req, res) => {
+  return await User.findById(req.params.id)
+}
+
 controller.post = async (req, res) => {
   const data = {
     name: req.body.name,
