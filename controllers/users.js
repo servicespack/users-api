@@ -6,8 +6,6 @@ const User       = mongoose.model('User')
 const controller = {}
 
 controller.get = (req, res) => {
-  console.log('GET /users')
-
   const query = {}
 
   User.find(query, (err, users) => {
