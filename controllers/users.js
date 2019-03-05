@@ -1,7 +1,7 @@
-const bcrypt   = require('bcryptjs')
-const mongoose = require('mongoose')
-const User     = mongoose.model('User')
+const bcrypt    = require('bcryptjs')
+const mongoose  = require('mongoose')
 
+const User       = mongoose.model('User')
 const controller = {}
 
 controller.get = (req, res) => {
@@ -21,15 +21,12 @@ controller.get = (req, res) => {
 }
 
 controller.post = async (req, res) => {
-  console.log('POST /users')
-
   const data = {} // Will receive all the valid user's data
 
   /**
    * User's data without validation
    */
   data.name = req.body.name // GET the User's name
-  data.birthday = req.body.birthday // GET the User's birthday
 
   /**
    * Email validation
