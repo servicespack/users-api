@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo nothing",
+    "dev": "node node_modules/nodemon/bin/nodemon index.js",
     "start": "node index.js"
   },
   "repository": {
