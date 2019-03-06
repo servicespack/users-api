@@ -21,7 +21,7 @@ app.use('/', router.index)
 app.use('/users', router.users)
 app.use('/auth', router.auth)
 
-const port = process.env.PORT
+const port = process.env.APP_PORT
 app.listen(port, () => {
   console.log('[index.js: Listening on ' + port + ']')
 })
