@@ -3,6 +3,7 @@ const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
+const TOKEN_PREFIX     = process.env.TOKEN_PREFIX
 const TOKEN_SECRET     = process.env.TOKEN_SECRET
 const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION
 const User             = mongoose.model('User')
@@ -41,7 +42,9 @@ controllers.post = async (req, res) => {
   }
 
   const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION * 60 })
-  return res.status(200).json({ token })
+  return res.status(200).json({
+    Authorization: `${TOKEN_PREFIX} ${token}`
+  })
 }
 
 module.exports = controllers
