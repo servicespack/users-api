@@ -36,7 +36,11 @@ controllers.post = async (req, res) => {
     return res.status(400).json({ error: 'Invalid password' })
   }
 
-  const token = jwt.sign({ id: user.id }, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION })
+  const payload = {
+    sub: user.id
+  }
+
+  const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION })
   return res.status(200).json({ token })
 }
 
