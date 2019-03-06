@@ -7,22 +7,6 @@ const User        = mongoose.model('User')
 const controllers = {}
 const secret      = process.env.SECRET
 
-controllers.get = async (req, res) => {
-  const token = req.headers.authorization
-
-  if (!token) {
-    return res.status(401).json({ authenticated: 'false', error: 'No token provided' })
-  }
-
-  jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ authenticated: 'false', error: err })
-    }
-
-    return res.status(200).json({ authenticated: 'true', user: decoded.id })
-  })
-}
-
 controllers.post = async (req, res) => {
   const { username, password } = req.body
 
