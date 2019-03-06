@@ -3,9 +3,10 @@ const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const User        = mongoose.model('User')
-const controllers = {}
-const secret      = process.env.SECRET
+const TOKEN_SECRET     = process.env.TOKEN_SECRET
+const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION
+const User             = mongoose.model('User')
+const controllers      = {}
 
 controllers.post = async (req, res) => {
   const { username, password } = req.body
@@ -35,7 +36,7 @@ controllers.post = async (req, res) => {
     return res.status(400).json({ error: 'Invalid password' })
   }
 
-  const token = jwt.sign({ id: user.id }, secret, { expiresIn: 20 })
+  const token = jwt.sign({ id: user.id }, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION })
   return res.status(200).json({ token })
 }
 
