@@ -69,6 +69,18 @@ controllers.post = async (req, res) => {
   })
 }
 
+controllers.put = (req, res) => {
+  return res.status(503).json({
+    error: 'Service Unavailable'
+  })
+}
+
+controllers.patch = (req, res) => {
+  return res.status(503).json({
+    error: 'Service Unavailable'
+  })
+}
+
 controllers.delete = async (req, res) => {
   const user = await User.findById(req.params.id)
 
