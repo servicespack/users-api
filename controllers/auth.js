@@ -40,7 +40,7 @@ controllers.post = async (req, res) => {
     sub: user.id
   }
 
-  const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION })
+  const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION * 60 })
   return res.status(200).json({ token })
 }
 
