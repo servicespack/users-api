@@ -1,11 +1,12 @@
 const express = require('express')
 
-const controller = require('../controllers/users')
-const router     = express.Router()
+const authMiddleware = require('../middlewares/auth')
+const controller     = require('../controllers/users')
+const router         = express.Router()
 
-router.get('/', controller.get)
-router.get('/:id', controller.getOne)
 router.post('/', controller.post)
-router.delete('/:id', controller.delete)
+router.get('/', authMiddleware, controller.get)
+router.get('/:id', authMiddleware, controller.getOne)
+router.delete('/:id', authMiddleware, controller.delete)
 
 module.exports = router
