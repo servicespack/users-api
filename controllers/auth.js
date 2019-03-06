@@ -3,10 +3,10 @@ const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
 const User     = mongoose.model('User')
 
-const controller = {}
+const controllers = {}
 const secret = process.env.SECRET
 
-controller.get = async (req, res) => {
+controllers.get = async (req, res) => {
   const token = req.headers.authorization
 
   if (!token) {
@@ -22,7 +22,7 @@ controller.get = async (req, res) => {
   })
 }
 
-controller.post = async (req, res) => {
+controllers.post = async (req, res) => {
   const { username, password } = req.body
   const user = await User.findOne({ username }).select('+password')
 
@@ -39,4 +39,4 @@ controller.post = async (req, res) => {
   return res.status(200).json({ user, token })
 }
 
-module.exports = controller
+module.exports = controllers

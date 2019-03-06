@@ -2,17 +2,17 @@ const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const User       = mongoose.model('User')
-const controller = {}
+const User        = mongoose.model('User')
+const controllers = {}
 
-controller.get = async (req, res) => {
+controllers.get = async (req, res) => {
   const query = {}
   const users = await User.find(query)
 
   return res.status(200).json(users)
 }
 
-controller.getOne = async (req, res) => {
+controllers.getOne = async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (!user) {
@@ -24,7 +24,7 @@ controller.getOne = async (req, res) => {
   return res.status(200).json(user)
 }
 
-controller.post = async (req, res) => {
+controllers.post = async (req, res) => {
   const data = {
     name: req.body.name,
     email: req.body.email,
@@ -69,7 +69,7 @@ controller.post = async (req, res) => {
   })
 }
 
-controller.delete = async (req, res) => {
+controllers.delete = async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (!user) {
@@ -82,4 +82,4 @@ controller.delete = async (req, res) => {
   return res.status(204).json({})
 }
 
-module.exports = controller
+module.exports = controllers
