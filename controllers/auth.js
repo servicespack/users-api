@@ -1,10 +1,11 @@
 const jwt      = require('jsonwebtoken')
 const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
-const User     = mongoose.model('User')
+const validate = require('validate.js')
 
+const User        = mongoose.model('User')
 const controllers = {}
-const secret = process.env.SECRET
+const secret      = process.env.SECRET
 
 controllers.get = async (req, res) => {
   const token = req.headers.authorization
@@ -24,6 +25,21 @@ controllers.get = async (req, res) => {
 
 controllers.post = async (req, res) => {
   const { username, password } = req.body
+
+  const constraints = {
+    username: {
+      presence: true
+    },
+    password: {
+      presence: true
+    }
+  }
+
+  const errors = validate({username, password}, constraints)
+  if (errors) {
+    return res.status(400).json(errors)
+  }
+
   const user = await User.findOne({ username }).select('+password')
 
   if (!user) {
