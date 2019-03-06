@@ -3,6 +3,7 @@ const bcrypt   = require('bcryptjs')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
+const APP_URL          = process.env.APP_URL
 const TOKEN_PREFIX     = process.env.TOKEN_PREFIX
 const TOKEN_SECRET     = process.env.TOKEN_SECRET
 const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION
@@ -38,6 +39,7 @@ controllers.post = async (req, res) => {
   }
 
   const payload = {
+    iss: APP_URL,
     sub: user.id
   }
 
