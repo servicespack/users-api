@@ -36,7 +36,7 @@ controllers.post = async (req, res) => {
   }
 
   const token = jwt.sign({ id: user.id }, secret, { expiresIn: 20 })
-  return res.status(200).json({ user, token })
+  return res.status(200).json({ token })
 }
 
 module.exports = controllers
