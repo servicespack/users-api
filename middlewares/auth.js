@@ -8,7 +8,6 @@ const auth = (req, res, next) => {
 
   if (!authorization) {
     return res.status(401).json({
-      authenticated: 'false',
       error: 'No token provided'
     })
   }
