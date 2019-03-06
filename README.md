@@ -34,9 +34,9 @@ DB_NAME=db_ubox
 
 Now, you can start the UBox!
 
-<pre>
+```
 npm start
-</pre>
+```
 
 Access http://localhost:3000! UBox is ready.
 
