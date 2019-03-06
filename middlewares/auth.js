@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const TOKEN_PREFIX = process.env.TOKEN_PREFIX
 const TOKEN_SECRET = process.env.TOKEN_SECRET
 
-const auth = (req, res, next) => {
+const auth = async (req, res, next) => {
   const authorization = req.headers.authorization
 
   if (!authorization) {
@@ -20,13 +20,15 @@ const auth = (req, res, next) => {
     })
   }
 
-  jwt.verify(token, TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ authenticated: 'false', error: err })
-    }
+  try {
+    const decoded = await jwt.verify(token, TOKEN_SECRET)
 
     return next()
-  })
+  } catch (err) {
+    return res.status(401).json({
+      error: err
+    })
+  }
 }
 
 module.exports = auth
