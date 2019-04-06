@@ -69,13 +69,43 @@ controllers.post = async (req, res) => {
   })
 }
 
-controllers.put = (req, res) => {
-  return res.status(503).json({
-    error: 'Service Unavailable'
-  })
+controllers.patch = async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (!user) {
+    return res.status(404).json({
+      'error': 'User not found'
+    })
+  }
+
+  const data = {
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+    password: req.body.password
+  }
+
+  const constraints = {
+    email: {
+      email: true
+    }
+  }
+
+  const errors = validate(data, constraints)
+  if (errors) {
+    return res.status(400).json(errors)
+  }
+
+
+  user.name     = data.name     || user.name
+  user.email    = data.email    || user.email
+  user.username = data.username || user.username
+  await user.save()
+
+  return res.status(200).json(user)
 }
 
-controllers.patch = (req, res) => {
+controllers.put = (req, res) => {
   return res.status(503).json({
     error: 'Service Unavailable'
   })
