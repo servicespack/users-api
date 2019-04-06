@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({
 
 // ---------- Object with the routers ----------
 const router = {
-  index: require('./routes/index'),
-  users: require('./routes/users'),
-  auth: require('./routes/auth')
+  index: require('./src/routes/index'),
+  users: require('./src/routes/users'),
+  auth: require('./src/routes/auth')
 }
 
 // ---------- routes Settings ----------

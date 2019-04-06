@@ -16,6 +16,6 @@ db.once('open', () => {
 })
 
 // ---------- Loading models ----------
-require('./models/user')
+require('./src/models/user')
 
 module.exports = db
