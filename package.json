@@ -4,9 +4,10 @@
   "description": "A simple and intuitive users API",
   "main": "index.js",
   "scripts": {
-    "test": "APP_ENV=test jest --coverage",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "docker": "docker-compose up",
+    "start": "node index.js",
+    "test": "APP_ENV=test jest --coverage"
   },
   "repository": {
     "type": "git",
