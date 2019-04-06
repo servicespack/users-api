@@ -4,7 +4,6 @@
   "description": "A simple and intuitive users API",
   "main": "index.js",
   "scripts": {
-    "test-server": "APP_ENV=test node index.js",
     "test": "APP_ENV=test jest",
     "dev": "nodemon index.js",
     "start": "node index.js"
