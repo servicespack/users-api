@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "deploy": "git push && git checkout master && git merge dev && git push && git checkout dev",
     "docker": "docker-compose up",
     "start": "node index.js",
     "test": "APP_ENV=test jest --coverage"
