@@ -1,9 +1,11 @@
-require('dotenv').config() // Load environment variables
-require('./db') // Start database and load models
-
-const app = require('./app')
-
-const port = process.env.PORT || 3000
-app.listen(port, () => {
-  console.log('[index.js: Listening on ' + port + ']')
+const dotenv = require('dotenv')
+const result = dotenv.config({
+  path: process.env.APP_ENV === 'test' ? '.env.test' : '.env'
 })
+
+if (result.error) {
+  throw new Error(result.error)
+}
+
+require('./db')
+require('./app')

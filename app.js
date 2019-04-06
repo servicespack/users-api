@@ -1,5 +1,5 @@
 const bodyParser = require('body-parser')
-const express = require('express')
+const express    = require('express')
 
 const app = express()
 
@@ -11,14 +11,19 @@ app.use(bodyParser.urlencoded({
 
 // ---------- Object with the routers ----------
 const router = {
-  index: require('./routes/index'),
-  users: require('./routes/users'),
-  auth: require('./routes/auth')
+  index: require('./src/routes/index'),
+  users: require('./src/routes/users'),
+  auth: require('./src/routes/auth')
 }
 
 // ---------- routes Settings ----------
 app.use('/', router.index)
 app.use('/users', router.users)
 app.use('/auth', router.auth)
+
+const port = process.env.APP_PORT
+app.listen(port, () => {
+  console.log('[index.js: Listening on ' + port + ']')
+})
 
 module.exports = app
