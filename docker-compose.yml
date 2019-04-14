@@ -6,7 +6,7 @@ services:
     working_dir: /usr/app
     volumes:
       - .:/usr/app
-    command: bash -c "npm install"
+    command: bash -c "npm install && npm run dev"
     ports:
       - "3000:3000"
     depends_on:
