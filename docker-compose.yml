@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
-  app:
+  app: # Don't use this service! It doesn't work for while.
     image: node
     working_dir: /usr/app
     volumes:
