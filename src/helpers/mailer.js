@@ -10,6 +10,9 @@ const transporter = nodemailer.createTransport({
   host: MAILER_HOST,
   port: MAILER_PORT,
   secure: MAILER_SECURE,
+  tls: {
+    rejectUnauthorized: true
+  },
   auth: {
     user: MAILER_USER,
     pass: MAILER_PASS
