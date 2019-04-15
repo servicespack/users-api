@@ -1,9 +1,13 @@
 const bcrypt   = require('bcryptjs')
+const doT      = require('dot')
+const fs       = require('fs')
+const mailer   = require('../helpers/mailer')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const User        = mongoose.model('User')
-const controllers = {}
+const User                 = mongoose.model('User')
+const verificationTemplate = fs.readFileSync('src/templates/base').toString('utf8')
+const controllers          = {}
 
 controllers.get = async (req, res) => {
   const query = {}
@@ -60,11 +64,15 @@ controllers.post = async (req, res) => {
   data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
-  newUser.save((err, user) => {
+  newUser.save(async (err, user) => {
     if (err) {
       return res.status(400).json({ err })
     } else {
-      return res.status(201).json(user)
+      res.status(201).json(user)
+
+      const generatedHtml = doT.template(verificationTemplate)()
+      await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+      return
     }
   })
 }
