@@ -13,7 +13,7 @@ services:
       - mongo
   mongo:
     image: mongo
-    restart: always
+  # restart: always
     ports:
       - '27017:27017'
   # environment:
@@ -21,7 +21,7 @@ services:
   #   MONGO_INITDB_ROOT_PASSWORD: root
   mongo-express:
     image: mongo-express
-    restart: always
+  # restart: always
     ports:
       - 8081:8081
     depends_on:
