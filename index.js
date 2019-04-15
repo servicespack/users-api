@@ -7,5 +7,7 @@ if (result.error) {
   throw new Error(result.error)
 }
 
+// Validate the .env payload!
+
 require('./db')
 require('./app')
