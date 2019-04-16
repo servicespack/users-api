@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const validate = require('validate.js')
 
 const User                 = mongoose.model('User')
-const verificationTemplate = fs.readFileSync('src/templates/base').toString('utf8')
+const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers          = {}
 
 controllers.get = async (req, res) => {
