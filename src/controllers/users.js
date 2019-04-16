@@ -71,6 +71,9 @@ controllers.post = async (req, res) => {
     } else {
       res.status(201).json(user)
 
+      const verification = new Verification({ email: user.email })
+      await verification.save()
+
       const generatedHtml = doT.template(verificationTemplate)()
       await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
       return
