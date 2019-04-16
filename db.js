@@ -17,5 +17,6 @@ db.once('open', () => {
 
 // ---------- Loading models ----------
 require('./src/models/user')
+require('./src/models/verification')
 
 module.exports = db
