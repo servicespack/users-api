@@ -13,12 +13,14 @@ app.use(bodyParser.urlencoded({
 const router = {
   index: require('./src/routes/index'),
   users: require('./src/routes/users'),
+  verifications: require('./src/routes/verifications'),
   auth: require('./src/routes/auth')
 }
 
 // ---------- routes Settings ----------
 app.use('/', router.index)
 app.use('/users', router.users)
+app.use('/verifications', router.verifications)
 app.use('/auth', router.auth)
 
 const port = process.env.APP_PORT
