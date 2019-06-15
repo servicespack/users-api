@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uuidv4   = require('uuid/v4')
 
 const verificationSchema = mongoose.Schema({
   email: {
@@ -8,7 +9,8 @@ const verificationSchema = mongoose.Schema({
   token: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    default: uuidv4()
   },
   created_at: {
     type: Date,
