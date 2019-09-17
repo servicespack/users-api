@@ -3,21 +3,14 @@ const express    = require('express')
 
 const app = express()
 
-const router = {
-  index: require('./src/routes/index'),
-  users: require('./src/routes/users'),
-  verifications: require('./src/routes/verifications'),
-  auth: require('./src/routes/auth')
-}
-
 app.disable('x-powered-by');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/', router.index)
-app.use('/users', router.users)
-app.use('/verifications', router.verifications)
-app.use('/auth', router.auth)
+app.use('/', require('./src/routes/index'))
+app.use('/users', require('./src/routes/users'))
+app.use('/verifications', require('./src/routes/verifications'))
+app.use('/auth', require('./src/routes/auth'))
 
 const port = process.env.APP_PORT
 app.listen(port, () => {
