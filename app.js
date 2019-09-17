@@ -3,13 +3,6 @@ const express    = require('express')
 
 const app = express()
 
-// ---------- app Settings ----------
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-
-// ---------- Object with the routers ----------
 const router = {
   index: require('./src/routes/index'),
   users: require('./src/routes/users'),
@@ -17,7 +10,10 @@ const router = {
   auth: require('./src/routes/auth')
 }
 
-// ---------- routes Settings ----------
+app.disable('x-powered-by');
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use('/', router.index)
 app.use('/users', router.users)
 app.use('/verifications', router.verifications)
