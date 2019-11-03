@@ -12,9 +12,10 @@ app.use('/users', require('./src/routes/users'))
 app.use('/verifications', require('./src/routes/verifications'))
 app.use('/auth', require('./src/routes/auth'))
 
-const port = process.env.APP_PORT
-app.listen(port, () => {
-  console.log('[index.js: Listening on ' + port + ']')
+const { APP_PORT } = process.env
+
+app.listen(APP_PORT, () => {
+  console.log('[index.js: Listening on ' + APP_PORT + ']')
 })
 
 module.exports = app
