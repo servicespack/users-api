@@ -82,6 +82,8 @@ In the UBox API, the user can have the following fields:
 }
 ```
 
+---
+
 ### Auth user
 
 > POST /auth
@@ -100,6 +102,8 @@ In the UBox API, the user can have the following fields:
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWRiZWU4MjZjZjczNTEzNTljNDFjMTIwIiwiaWF0IjoxNTcyNzk0MzM0LCJleHAiOjE1NzI3OTc5MzR9.qsIERF-02_HikpvLNQTsTestfXMfL_z0pytSjK6wyoc"
 }
 ```
+
+---
 
 ### List users
 
