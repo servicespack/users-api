@@ -65,21 +65,22 @@ controllers.post = async (req, res) => {
   data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
-  newUser.save(async (err, user) => {
-    if (err) {
-      return res.status(400).json({ err })
-    } else {
-      res.status(201).json({
-        success: 'User created'
-      })
 
-      const verification = new Verification({ email: user.email })
-      await verification.save()
+  try {
+    const user = await newUser.save()
 
-      const generatedHtml = doT.template(verificationTemplate)()
-      await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
-    }
-  })
+    res.status(201).json({
+      success: 'User created'
+    })
+
+    const verification = new Verification({ email: user.email })
+    await verification.save()
+
+    const generatedHtml = doT.template(verificationTemplate)()
+    await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
 }
 
 controllers.patch = async (req, res) => {
