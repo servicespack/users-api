@@ -11,6 +11,11 @@
     "test": "APP_ENV=test jest --coverage",
     "lint": "standard"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gabrielrufino/UBox.git"
