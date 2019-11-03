@@ -1,14 +1,14 @@
-const bcrypt   = require('bcryptjs')
-const doT      = require('dot')
-const fs       = require('fs')
-const mailer   = require('../helpers/mailer')
+const bcrypt = require('bcryptjs')
+const doT = require('dot')
+const fs = require('fs')
+const mailer = require('../helpers/mailer')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const User                 = mongoose.model('User')
-const Verification         = mongoose.model('Verification')
+const User = mongoose.model('User')
+const Verification = mongoose.model('Verification')
 const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
-const controllers          = {}
+const controllers = {}
 
 controllers.get = async (req, res) => {
   const query = {}
@@ -61,7 +61,7 @@ controllers.post = async (req, res) => {
     return res.status(400).json(validate(data, constraints))
   }
 
-  const salt    = bcrypt.genSaltSync(10)
+  const salt = bcrypt.genSaltSync(10)
   data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
@@ -78,7 +78,6 @@ controllers.post = async (req, res) => {
 
       const generatedHtml = doT.template(verificationTemplate)()
       await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
-      return
     }
   })
 }
@@ -110,9 +109,8 @@ controllers.patch = async (req, res) => {
     return res.status(400).json(errors)
   }
 
-
-  user.name     = data.name     || user.name
-  user.email    = data.email    || user.email
+  user.name = data.name || user.name
+  user.email = data.email || user.email
   user.username = data.username || user.username
   await user.save()
 

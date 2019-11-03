@@ -1,14 +1,14 @@
-const jwt      = require('jsonwebtoken')
-const bcrypt   = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const APP_URL          = process.env.APP_URL
-const TOKEN_PREFIX     = process.env.TOKEN_PREFIX
-const TOKEN_SECRET     = process.env.TOKEN_SECRET
+const APP_URL = process.env.APP_URL
+const TOKEN_PREFIX = process.env.TOKEN_PREFIX
+const TOKEN_SECRET = process.env.TOKEN_SECRET
 const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION
-const User             = mongoose.model('User')
-const controllers      = {}
+const User = mongoose.model('User')
+const controllers = {}
 
 controllers.post = async (req, res) => {
   const { username, password } = req.body

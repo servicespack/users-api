@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const uuidv4   = require('uuid/v4')
+const uuidv4 = require('uuid/v4')
 
 const verificationSchema = mongoose.Schema({
   email: {
@@ -25,4 +25,4 @@ const verificationSchema = mongoose.Schema({
 })
 
 const Verification = mongoose.model('Verification', verificationSchema)
-module.exports     = Verification
+module.exports = Verification
