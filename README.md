@@ -101,7 +101,7 @@ In the UBox API, the user can have the following fields:
 **Response:**
 ```json
 {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWRiZWU4MjZjZjczNTEzNTljNDFjMTIwIiwiaWF0IjoxNTcyNzk0MzM0LCJleHAiOjE1NzI3OTc5MzR9.qsIERF-02_HikpvLNQTsTestfXMfL_z0pytSjK6wyoc"
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWRiZWU4MjZjZjczNTEzNTljNDFjMTIwIiwiaWF0IjoxNTcyNzk0MzM0LCJleHAiOjE1NzI3OTc5MzR9.qsIERF-02_HikpvLNQTsTestfXMfL_z0pytSjK6wyoc"
 }
 ```
 
