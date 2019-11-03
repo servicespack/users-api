@@ -78,7 +78,26 @@ In the UBox API, the user can have the following fields:
 **Response:**
 ```json
 {
-    "success": "User created"
+  "success": "User created"
+}
+```
+
+### Auth user
+
+> POST /auth
+
+**Body:**
+```json
+{
+	"username": "gabrielrufino",
+	"password": "p@$sw0rd"
+}
+```
+
+**Response:**
+```json
+{
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWRiZWU4MjZjZjczNTEzNTljNDFjMTIwIiwiaWF0IjoxNTcyNzk0MzM0LCJleHAiOjE1NzI3OTc5MzR9.qsIERF-02_HikpvLNQTsTestfXMfL_z0pytSjK6wyoc"
 }
 ```
 
@@ -97,12 +116,12 @@ In the UBox API, the user can have the following fields:
 ```json
 [
   {
-      "verified": false,
-      "_id": "5dbee826cf7351359c41c120",
-      "name": "Gabriel Rufino",
-      "email": "contato@gabrielrufino.com",
-      "username": "gabrielrufino",
-      "__v": 0
+    "verified": false,
+    "_id": "5dbee826cf7351359c41c120",
+    "name": "Gabriel Rufino",
+    "email": "contato@gabrielrufino.com",
+    "username": "gabrielrufino",
+    "__v": 0
   }
 ]
 ```
