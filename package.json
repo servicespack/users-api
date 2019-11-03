@@ -8,7 +8,8 @@
     "deploy": "git push && git checkout master && git merge dev && git push && git checkout dev",
     "docker": "docker-compose up",
     "start": "node index.js",
-    "test": "APP_ENV=test jest --coverage"
+    "test": "APP_ENV=test jest --coverage",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
