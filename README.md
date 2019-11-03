@@ -59,6 +59,36 @@ In the UBox API, the user can have the following fields:
 - DB_PORT
 - DB_NAME
 
+## API Docs
+
+### Create user
+
+**Method:** POST
+**Body:**
+```json
+{
+  "name": "Gabriel Rufino",
+  "email": "contato@gabrielrufino.com",
+  "username": "gabrielrufino",
+  "password": "p@$sw0rd"
+}
+```
+
+**Response:**
+```json
+{
+  "verified": false,
+  "created_at": "2019-11-03T14:45:51.000Z",
+  "updated_at": "2019-11-03T14:45:51.000Z",
+  "_id": "5dbee826cf7351359c41c120",
+  "name": "Gabriel Rufino",
+  "email": "contato@gabrielrufino.com",
+  "username": "gabrielrufino",
+  "password": "$2a$10$vFeXY6emPm.zJJTHvpe5uOdxmUtWjnqCoRViwOeeb.8HLVlDM6fV6",
+  "__v": 0
+}
+```
+
 ## LICENSE
 
 The MIT License (MIT)
