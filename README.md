@@ -82,6 +82,31 @@ In the UBox API, the user can have the following fields:
 }
 ```
 
+### List users
+
+> GET /users
+
+**Header:**
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWRiZWU4MjZjZjczNTEzNTljNDFjMTIwIiwiaWF0IjoxNTcyNzk0MzM0LCJleHAiOjE1NzI3OTc5MzR9.qsIERF-02_HikpvLNQTsTestfXMfL_z0pytSjK6wyoc"
+}
+```
+
+**Response:**
+```json
+[
+  {
+      "verified": false,
+      "_id": "5dbee826cf7351359c41c120",
+      "name": "Gabriel Rufino",
+      "email": "contato@gabrielrufino.com",
+      "username": "gabrielrufino",
+      "__v": 0
+  }
+]
+```
+
 ## LICENSE
 
 The MIT License (MIT)
