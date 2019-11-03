@@ -69,7 +69,9 @@ controllers.post = async (req, res) => {
     if (err) {
       return res.status(400).json({ err })
     } else {
-      res.status(201).json(user)
+      res.status(201).json({
+        success: 'User created'
+      })
 
       const verification = new Verification({ email: user.email })
       await verification.save()
