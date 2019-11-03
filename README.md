@@ -63,7 +63,8 @@ In the UBox API, the user can have the following fields:
 
 ### Create user
 
-**Method:** POST
+> POST /users
+
 **Body:**
 ```json
 {
