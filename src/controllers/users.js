@@ -1,8 +1,13 @@
-const bcrypt   = require('bcryptjs')
+const bcrypt = require('bcryptjs')
+const doT = require('dot')
+const fs = require('fs')
+const mailer = require('../helpers/mailer')
 const mongoose = require('mongoose')
 const validate = require('validate.js')
 
-const User        = mongoose.model('User')
+const User = mongoose.model('User')
+const Verification = mongoose.model('Verification')
+const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
 controllers.get = async (req, res) => {
@@ -56,17 +61,26 @@ controllers.post = async (req, res) => {
     return res.status(400).json(validate(data, constraints))
   }
 
-  const salt    = bcrypt.genSaltSync(10)
+  const salt = bcrypt.genSaltSync(10)
   data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
-  newUser.save((err, user) => {
-    if (err) {
-      return res.status(400).json({ err })
-    } else {
-      return res.status(201).json(user)
-    }
-  })
+
+  try {
+    const user = await newUser.save()
+
+    res.status(201).json({
+      success: 'User created'
+    })
+
+    const verification = new Verification({ email: user.email })
+    await verification.save()
+
+    const generatedHtml = doT.template(verificationTemplate)()
+    await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
 }
 
 controllers.patch = async (req, res) => {
@@ -96,9 +110,8 @@ controllers.patch = async (req, res) => {
     return res.status(400).json(errors)
   }
 
-
-  user.name     = data.name     || user.name
-  user.email    = data.email    || user.email
+  user.name = data.name || user.name
+  user.email = data.email || user.email
   user.username = data.username || user.username
   await user.save()
 

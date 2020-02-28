@@ -1,29 +1,21 @@
 const bodyParser = require('body-parser')
-const express    = require('express')
+const express = require('express')
 
 const app = express()
 
-// ---------- app Settings ----------
+app.disable('x-powered-by')
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// ---------- Object with the routers ----------
-const router = {
-  index: require('./src/routes/index'),
-  users: require('./src/routes/users'),
-  auth: require('./src/routes/auth')
-}
+app.use('/', require('./src/routes/index'))
+app.use('/users', require('./src/routes/users'))
+app.use('/verifications', require('./src/routes/verifications'))
+app.use('/auth', require('./src/routes/auth'))
 
-// ---------- routes Settings ----------
-app.use('/', router.index)
-app.use('/users', router.users)
-app.use('/auth', router.auth)
+const { APP_PORT } = process.env
 
-const port = process.env.APP_PORT
-app.listen(port, () => {
-  console.log('[index.js: Listening on ' + port + ']')
+app.listen(APP_PORT, () => {
+  console.log('[index.js: Listening on ' + APP_PORT + ']')
 })
 
 module.exports = app

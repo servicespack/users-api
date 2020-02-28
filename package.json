@@ -5,10 +5,16 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "deploy": "git push && git checkout master && git merge dev && git push && git checkout dev",
     "docker": "docker-compose up",
+    "git-branch-is": "git-branch-is",
     "start": "node index.js",
-    "test": "APP_ENV=test jest --coverage"
+    "test": "APP_ENV=test jest --coverage",
+    "lint": "standard"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git-branch-is --not master && npm run lint"
+    }
   },
   "repository": {
     "type": "git",
@@ -22,18 +28,26 @@
   "homepage": "https://github.com/gabrielrufino/UBox#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dot": "^1.1.2",
     "body-parser": "^1.19.0",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.5",
+    "nodemailer": "^6.1.0",
+    "uuid": "^3.3.2",
     "validate.js": "^0.12.0",
+    "mongoose": "^5.7.5",
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "axios": "^0.18.1",
+    "git-branch-is": "^3.1.0",
+    "husky": "^3.0.9",
     "jest": "^24.8.0",
+    "js-yaml": "^3.13.1",
+    "mongoose": "^5.6.0",
     "nodemon": "^1.19.1",
-    "standard": "^11.0.1"
+    "standard": "^11.0.1",
+    "validate.js": "^0.12.0"
   }
 }

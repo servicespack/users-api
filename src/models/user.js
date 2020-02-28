@@ -11,6 +11,11 @@ const userSchema = mongoose.Schema({
     unique: true,
     lowercase: true
   },
+  verified: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   username: {
     type: String,
     required: true,
@@ -33,5 +38,5 @@ const userSchema = mongoose.Schema({
   }
 })
 
-const User     = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 module.exports = User
