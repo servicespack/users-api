@@ -9,7 +9,8 @@
     "git-branch-is": "git-branch-is",
     "start": "node index.js",
     "test": "APP_ENV=test jest --coverage",
-    "lint": "standard"
+    "lint": "standard",
+    "generate:docs": "snowboard html -o docs docs.apib"
   },
   "husky": {
     "hooks": {
