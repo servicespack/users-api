@@ -45,6 +45,7 @@
     "js-yaml": "^3.14.0",
     "mongoose": "^5.9.16",
     "nodemon": "^1.19.4",
+    "snowboard": "^4.1.13",
     "standard": "^11.0.1",
     "validate.js": "^0.12.0"
   }
