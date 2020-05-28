@@ -1,7 +1,7 @@
 const express = require('express')
 
-const controllers = require('../controllers/auth')
 const router = express.Router()
+const controllers = require('../controllers/tokens')
 
 router.post('/', controllers.post)
 
