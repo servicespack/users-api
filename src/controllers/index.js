@@ -1,7 +1,7 @@
 const controllers = {}
 
-controllers.get = (req, res) => {
-  return res.status(200).json({ healthcheck: 'live' })
+controllers.get = (_, response) => {
+  return response.status(200).json({ healthcheck: 'live' })
 }
 
 module.exports = controllers
