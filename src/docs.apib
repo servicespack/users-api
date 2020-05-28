@@ -1,0 +1,92 @@
+FORMAT: 1A
+
+# UBox
+
+Microservices for users
+
+## Users [/api/users]
+
+### List users [GET]
+
++ Response 200 (application/json)
+
+        {
+          "meta": {
+            "total": 1,
+            "page": 1,
+          },
+          "data": [
+            {
+              "id": "11d6525e-827a-47cd-b707-cc41155df58b",
+              "name": "Gabriel Rufino"
+            }
+          ]
+        }
+
+### Create new user [POST]
+
++ name (string) - User name
++ email (string) - User email
+
++ Request (application/json)
+
+        {
+          "name": "Gabriel Rufino",
+          "email": "contato@gabrielrufino.com"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
+          "name": "Gabriel Rufino"
+        }
+
+## User [/api/users/{user_id}]
+
+Endpoint to unique user actions
+
+### Detail user [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
+          "name": "Gabriel Rufino"
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "User not found"
+        }
+
+### Update user [PATCH]
+
++ Response 200 (application/json)
+
+        {
+          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
+          "name": "Gabriel Rufino"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
+          "name": "Gabriel Rufino"
+        }
+
+### Delete user [DELETE]
+
++ Response 200 (application/json)
+
+        {
+          "success": "User deleted"
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "User not found"
+        }

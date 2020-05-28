@@ -4,13 +4,13 @@
   "description": "A simple and intuitive users API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon --exec 'npm run generate:docs && node index.js' --ignore docs/ --ext js,apib",
     "docker": "docker-compose up",
     "git-branch-is": "git-branch-is",
     "start": "node index.js",
     "test": "APP_ENV=test jest --coverage",
     "lint": "standard",
-    "generate:docs": "snowboard html -o docs docs.apib"
+    "generate:docs": "snowboard html -o docs ./src/docs.apib"
   },
   "husky": {
     "hooks": {
@@ -49,5 +49,10 @@
     "snowboard": "^4.1.13",
     "standard": "^11.0.1",
     "validate.js": "^0.12.0"
+  },
+  "standard": {
+    "ignore": [
+      "/docs/"
+    ]
   }
 }
