@@ -10,31 +10,31 @@ const Verification = mongoose.model('Verification')
 const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
-controllers.get = async (req, res) => {
+controllers.get = async (_, response) => {
   const query = {}
   const users = await User.find(query)
 
-  return res.status(200).json(users)
+  return response.status(200).json(users)
 }
 
-controllers.getOne = async (req, res) => {
-  const user = await User.findById(req.params.id)
+controllers.getOne = async (request, response) => {
+  const user = await User.findById(request.params.id)
 
   if (!user) {
-    return res.status(404).json({
+    return response.status(404).json({
       'error': 'User not found'
     })
   }
 
-  return res.status(200).json(user)
+  return response.status(200).json(user)
 }
 
-controllers.post = async (req, res) => {
+controllers.post = async (request, response) => {
   const data = {
-    name: req.body.name,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password
+    name: request.body.name,
+    email: request.body.email,
+    username: request.body.username,
+    password: request.body.password
   }
 
   const constraints = {
@@ -58,7 +58,7 @@ controllers.post = async (req, res) => {
 
   const errors = validate(data, constraints)
   if (errors) {
-    return res.status(400).json(validate(data, constraints))
+    return response.status(400).json(validate(data, constraints))
   }
 
   const salt = bcrypt.genSaltSync(10)
@@ -69,7 +69,7 @@ controllers.post = async (req, res) => {
   try {
     const user = await newUser.save()
 
-    res.status(201).json({
+    response.status(201).json({
       success: 'User created'
     })
 
@@ -79,24 +79,24 @@ controllers.post = async (req, res) => {
     const generatedHtml = doT.template(verificationTemplate)()
     await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
   } catch (error) {
-    return res.status(400).json({ error })
+    return response.status(400).json({ error })
   }
 }
 
-controllers.patch = async (req, res) => {
-  const user = await User.findById(req.params.id)
+controllers.patch = async (request, response) => {
+  const user = await User.findById(request.params.id)
 
   if (!user) {
-    return res.status(404).json({
+    return response.status(404).json({
       'error': 'User not found'
     })
   }
 
   const data = {
-    name: req.body.name,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password
+    name: request.body.name,
+    email: request.body.email,
+    username: request.body.username,
+    password: request.body.password
   }
 
   const constraints = {
@@ -107,7 +107,7 @@ controllers.patch = async (req, res) => {
 
   const errors = validate(data, constraints)
   if (errors) {
-    return res.status(400).json(errors)
+    return response.status(400).json(errors)
   }
 
   user.name = data.name || user.name
@@ -115,26 +115,26 @@ controllers.patch = async (req, res) => {
   user.username = data.username || user.username
   await user.save()
 
-  return res.status(200).json(user)
+  return response.status(200).json(user)
 }
 
-controllers.put = (req, res) => {
-  return res.status(503).json({
+controllers.put = (_, response) => {
+  return response.status(503).json({
     error: 'Service Unavailable'
   })
 }
 
-controllers.delete = async (req, res) => {
-  const user = await User.findById(req.params.id)
+controllers.delete = async (request, response) => {
+  const user = await User.findById(request.params.id)
 
   if (!user) {
-    return res.status(404).json({
+    return response.status(404).json({
       'error': 'User not found'
     })
   }
 
   await user.delete()
-  return res.status(204).json({})
+  return response.status(204).json({})
 }
 
 module.exports = controllers
