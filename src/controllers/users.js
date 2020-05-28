@@ -10,11 +10,18 @@ const Verification = mongoose.model('Verification')
 const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
-controllers.get = async (_, response) => {
+controllers.get = async (request, response) => {
   const query = {}
   const users = await User.find(query)
 
-  return response.status(200).json(users)
+  const total = await User.countDocuments()
+
+  return response.status(200).json({
+    meta: {
+      total,
+    },
+    data: users
+  })
 }
 
 controllers.getOne = async (request, response) => {
