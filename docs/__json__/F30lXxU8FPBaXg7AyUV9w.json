@@ -1,0 +1,43 @@
+{
+  "title": "GET /api/users",
+  "description": "",
+  "permalink": "t~api~users~get~api~users",
+  "uuid": "F30lXxU8FPBaXg7AyUV9w",
+  "method": "GET",
+  "path": "/api/users",
+  "pathTemplate": "/api/users",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "/api/users",
+      "permalink": "r~api~users"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "GET",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "text/plain",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "text/plain",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "Hello World!\n"
+      }
+    }
+  ]
+}

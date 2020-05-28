@@ -1,0 +1,43 @@
+{
+  "title": "GET /",
+  "description": "",
+  "permalink": "t~get",
+  "uuid": "PXax0KzatIXz1IQaZqNAM",
+  "method": "GET",
+  "path": "/",
+  "pathTemplate": "/",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "/",
+      "permalink": "r"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "GET",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "text/plain",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "text/plain",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "Hello World!\n"
+      }
+    }
+  ]
+}

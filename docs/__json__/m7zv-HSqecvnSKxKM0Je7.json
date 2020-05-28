@@ -1,0 +1,43 @@
+{
+  "title": "POST /api/users",
+  "description": "",
+  "permalink": "t~api~users~post~api~users",
+  "uuid": "m7zv-HSqecvnSKxKM0Je7",
+  "method": "POST",
+  "path": "/api/users",
+  "pathTemplate": "/api/users",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "/api/users",
+      "permalink": "r~api~users"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "POST",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "text/plain",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "text/plain",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "Hello World!\n"
+      }
+    }
+  ]
+}
