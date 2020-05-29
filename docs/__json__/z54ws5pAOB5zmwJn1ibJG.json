@@ -1,0 +1,54 @@
+{
+  "title": "Create new user",
+  "description": "+ name (string) - User name\n\n+ email (string) - User email",
+  "permalink": "t~users~post~api~users",
+  "uuid": "z54ws5pAOB5zmwJn1ibJG",
+  "method": "POST",
+  "path": "/api/users",
+  "pathTemplate": "/api/users",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "Users",
+      "permalink": "r~users"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "POST",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"name\": \"Gabriel Rufino\",\n  \"email\": \"contato@gabrielrufino.com\"\n}\n"
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "201",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"id\": \"11d6525e-827a-47cd-b707-cc41155df58b\",\n  \"name\": \"Gabriel Rufino\"\n}\n"
+      }
+    }
+  ]
+}
