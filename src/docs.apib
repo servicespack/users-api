@@ -12,14 +12,17 @@ Microservices for users
 
         {
           "meta": {
-            "total": 1,
             "page": 1,
+            "size": 10,
+            "total": 1
           },
           "data": [
-            {
-              "id": "11d6525e-827a-47cd-b707-cc41155df58b",
-              "name": "Gabriel Rufino"
-            }
+            "verified": false,
+            "_id": "5ecf208f7e372416b23669c2",
+            "name": "Gabriel Rufino",
+            "email": "gabrielruufinooo@gmail.com",
+            "username": "gabrielrufinoo",
+            "__v": 0
           ]
         }
 
@@ -28,18 +31,19 @@ Microservices for users
 + name (string) - User name
 + email (string) - User email
 
-+ Request (application/json)
++ Request  (application/json)
 
         {
           "name": "Gabriel Rufino",
-          "email": "contato@gabrielrufino.com"
+          "email": "contato@gabrielrufino.com",
+          "username": "gabrielrufino",
+          "password": "12345678"
         }
 
 + Response 201 (application/json)
 
         {
-          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
-          "name": "Gabriel Rufino"
+          "success": "User created"
         }
 
 ## User [/api/users/{user_id}]
@@ -51,8 +55,12 @@ Endpoint to unique user actions
 + Response 200 (application/json)
 
         {
-          "id": "11d6525e-827a-47cd-b707-cc41155df58b",
-          "name": "Gabriel Rufino"
+          "verified": false,
+          "_id": "5ecf208f7e372416b23669c2",
+          "name": "Gabriel Rufino",
+          "email": "gabrielruufinooo@gmail.com",
+          "username": "gabrielrufinoo",
+          "__v": 0
         }
 
 + Response 404 (application/json)
@@ -98,7 +106,7 @@ Endpoint to unique user actions
 + username (string) - username
 + password (string) - password
 
-+ Request (application/json)
++ Request  (application/json)
 
         {
           "username": "gabrielrufino",
