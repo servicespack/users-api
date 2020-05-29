@@ -11,14 +11,22 @@ const verificationTemplate = fs.readFileSync('src/templates/account-verification
 const controllers = {}
 
 controllers.get = async (request, response) => {
-  const query = {}
-  const users = await User.find(query)
+  const { page = 1, size = 10 } = request.query
 
-  const total = await User.countDocuments()
+  const query = {}
+
+  const users = await User
+    .find(query)
+    .skip((Number(page) - 1) * Number(size))
+    .limit(Number(size))
+
+  const total = await User.countDocuments(query)
 
   return response.status(200).json({
     meta: {
-      total,
+      page: Number(page),
+      size: Number(size),
+      total
     },
     data: users
   })
