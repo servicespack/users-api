@@ -90,3 +90,23 @@ Endpoint to unique user actions
         {
           "error": "User not found"
         }
+
+## Tokens [/api/tokens]
+
+### Create token [POST]
+
++ username (string) - username
++ password (string) - password
+
++ Request (application/json)
+
+        {
+          "username": "gabrielrufino",
+          "password": "12345678"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWVkMDQ1ZjgzYzU1Njk1M2I4YTkyN2ExIiwiaWF0IjoxNTkwNzEzODg4LCJleHAiOjE1OTA3MTc0ODh9.vv63_7FjITYWyoT-ykElhtrfgMKUQmuNZgbScx903k0"
+        }
