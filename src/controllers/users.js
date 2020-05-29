@@ -11,9 +11,15 @@ const verificationTemplate = fs.readFileSync('src/templates/account-verification
 const controllers = {}
 
 controllers.get = async (request, response) => {
-  const { page = 1, size = 10 } = request.query
+  const { page = 1, size = 10, search = '' } = request.query
 
-  const query = {}
+  const query = {
+    $or: [
+      { 'name': new RegExp(search, 'gi') },
+      { 'email': new RegExp(search, 'gi') },
+      { 'username': new RegExp(search, 'gi') }
+    ]
+  }
 
   const users = await User
     .find(query)
