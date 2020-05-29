@@ -21,12 +21,13 @@ controllers.get = async (request, response) => {
     ]
   }
 
-  const users = await User
-    .find(query)
-    .skip((Number(page) - 1) * Number(size))
-    .limit(Number(size))
-
-  const total = await User.countDocuments(query)
+  const [users, total] = await Promise.all([
+    User
+      .find(query)
+      .skip((Number(page) - 1) * Number(size))
+      .limit(Number(size)),
+    User.countDocuments(query)
+  ])
 
   return response.status(200).json({
     meta: {
