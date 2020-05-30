@@ -8,7 +8,7 @@ const router = express.Router()
 router.post('/', [validators.create], controllers.create)
 router.get('/', [authMiddleware, validators.list], controllers.list)
 router.get('/:id', [authMiddleware], controllers.show)
-router.patch('/:id', [authMiddleware, validators.update], controllers.patch)
+router.patch('/:id', [authMiddleware, validators.update], controllers.update)
 router.delete('/:id', [authMiddleware], controllers.delete)
 
 module.exports = router

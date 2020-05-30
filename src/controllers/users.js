@@ -80,7 +80,7 @@ controllers.create = async (request, response) => {
   }
 }
 
-controllers.patch = async (request, response) => {
+controllers.update = async (request, response) => {
   const user = await User.findById(request.params.id)
 
   if (!user) {
