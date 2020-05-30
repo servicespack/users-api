@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const TOKEN_PREFIX = process.env.TOKEN_PREFIX
-const TOKEN_SECRET = process.env.TOKEN_SECRET
+const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 
 const auth = async (req, res, next) => {
   const authorization = req.headers.authorization
