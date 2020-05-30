@@ -38,7 +38,7 @@ controllers.list = async (request, response) => {
   })
 }
 
-controllers.getOne = async (request, response) => {
+controllers.show = async (request, response) => {
   const user = await User.findById(request.params.id)
 
   if (!user) {
