@@ -6,8 +6,8 @@
   "scripts": {
     "database:clear": "node ./scripts/database:clear",
     "database:populate": "node ./scripts/database:populate",
-    "dev": "nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
-    "docker": "docker-compose up",
+    "dev": "npm run docker && nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
+    "docker": "docker-compose up -d",
     "docs:generate": "snowboard html -o docs ./src/docs.apib",
     "git-branch-is": "git-branch-is",
     "lint": "standard",

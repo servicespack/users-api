@@ -7,4 +7,6 @@ if (result.error) {
   throw new Error(result.error)
 }
 
+process.env = Object.freeze({...process.env})
+
 module.exports = result
