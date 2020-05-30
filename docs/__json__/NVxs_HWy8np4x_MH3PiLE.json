@@ -1,0 +1,54 @@
+{
+  "title": "Create token",
+  "description": "+ username (string) - username\n\n+ password (string) - password",
+  "permalink": "t~tokens~post~api~tokens",
+  "uuid": "NVxs_HWy8np4x_MH3PiLE",
+  "method": "POST",
+  "path": "/api/tokens",
+  "pathTemplate": "/api/tokens",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "Tokens",
+      "permalink": "r~tokens"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "POST",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"username\": \"gabrielrufino\",\n  \"password\": \"12345678\"\n}\n"
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "201",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwic3ViIjoiNWVkMDQ1ZjgzYzU1Njk1M2I4YTkyN2ExIiwiaWF0IjoxNTkwNzEzODg4LCJleHAiOjE1OTA3MTc0ODh9.vv63_7FjITYWyoT-ykElhtrfgMKUQmuNZgbScx903k0\"\n}\n"
+      }
+    }
+  ]
+}

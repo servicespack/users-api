@@ -50,7 +50,7 @@ controllers.getOne = async (request, response) => {
   return response.status(200).json(user)
 }
 
-controllers.post = async (request, response) => {
+controllers.create = async (request, response) => {
   const { name, email, username, password } = request.body
 
   const data = {
