@@ -9,7 +9,7 @@ const Verification = mongoose.model('Verification')
 const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
-controllers.get = async (request, response) => {
+controllers.list = async (request, response) => {
   const { page = 1, size = 10, search = '' } = request.query
 
   const query = {

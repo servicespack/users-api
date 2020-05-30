@@ -6,7 +6,7 @@ const controllers = require('../controllers/users')
 const router = express.Router()
 
 router.post('/', [validators.create], controllers.post)
-router.get('/', [authMiddleware, validators.list], controllers.get)
+router.get('/', [authMiddleware, validators.list], controllers.list)
 router.get('/:id', [authMiddleware], controllers.getOne)
 router.patch('/:id', [authMiddleware, validators.update], controllers.patch)
 router.delete('/:id', [authMiddleware], controllers.delete)
