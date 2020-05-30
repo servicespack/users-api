@@ -3,7 +3,6 @@ const doT = require('dot')
 const fs = require('fs')
 const mailer = require('../helpers/mailer')
 const mongoose = require('mongoose')
-const validate = require('validate.js')
 
 const User = mongoose.model('User')
 const Verification = mongoose.model('Verification')
@@ -52,35 +51,13 @@ controllers.getOne = async (request, response) => {
 }
 
 controllers.post = async (request, response) => {
+  const { name, email, username, password } = request.body
+
   const data = {
-    name: request.body.name,
-    email: request.body.email,
-    username: request.body.username,
-    password: request.body.password
-  }
-
-  const constraints = {
-    name: {
-      presence: true
-    },
-    email: {
-      presence: true,
-      email: true
-    },
-    username: {
-      presence: true
-    },
-    password: {
-      presence: true,
-      length: {
-        minimum: 8
-      }
-    }
-  }
-
-  const errors = validate(data, constraints)
-  if (errors) {
-    return response.status(400).json(validate(data, constraints))
+    name,
+    email,
+    username,
+    password
   }
 
   const salt = bcrypt.genSaltSync(10)
@@ -91,9 +68,7 @@ controllers.post = async (request, response) => {
   try {
     const user = await newUser.save()
 
-    response.status(201).json({
-      success: 'User created'
-    })
+    response.status(201).json(user)
 
     const verification = new Verification({ email: user.email })
     await verification.save()
@@ -114,36 +89,14 @@ controllers.patch = async (request, response) => {
     })
   }
 
-  const data = {
-    name: request.body.name,
-    email: request.body.email,
-    username: request.body.username,
-    password: request.body.password
-  }
+  const { name, email, username } = request.body
 
-  const constraints = {
-    email: {
-      email: true
-    }
-  }
-
-  const errors = validate(data, constraints)
-  if (errors) {
-    return response.status(400).json(errors)
-  }
-
-  user.name = data.name || user.name
-  user.email = data.email || user.email
-  user.username = data.username || user.username
+  user.name = name || user.name
+  user.email = email || user.email
+  user.username = username || user.username
   await user.save()
 
   return response.status(200).json(user)
-}
-
-controllers.put = (_, response) => {
-  return response.status(503).json({
-    error: 'Service Unavailable'
-  })
 }
 
 controllers.delete = async (request, response) => {
