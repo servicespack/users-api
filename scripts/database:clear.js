@@ -1,12 +1,16 @@
 const { db } = require('../start/')
 
-const mongoose = require('mongoose')
+if (process.env.APP_ENV === 'development') {
+  const mongoose = require('mongoose')
 
-const User = mongoose.model('User')
+  const User = mongoose.model('User')
 
-User
-  .deleteMany({})
-  .then(async () => {
-    console.log('All users deleted')
-    db.close()
-  })
+  User
+    .deleteMany({})
+    .then(async () => {
+      console.log('All users deleted')
+      db.close()
+    })
+} else {
+  throw new Error('Script only allowed in development')
+}
