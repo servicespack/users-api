@@ -1,0 +1,43 @@
+{
+  "title": "List users",
+  "description": "",
+  "permalink": "t~users~get~api~users",
+  "uuid": "aaqtKdtsyPMETyZm_xjnO",
+  "method": "GET",
+  "path": "/api/users",
+  "pathTemplate": "/api/users",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "Users",
+      "permalink": "r~users"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "GET",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"meta\": {\n    \"page\": 1,\n    \"size\": 10,\n    \"total\": 1\n  },\n  \"data\": [\n    \"verified\": false,\n    \"_id\": \"5ecf208f7e372416b23669c2\",\n    \"name\": \"Gabriel Rufino\",\n    \"email\": \"gabrielruufinooo@gmail.com\",\n    \"username\": \"gabrielrufinoo\",\n    \"__v\": 0\n  ]\n}\n"
+      }
+    }
+  ]
+}
