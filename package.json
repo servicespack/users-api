@@ -8,11 +8,11 @@
     "database:populate": "node ./scripts/database:populate",
     "dev": "nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
     "docker": "docker-compose up",
+    "docs:generate": "snowboard html -o docs ./src/docs.apib",
     "git-branch-is": "git-branch-is",
-    "start": "node index.js",
-    "test": "APP_ENV=test jest --coverage",
     "lint": "standard",
-    "docs:generate": "snowboard html -o docs ./src/docs.apib"
+    "start": "node index.js",
+    "test": "APP_ENV=test jest --coverage"
   },
   "husky": {
     "hooks": {
