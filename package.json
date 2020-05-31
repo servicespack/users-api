@@ -1,7 +1,7 @@
 {
   "name": "ubox",
   "version": "3.0.0",
-  "description": "A simple and intuitive users API",
+  "description": "Users microservice ready and flexible for your system",
   "main": "index.js",
   "scripts": {
     "database:clear": "node ./scripts/database:clear",
