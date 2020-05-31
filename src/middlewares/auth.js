@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken')
 
-const TOKEN_PREFIX = process.env.TOKEN_PREFIX
-const TOKEN_SECRET = process.env.TOKEN_SECRET
+const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 
-const auth = async (req, res, next) => {
-  const authorization = req.headers.authorization
+const auth = async (request, response, next) => {
+  const authorization = request.headers.authorization
 
   if (!authorization) {
-    return res.status(401).json({
+    return response.status(401).json({
       error: 'No token provided'
     })
   }
@@ -15,7 +14,7 @@ const auth = async (req, res, next) => {
   const [prefix, token] = authorization.split(' ')
 
   if (prefix !== TOKEN_PREFIX) {
-    return res.status(401).json({
+    return response.status(401).json({
       error: 'Invalid prefix'
     })
   }
@@ -25,7 +24,7 @@ const auth = async (req, res, next) => {
 
     return next()
   } catch (error) {
-    return res.status(401).json({
+    return response.status(401).json({
       error
     })
   }

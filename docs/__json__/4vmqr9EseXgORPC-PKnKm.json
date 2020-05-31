@@ -1,0 +1,68 @@
+{
+  "title": "Delete user",
+  "description": "",
+  "permalink": "t~user~delete~api~users~user~id",
+  "uuid": "4vmqr9EseXgORPC-PKnKm",
+  "method": "DELETE",
+  "path": "/api/users/{user_id}",
+  "pathTemplate": "/api/users/{user_id}",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "User",
+      "permalink": "r~user"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "DELETE",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"success\": \"User deleted\"\n}\n"
+      }
+    },
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "DELETE",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "404",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"error\": \"User not found\"\n}\n"
+      }
+    }
+  ]
+}

@@ -12,7 +12,11 @@ const userSchema = mongoose.Schema({
     unique: true,
     lowercase: true
   },
-  verified: {
+  email_verification_key: {
+    type: String,
+    select: false
+  },
+  is_email_verified: {
     type: Boolean,
     required: true,
     default: false

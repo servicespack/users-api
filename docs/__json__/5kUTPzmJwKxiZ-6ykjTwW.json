@@ -1,0 +1,54 @@
+{
+  "title": "Create token",
+  "description": "+ username (string) - username\n\n+ password (string) - password",
+  "permalink": "t~tokens~post~api~tokens",
+  "uuid": "5kUTPzmJwKxiZ-6ykjTwW",
+  "method": "POST",
+  "path": "/api/tokens",
+  "pathTemplate": "/api/tokens",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "Tokens",
+      "permalink": "r~tokens"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "POST",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"username\": \"gabrielrufino\",\n  \"email\": \"12345678\"\n}\n"
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "201",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"id\": \"11d6525e-827a-47cd-b707-cc41155df58b\",\n  \"name\": \"Gabriel Rufino\"\n}\n"
+      }
+    }
+  ]
+}

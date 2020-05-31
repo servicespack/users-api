@@ -1,16 +1,14 @@
 const bcrypt = require('bcryptjs')
-const doT = require('dot')
-const fs = require('fs')
-const mailer = require('../helpers/mailer')
+const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
-const validate = require('validate.js')
 
+const mailer = require('../helpers/mailer')
+
+const { MAILER_CONFIRM_URI } = process.env
 const User = mongoose.model('User')
-const Verification = mongoose.model('Verification')
-const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
-controllers.get = async (request, response) => {
+controllers.list = async (request, response) => {
   const { page = 1, size = 10, search = '' } = request.query
 
   const query = {
@@ -39,48 +37,27 @@ controllers.get = async (request, response) => {
   })
 }
 
-controllers.getOne = async (request, response) => {
+controllers.show = async (request, response) => {
   const user = await User.findById(request.params.id)
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 
   return response.status(200).json(user)
 }
 
-controllers.post = async (request, response) => {
+controllers.create = async (request, response) => {
+  const { name, email, username, password } = request.body
+
   const data = {
-    name: request.body.name,
-    email: request.body.email,
-    username: request.body.username,
-    password: request.body.password
-  }
-
-  const constraints = {
-    name: {
-      presence: true
-    },
-    email: {
-      presence: true,
-      email: true
-    },
-    username: {
-      presence: true
-    },
-    password: {
-      presence: true,
-      length: {
-        minimum: 8
-      }
-    }
-  }
-
-  const errors = validate(data, constraints)
-  if (errors) {
-    return response.status(400).json(validate(data, constraints))
+    name,
+    email,
+    username,
+    password,
+    email_verification_key: cryptoRandomString({length: 128})
   }
 
   const salt = bcrypt.genSaltSync(10)
@@ -89,61 +66,53 @@ controllers.post = async (request, response) => {
   const newUser = new User(data)
 
   try {
-    const user = await newUser.save()
+    const {
+      _id,
+      name,
+      email,
+      username,
+      email_verification_key: emailVerificationKey
+    } = await newUser.save()
 
     response.status(201).json({
-      success: 'User created'
+      _id,
+      name,
+      email,
+      username
     })
 
-    const verification = new Verification({ email: user.email })
-    await verification.save()
-
-    const generatedHtml = doT.template(verificationTemplate)()
-    await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+    mailer
+      .sendMail(
+        email,
+        'Account Confirmation',
+        `
+          <div>
+            <a href="${MAILER_CONFIRM_URI}?key=${emailVerificationKey}">Clique aqui</a> para confirmar seu E-mail
+          </div>
+        `
+      )
   } catch (error) {
     return response.status(400).json({ error })
   }
 }
 
-controllers.patch = async (request, response) => {
+controllers.update = async (request, response) => {
   const user = await User.findById(request.params.id)
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 
-  const data = {
-    name: request.body.name,
-    email: request.body.email,
-    username: request.body.username,
-    password: request.body.password
-  }
+  const { name, email, username } = request.body
 
-  const constraints = {
-    email: {
-      email: true
-    }
-  }
-
-  const errors = validate(data, constraints)
-  if (errors) {
-    return response.status(400).json(errors)
-  }
-
-  user.name = data.name || user.name
-  user.email = data.email || user.email
-  user.username = data.username || user.username
+  user.name = name || user.name
+  user.email = email || user.email
+  user.username = username || user.username
   await user.save()
 
   return response.status(200).json(user)
-}
-
-controllers.put = (_, response) => {
-  return response.status(503).json({
-    error: 'Service Unavailable'
-  })
 }
 
 controllers.delete = async (request, response) => {
@@ -151,7 +120,7 @@ controllers.delete = async (request, response) => {
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 
