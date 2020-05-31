@@ -1,8 +1,10 @@
 const bcrypt = require('bcryptjs')
+const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
 
-// const mailer = require('../helpers/mailer')]
+const mailer = require('../helpers/mailer')
 
+const { MAILER_CONFIRM_URI } = process.env
 const User = mongoose.model('User')
 const controllers = {}
 
@@ -54,7 +56,8 @@ controllers.create = async (request, response) => {
     name,
     email,
     username,
-    password
+    password,
+    email_verification_key: cryptoRandomString({length: 128})
   }
 
   const salt = bcrypt.genSaltSync(10)
@@ -63,11 +66,31 @@ controllers.create = async (request, response) => {
   const newUser = new User(data)
 
   try {
-    const user = await newUser.save()
+    const {
+      _id,
+      name,
+      email,
+      username,
+      email_verification_key: emailVerificationKey
+    } = await newUser.save()
 
-    response.status(201).json(user)
+    response.status(201).json({
+      _id,
+      name,
+      email,
+      username
+    })
 
-    // await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+    mailer
+      .sendMail(
+        email,
+        'Account Confirmation',
+        `
+          <div>
+            <a href="${MAILER_CONFIRM_URI}?key=${emailVerificationKey}">Clique aqui</a> para confirmar seu E-mail
+          </div>
+        `
+      )
   } catch (error) {
     return response.status(400).json({ error })
   }
