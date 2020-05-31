@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', require('./routes/index'))
 app.use('/api/users', require('./routes/users'))
 app.use('/api/tokens', require('./routes/tokens'))
+app.use('/api/verifications', require('./routes/verifications'))
 
 const { APP_PORT } = process.env
 
