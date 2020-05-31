@@ -7,7 +7,7 @@ if (process.env.APP_ENV === 'development') {
 
   const salt = bcrypt.genSaltSync(10)
 
-  const users = Array(1000).fill(null).map(() => ({
+  const users = Array(100).fill(null).map(() => ({
     name: faker.name.findName(),
     email: faker.internet.email(),
     username: faker.internet.userName(),
