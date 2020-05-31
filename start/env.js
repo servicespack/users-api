@@ -94,6 +94,8 @@ if (errors) {
   throw new Error('Erros in environment variables')
 }
 
-process.env = Object.freeze({...process.env})
+if (process.env.APP_ENV === 'production') {
+  process.env = Object.freeze({...process.env})
+}
 
 module.exports = result
