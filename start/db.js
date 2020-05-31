@@ -24,10 +24,6 @@ if (DB_CONNECTION === 'mongodb') {
   require('../src/models/user')
 } else if (DB_CONNECTION === 'mysql') {
   throw new Error('Database driver \'mysql\' not implemented yet.')
-} else if (DB_CONNECTION) {
-  throw new Error('Database driver unknown.')
-} else {
-  throw new Error('Database driver not provided.')
 }
 
 module.exports = db
