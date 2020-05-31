@@ -1,12 +1,9 @@
 const bcrypt = require('bcryptjs')
-const doT = require('dot')
-const fs = require('fs')
-const mailer = require('../helpers/mailer')
 const mongoose = require('mongoose')
 
+// const mailer = require('../helpers/mailer')]
+
 const User = mongoose.model('User')
-const Verification = mongoose.model('Verification')
-const verificationTemplate = fs.readFileSync('src/templates/account-verification').toString('utf8')
 const controllers = {}
 
 controllers.list = async (request, response) => {
@@ -43,7 +40,7 @@ controllers.show = async (request, response) => {
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 
@@ -70,11 +67,7 @@ controllers.create = async (request, response) => {
 
     response.status(201).json(user)
 
-    const verification = new Verification({ email: user.email })
-    await verification.save()
-
-    const generatedHtml = doT.template(verificationTemplate)()
-    await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
+    // await mailer.sendMail(user.email, 'Account Confirmation', generatedHtml)
   } catch (error) {
     return response.status(400).json({ error })
   }
@@ -85,7 +78,7 @@ controllers.update = async (request, response) => {
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 
@@ -104,7 +97,7 @@ controllers.delete = async (request, response) => {
 
   if (!user) {
     return response.status(404).json({
-      'error': 'User not found'
+      error: 'User not found'
     })
   }
 

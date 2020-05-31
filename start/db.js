@@ -21,9 +21,7 @@ if (DB_CONNECTION === 'mongodb') {
     console.log('[db.js: Connected to the database]')
   })
 
-  // ---------- Loading models ----------
   require('../src/models/user')
-  require('../src/models/verification')
 } else if (DB_CONNECTION === 'mysql') {
   throw new Error('Database driver \'mysql\' not implemented yet.')
 } else if (DB_CONNECTION) {
