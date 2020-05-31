@@ -44,18 +44,15 @@
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
-    "axios": "^0.18.1",
     "faker": "^4.1.0",
     "git-branch-is": "^3.1.0",
     "hasha": "^5.2.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "js-yaml": "^3.14.0",
     "nodemon": "^1.19.4",
     "shelljs": "^0.8.4",
     "snowboard": "^4.1.13",
-    "standard": "^11.0.1",
-    "validate.js": "^0.12.0"
+    "standard": "^11.0.1"
   },
   "standard": {
     "ignore": [
