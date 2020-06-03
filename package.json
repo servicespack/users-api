@@ -11,7 +11,7 @@
     "docs:generate": "node ./scripts/docs:generate",
     "git-branch-is": "git-branch-is",
     "lint": "standard",
-    "start": "forever index.js",
+    "start": "APP_PORT=$PORT forever index.js",
     "test": "APP_ENV=test jest --coverage"
   },
   "husky": {
