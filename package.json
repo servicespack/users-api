@@ -11,7 +11,7 @@
     "docs:generate": "node ./scripts/docs:generate",
     "git-branch-is": "git-branch-is",
     "lint": "standard",
-    "start": "node index.js",
+    "start": "forever index.js",
     "test": "APP_ENV=test jest --coverage"
   },
   "husky": {
@@ -37,6 +37,7 @@
     "crypto-random-string": "^3.2.0",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
+    "forever": "^3.0.0",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.17",
