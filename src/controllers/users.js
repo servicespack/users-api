@@ -87,7 +87,7 @@ controllers.create = async (request, response) => {
         'Account Confirmation',
         `
           <div>
-            <a href="${MAILER_CONFIRM_URI}?key=${emailVerificationKey}">Clique aqui</a> para confirmar seu E-mail
+            <a href="${MAILER_CONFIRM_URI}?key=${emailVerificationKey}&user_id=${_id}">Clique aqui</a> para confirmar seu E-mail
           </div>
         `
       )

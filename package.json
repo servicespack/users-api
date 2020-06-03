@@ -8,10 +8,10 @@
     "database:populate": "node ./scripts/database:populate",
     "dev": "npm run docker && nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
     "docker": "docker-compose up -d",
-    "docs:generate": "snowboard html -o docs ./src/docs.apib",
+    "docs:generate": "node ./scripts/docs:generate",
     "git-branch-is": "git-branch-is",
     "lint": "standard",
-    "start": "node index.js",
+    "start": "forever index.js",
     "test": "APP_ENV=test jest --coverage"
   },
   "husky": {
@@ -33,26 +33,28 @@
     "@sendgrid/mail": "^7.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "crypto-random-string": "^3.2.0",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
+    "forever": "^3.0.0",
+    "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.16",
+    "mongoose": "^5.9.17",
     "nodemailer": "^6.4.8",
     "uuid": "^3.4.0",
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
-    "axios": "^0.18.1",
     "faker": "^4.1.0",
     "git-branch-is": "^3.1.0",
+    "hasha": "^5.2.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "js-yaml": "^3.14.0",
     "nodemon": "^1.19.4",
+    "shelljs": "^0.8.4",
     "snowboard": "^4.1.13",
-    "standard": "^11.0.1",
-    "validate.js": "^0.12.0"
+    "standard": "^11.0.1"
   },
   "standard": {
     "ignore": [

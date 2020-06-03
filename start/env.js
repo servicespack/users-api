@@ -5,9 +5,11 @@ const result = dotenv.config({
   path: process.env.APP_ENV === 'test' ? '.env.test' : '.env'
 })
 
+/*
 if (result.error) {
   throw new Error(result.error)
 }
+*/
 
 const constraints = {
   /**
@@ -46,24 +48,17 @@ const constraints = {
     presence: true,
     inclusion: ['mongodb', 'mysql']
   },
-  DB_HOST: {
-    presence: true
-  },
-  DB_PORT: {
-    presence: true,
+  DB_MONGODB_URL: {},
+  DB_MYSQL_HOST: {},
+  DB_MYSQL_PORT: {
     numericality: {
       onlyInteger: true,
       greaterThan: 0
     }
   },
-  DB_USER: {
-    presence: true
-  },
-  DB_PASS: {
-    presence: true
-  },
-  DB_NAME: {
-    presence: true,
+  DB_MYSQL_USER: {},
+  DB_MYSQL_PASS: {},
+  DB_MYSQL_NAME: {
     length: {
       minimum: 2
     }
@@ -94,6 +89,8 @@ if (errors) {
   throw new Error('Erros in environment variables')
 }
 
-process.env = Object.freeze({...process.env})
+if (process.env.APP_ENV === 'production') {
+  process.env = Object.freeze({...process.env})
+}
 
 module.exports = result

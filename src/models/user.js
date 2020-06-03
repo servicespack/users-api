@@ -8,9 +8,9 @@ const userSchema = mongoose.Schema({
   },
   email: {
     type: String,
+    lowercase: true,
     required: true,
-    unique: true,
-    lowercase: true
+    unique: true
   },
   email_verification_key: {
     type: String,
@@ -23,6 +23,7 @@ const userSchema = mongoose.Schema({
   },
   username: {
     type: String,
+    lowercase: true,
     required: true,
     unique: true
   },
