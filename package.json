@@ -11,8 +11,10 @@
     "docs:generate": "node ./scripts/docs:generate",
     "git-branch-is": "git-branch-is",
     "lint": "standard",
+    "posttest": "npm run database:clear",
+    "pretest": "npm run database:clear",
     "start": "APP_PORT=$PORT forever index.js",
-    "test": "APP_ENV=test jest --coverage"
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -51,12 +53,16 @@
     "hasha": "^5.2.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
+    "node-fetch": "^2.6.0",
     "nodemon": "^1.19.4",
     "shelljs": "^0.8.4",
     "snowboard": "^4.1.13",
     "standard": "^11.0.1"
   },
   "standard": {
+    "env": [
+      "jest"
+    ],
     "ignore": [
       "/docs/"
     ]
