@@ -18,7 +18,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git-branch-is --not master && npm run lint"
+      "pre-commit": "git-branch-is --not master && npm run lint",
+      "pre-push": "npm test"
     }
   },
   "repository": {
