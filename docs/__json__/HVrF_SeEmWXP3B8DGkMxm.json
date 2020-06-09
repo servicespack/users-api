@@ -1,0 +1,54 @@
+{
+  "title": "Create new verification",
+  "description": "+ user_id (string) - User id\n\n+ type (string) - Verification type\n\n+ key (string) - Verification key",
+  "permalink": "t~verifications~post~api~verifications",
+  "uuid": "HVrF_SeEmWXP3B8DGkMxm",
+  "method": "POST",
+  "path": "/api/verifications",
+  "pathTemplate": "/api/verifications",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "Verifications",
+      "permalink": "r~verifications"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "POST",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"user_id\": \"5ed4108c7976896f448cdd06\",\n  \"type\": \"email\",\n  \"key\": \"f260a22e4183d75b611bbc2f51c537297f2e13dd458eddd4d23f3acf4d98a2539dd8db1ece55f4262b00f2c15a19a58069d53db34365dc24ad68aa2e3b607ed1\"\n}\n"
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "201",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"success\": \"Email verified\"\n}\n"
+      }
+    }
+  ]
+}
