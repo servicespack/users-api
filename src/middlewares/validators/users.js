@@ -1,4 +1,19 @@
+const mongoose = require('mongoose')
 const validate = require('validate.js')
+
+const User = mongoose.model('User')
+
+validate.validators.available = function (value, { field }) {
+  return new validate.Promise(async function (resolve, reject) {
+    const user = await User.findOne({ [field]: value })
+
+    if (user) {
+      resolve(`not available`)
+    } else {
+      resolve()
+    }
+  })
+}
 
 const validators = {}
 
@@ -37,7 +52,7 @@ validators.list = (request, response, next) => {
   next()
 }
 
-validators.create = (request, response, next) => {
+validators.create = async (request, response, next) => {
   const { name, email, username, password } = request.body
 
   const data = {
@@ -56,12 +71,18 @@ validators.create = (request, response, next) => {
     },
     email: {
       presence: true,
-      email: true
+      email: true,
+      available: {
+        field: 'email'
+      }
     },
     username: {
       presence: true,
       length: {
         minimum: 3
+      },
+      available: {
+        field: 'username'
       }
     },
     password: {
@@ -72,16 +93,16 @@ validators.create = (request, response, next) => {
     }
   }
 
-  const errors = validate(data, constraints)
-
-  if (errors) {
+  try {
+    await validate.async(data, constraints)
+  } catch (errors) {
     return response.status(400).json(errors)
   }
 
   next()
 }
 
-validators.update = (request, response, next) => {
+validators.update = async (request, response, next) => {
   const { name, email, username } = request.body
 
   const data = {
