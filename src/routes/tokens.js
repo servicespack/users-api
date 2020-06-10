@@ -1,8 +1,9 @@
 const express = require('express')
 
 const router = express.Router()
+const validators = require('../middlewares/validators/tokens')
 const controllers = require('../controllers/tokens')
 
-router.post('/', controllers.post)
+router.post('/', [validators.create], controllers.post)
 
 module.exports = router
