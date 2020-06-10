@@ -118,18 +118,24 @@ validators.update = async (request, response, next) => {
       }
     },
     email: {
-      email: true
+      email: true,
+      available: {
+        field: 'email'
+      }
     },
     username: {
       length: {
         minimum: 3
+      },
+      available: {
+        field: 'username'
       }
     }
   }
 
-  const errors = validate(data, constraints)
-
-  if (errors) {
+  try {
+    await validate.async(data, constraints)
+  } catch (errors) {
     return response.status(400).json(errors)
   }
 
