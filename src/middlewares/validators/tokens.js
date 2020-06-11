@@ -1,3 +1,5 @@
+'use strict'
+
 const validate = require('validate.js')
 
 const validators = {}

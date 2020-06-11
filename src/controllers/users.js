@@ -1,3 +1,5 @@
+'use strict'
+
 const bcrypt = require('bcryptjs')
 const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
