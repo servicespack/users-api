@@ -1,3 +1,5 @@
+'use strict'
+
 const controllers = {}
 
 controllers.get = (_, response) => {

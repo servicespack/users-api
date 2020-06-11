@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 
 const validators = require('../middlewares/validators/verifications')

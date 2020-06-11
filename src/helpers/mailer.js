@@ -1,3 +1,5 @@
+'use strict'
+
 const mailer = {}
 const { MAILER_CONNECTION } = process.env
 
