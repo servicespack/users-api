@@ -116,6 +116,6 @@ describe('Testing the users lifecycle', () => {
       headers: { 'Authorization': token }
     })
 
-    expect(response.status).toEqual(204)
+    expect(response.status).toEqual(203)
   })
 })
