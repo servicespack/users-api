@@ -4,7 +4,7 @@ const dotenv = require('dotenv')
 const validate = require('validate.js')
 
 const result = dotenv.config({
-  path: process.env.APP_ENV === 'test' ? '.env.test' : '.env'
+  path: process.env.APP_ENV === 'testing' ? '.env.testing' : '.env'
 })
 
 /*
@@ -19,7 +19,7 @@ const constraints = {
    */
   APP_ENV: {
     presence: true,
-    inclusion: ['production', 'development']
+    inclusion: ['production', 'development', 'testing']
   },
   APP_NAME: {
     presence: true,
