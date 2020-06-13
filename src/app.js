@@ -17,10 +17,4 @@ app.use('/api/users', require('./routes/users'))
 app.use('/api/tokens', require('./routes/tokens'))
 app.use('/api/verifications', require('./routes/verifications'))
 
-const { APP_PORT } = process.env
-
-app.listen(APP_PORT, () => {
-  console.log('[app.js: Listening on ' + APP_PORT + ']')
-})
-
 module.exports = app
