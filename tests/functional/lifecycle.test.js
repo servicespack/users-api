@@ -2,9 +2,22 @@ const faker = require('faker')
 const fetch = require('node-fetch')
 const jwt = require('jsonwebtoken')
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'http://localhost:4000'
 
 describe('Testing the users lifecycle', () => {
+  let ubox
+
+  beforeAll(() => {
+    process.env.APP_ENV = 'testing'
+    process.env.DB_MONGODB_URI = process.env.MONGO_URL
+
+    ubox = require('../../index')
+  })
+
+  afterAll(() => {
+    ubox.turnOff()
+  })
+
   const user = {
     name: faker.name.findName(),
     email: faker.internet.email(),

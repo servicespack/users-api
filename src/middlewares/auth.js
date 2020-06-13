@@ -7,7 +7,7 @@ const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 
 const User = mongoose.model('User')
 
-const auth = async (request, response, next) => {
+const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request, response, next) => {
   const authorization = request.headers.authorization
 
   if (!authorization) {
@@ -25,13 +25,21 @@ const auth = async (request, response, next) => {
   }
 
   try {
-    const { sub: id } = jwt.verify(token, TOKEN_SECRET)
+    const { sub } = jwt.verify(token, TOKEN_SECRET)
 
-    const user = await User.findById(id)
+    const user = await User.findById(sub)
 
     if (!user) {
       return response.status(401).json({
         error: 'Token\'s user doesn\'t exist'
+      })
+    }
+
+    const { id } = request.params
+
+    if (onlyTheOwner && sub !== id) {
+      return response.status(401).json({
+        error: 'Only allowed to the owner'
       })
     }
 
