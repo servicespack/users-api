@@ -5,6 +5,7 @@
 # UBox
 
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://standardjs.com/)
+![Testing](https://github.com/gabrielrufino/UBox/workflows/Testing/badge.svg)
 
 Users microservice ready and flexible for your system
 
