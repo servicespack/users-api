@@ -33,6 +33,7 @@ controllers.list = async (request, response) => {
     meta: {
       page: Number(page),
       size: Number(size),
+      pages: Math.ceil(total / Number(size)),
       total
     },
     data: users
