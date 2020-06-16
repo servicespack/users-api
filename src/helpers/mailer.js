@@ -34,6 +34,7 @@ if (MAILER_CONNECTION === 'server') {
       subject: subject,
       html: html
     })
+      .catch(() => {})
   }
 } else if (MAILER_CONNECTION === 'sendgrid') {
   const sgMail = require('@sendgrid/mail')
@@ -51,6 +52,7 @@ if (MAILER_CONNECTION === 'server') {
     }
 
     sgMail.send(mail)
+      .catch(() => {})
   }
 }
 
