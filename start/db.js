@@ -9,6 +9,7 @@ if (DB_CONNECTION === 'mongodb') {
   const { DB_MONGODB_URI } = process.env
 
   mongoose.connect(DB_MONGODB_URI, {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
