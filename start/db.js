@@ -22,7 +22,7 @@ if (DB_CONNECTION === 'mongodb') {
     console.log('[db.js: Connected to the database]')
   })
 
-  require('../src/models/user')
+  require('../src/models/')
 } else if (DB_CONNECTION === 'mysql') {
   throw new Error('Database driver \'mysql\' not implemented yet.')
 }
