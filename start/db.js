@@ -1,9 +1,10 @@
 'use strict'
 
 const mongoose = require('mongoose')
-const db = mongoose.connection
 
 const { DB_CONNECTION } = process.env
+
+let db
 
 if (DB_CONNECTION === 'mongodb') {
   const { DB_MONGODB_URI } = process.env
@@ -13,6 +14,8 @@ if (DB_CONNECTION === 'mongodb') {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
+
+  db = mongoose.connection
 
   db.on('error', console.error)
   db.once('open', () => {
