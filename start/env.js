@@ -88,7 +88,7 @@ const errors = validate(process.env, constraints)
 
 if (errors) {
   console.table(errors)
-  throw new Error('Erros in environment variables')
+  throw new Error('Errors in environment variables')
 }
 
 if (process.env.APP_ENV === 'production') {
