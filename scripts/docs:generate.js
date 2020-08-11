@@ -18,6 +18,7 @@ if (process.env.APP_ENV === 'development') {
 
       db.close()
     })
+    .catch(console.error)
 } else {
   throw new Error('Script only allowed in development')
 }
