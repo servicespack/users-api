@@ -41,7 +41,7 @@
     "forever": "^3.0.0",
     "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.28",
+    "mongoose": "^5.10.0",
     "nodemailer": "^6.4.11",
     "uuid": "^3.4.0",
     "validate.js": "^0.12.0"
@@ -56,7 +56,7 @@
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.4",
     "shelljs": "^0.8.4",
-    "snowboard": "^4.1.16",
+    "snowboard": "^4.1.18",
     "standard": "^11.0.1"
   },
   "standard": {
