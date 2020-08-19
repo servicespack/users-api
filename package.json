@@ -56,7 +56,7 @@
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.4",
     "shelljs": "^0.8.4",
-    "snowboard": "^4.1.18",
+    "snowboard": "^4.1.19",
     "standard": "^11.0.1"
   },
   "standard": {
