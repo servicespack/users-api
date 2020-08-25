@@ -17,4 +17,6 @@ app.use('/api/users', require('./routes/users'))
 app.use('/api/tokens', require('./routes/tokens'))
 app.use('/api/verifications', require('./routes/verifications'))
 
+require('./listeners')
+
 module.exports = app
