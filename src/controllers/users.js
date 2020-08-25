@@ -4,9 +4,8 @@ const bcrypt = require('bcryptjs')
 const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
 
-const mailer = require('../helpers/mailer')
+const UserEmitter = require('../emitters/UserEmitter')
 
-const { MAILER_CONFIRM_URI } = process.env
 const User = mongoose.model('User')
 const controllers = {}
 
@@ -84,16 +83,13 @@ controllers.create = async (request, response) => {
       username
     })
 
-    mailer
-      .sendMail(
-        email,
-        'Account Confirmation',
-        `
-          <div>
-            <a href="${MAILER_CONFIRM_URI}?key=${emailVerificationKey}&user_id=${_id}">Clique aqui</a> para confirmar seu E-mail
-          </div>
-        `
-      )
+    UserEmitter.emit('create', {
+      _id,
+      name,
+      email,
+      username,
+      emailVerificationKey
+    })
   } catch (error) {
     return response.status(400).json({ error })
   }
@@ -128,6 +124,8 @@ controllers.delete = async (request, response) => {
   }
 
   await user.delete()
+  UserEmitter.emit('delete', user)
+
   return response.status(204).json({})
 }
 
