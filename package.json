@@ -43,6 +43,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.1",
     "nodemailer": "^6.4.11",
+    "ora": "^5.0.0",
     "uuid": "^3.4.0",
     "validate.js": "^0.12.0"
   },
