@@ -1,3 +1,5 @@
+'use strict'
+
 const { db } = require('../start/')
 
 if (process.env.APP_ENV !== 'development') {

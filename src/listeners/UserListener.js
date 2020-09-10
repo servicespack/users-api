@@ -1,3 +1,5 @@
+'use strict'
+
 const UserEmitter = require('../emitters/UserEmitter')
 const mailer = require('../helpers/mailer')
 
