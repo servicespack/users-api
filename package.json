@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/gabrielrufino/UBox#readme",
   "dependencies": {
-    "@sendgrid/mail": "^7.3.0",
+    "@sendgrid/mail": "^7.4.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -41,8 +41,8 @@
     "forever": "^3.0.2",
     "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.11",
-    "nodemailer": "^6.4.14",
+    "mongoose": "^5.10.13",
+    "nodemailer": "^6.4.15",
     "uuid": "^3.4.0",
     "validate.js": "^0.12.0"
   },
