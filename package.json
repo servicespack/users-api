@@ -41,7 +41,7 @@
     "forever": "^3.0.4",
     "helmet": "^3.23.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.7",
+    "mongoose": "^5.12.10",
     "nodemailer": "^6.6.0",
     "uuid": "^3.4.0",
     "validate.js": "^0.12.0"
