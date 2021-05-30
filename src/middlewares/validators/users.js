@@ -42,6 +42,7 @@ validators.list = (request, response, next) => {
       }
     },
     search: {
+      type: 'string'
     }
   }
 

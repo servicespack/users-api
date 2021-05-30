@@ -33,6 +33,7 @@ async function main () {
     loading.succeed('Database populated')
   } catch (error) {
     loading.fail('Error when populating the database')
+    console.error(error.message)
   } finally {
     db.close()
   }

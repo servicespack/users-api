@@ -3,6 +3,7 @@
 const bcrypt = require('bcryptjs')
 const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
+const xss = require('xss')
 
 const UserEmitter = require('../emitters/UserEmitter')
 
@@ -55,9 +56,9 @@ controllers.create = async (request, response) => {
   const { name, email, username, password } = request.body
 
   const data = {
-    name,
-    email,
-    username,
+    name: xss(name),
+    email: xss(email),
+    username: xss(username),
     password,
     email_verification_key: cryptoRandomString({length: 128})
   }
