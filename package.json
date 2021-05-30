@@ -44,7 +44,8 @@
     "mongoose": "^5.12.12",
     "nodemailer": "^6.6.1",
     "uuid": "^3.4.0",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "xss": "^1.0.9"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.5",
