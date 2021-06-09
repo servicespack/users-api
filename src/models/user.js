@@ -3,8 +3,6 @@
 const mongoose = require('mongoose')
 const mongooseDelete = require('mongoose-delete')
 
-const DB_SOFT_DELETE = process.env.DB_SOFT_DELETE === 'true'
-
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -47,8 +45,6 @@ const userSchema = mongoose.Schema({
   }
 })
 
-DB_SOFT_DELETE && userSchema.plugin(mongooseDelete)
-
 userSchema.pre('save', function (next) {
   const now = new Date()
 
@@ -58,6 +54,20 @@ userSchema.pre('save', function (next) {
 
   next()
 })
+
+const DB_SOFT_DELETE = process.env.DB_SOFT_DELETE === 'true'
+
+if (DB_SOFT_DELETE) {
+  userSchema.plugin(mongooseDelete)
+
+  const filterDeletedUsers = function (next) {
+    this.where({deleted: false})
+    next()
+  }
+
+  userSchema.pre('find', filterDeletedUsers)
+  userSchema.pre('findOne', filterDeletedUsers)
+}
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
