@@ -44,7 +44,6 @@
     "mongoose": "^5.12.13",
     "mongoose-delete": "^0.5.3",
     "nodemailer": "^6.6.1",
-    "uuid": "^3.4.0",
     "validate.js": "^0.13.1",
     "xss": "^1.0.9"
   },
