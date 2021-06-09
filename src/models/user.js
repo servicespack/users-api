@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongooseDelete = require('mongoose-delete')
 
 const userSchema = mongoose.Schema({
   name: {
@@ -53,6 +54,20 @@ userSchema.pre('save', function (next) {
 
   next()
 })
+
+const DB_SOFT_DELETE = process.env.DB_SOFT_DELETE === 'true'
+
+if (DB_SOFT_DELETE) {
+  userSchema.plugin(mongooseDelete)
+
+  const filterDeletedUsers = function (next) {
+    this.where({deleted: false})
+    next()
+  }
+
+  userSchema.pre('find', filterDeletedUsers)
+  userSchema.pre('findOne', filterDeletedUsers)
+}
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
