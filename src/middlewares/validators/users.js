@@ -145,4 +145,28 @@ validators.update = async (request, response, next) => {
   next()
 }
 
+validators.updatePassword = async (request, response, next) => {
+  const constraints = {
+    current_password: {
+      presence: true,
+      type: 'string'
+    },
+    new_password: {
+      presence: true,
+      type: 'string',
+      length: {
+        minimum: 8
+      }
+    }
+  }
+
+  try {
+    await validate.async(request.body, constraints)
+  } catch (errors) {
+    return response.status(400).json(errors)
+  }
+
+  next()
+}
+
 module.exports = validators

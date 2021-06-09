@@ -115,6 +115,37 @@ controllers.update = async (request, response) => {
   return response.status(200).json(user)
 }
 
+controllers.updatePassword = async (request, response) => {
+  const user = await User
+    .findById(request.params.id)
+    .select('+password')
+
+  if (!user) {
+    return response.status(404).json({
+      error: 'User not found'
+    })
+  }
+
+  const {
+    current_password: currentPassword,
+    new_password: newPassword
+  } = request.body
+
+  const correctPassword = await bcrypt.compare(currentPassword, user.password)
+  if (!correctPassword) {
+    return response.status(401).json({ error: 'Invalid password' })
+  }
+
+  const salt = bcrypt.genSaltSync(10)
+  user.password = bcrypt.hashSync(newPassword, salt)
+
+  await user.save()
+
+  return response.status(200).json({
+    message: 'Password updated'
+  })
+}
+
 controllers.delete = async (request, response) => {
   const user = await User.findById(request.params.id)
 
