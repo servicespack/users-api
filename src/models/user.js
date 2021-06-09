@@ -1,6 +1,9 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongooseDelete = require('mongoose-delete')
+
+const DB_SOFT_DELETE = process.env.DB_SOFT_DELETE === 'true'
 
 const userSchema = mongoose.Schema({
   name: {
@@ -43,6 +46,8 @@ const userSchema = mongoose.Schema({
     select: false
   }
 })
+
+DB_SOFT_DELETE && userSchema.plugin(mongooseDelete)
 
 userSchema.pre('save', function (next) {
   const now = new Date()
