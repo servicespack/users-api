@@ -8,6 +8,7 @@ const xss = require('xss')
 const UserEmitter = require('../emitters/UserEmitter')
 
 const User = mongoose.model('User')
+const salt = bcrypt.genSaltSync(10)
 const controllers = {}
 
 controllers.list = async (request, response) => {
@@ -63,7 +64,6 @@ controllers.create = async (request, response) => {
     email_verification_key: cryptoRandomString({length: 128})
   }
 
-  const salt = bcrypt.genSaltSync(10)
   data.password = bcrypt.hashSync(data.password, salt)
 
   const newUser = new User(data)
@@ -136,7 +136,6 @@ controllers.updatePassword = async (request, response) => {
     return response.status(401).json({ error: 'Invalid password' })
   }
 
-  const salt = bcrypt.genSaltSync(10)
   user.password = bcrypt.hashSync(newPassword, salt)
 
   await user.save()
