@@ -1,0 +1,43 @@
+{
+  "title": "Update user password",
+  "description": "",
+  "permalink": "t~user~password~put~api~users~user~id~password",
+  "uuid": "bMrQXIEU-4JxMlXvOoFrG",
+  "method": "PUT",
+  "path": "/api/users/{user_id}/password",
+  "pathTemplate": "/api/users/{user_id}/password",
+  "parameters": [],
+  "meta": {
+    "resource": {
+      "title": "User password",
+      "permalink": "r~user~password"
+    }
+  },
+  "transactions": [
+    {
+      "request": {
+        "title": "",
+        "description": "",
+        "method": "PUT",
+        "headers": []
+      },
+      "response": {
+        "title": "",
+        "description": "",
+        "statusCode": "200",
+        "contentType": "application/json",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "example": "application/json",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "body": "{\n  \"message\": \"Password updated\"\n}\n"
+      }
+    }
+  ]
+}
