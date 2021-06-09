@@ -20,14 +20,6 @@ validate.validators.available = function (value, { field }) {
 const validators = {}
 
 validators.list = (request, response, next) => {
-  const { page, size, search } = request.query
-
-  const data = {
-    page,
-    size,
-    search
-  }
-
   const constraints = {
     page: {
       numericality: {
@@ -46,7 +38,7 @@ validators.list = (request, response, next) => {
     }
   }
 
-  const errors = validate(data, constraints)
+  const errors = validate(request.query, constraints)
 
   if (errors) {
     return response.status(400).json(errors)
@@ -56,15 +48,6 @@ validators.list = (request, response, next) => {
 }
 
 validators.create = async (request, response, next) => {
-  const { name, email, username, password } = request.body
-
-  const data = {
-    name,
-    email,
-    username,
-    password
-  }
-
   const constraints = {
     name: {
       presence: true,
@@ -97,7 +80,7 @@ validators.create = async (request, response, next) => {
   }
 
   try {
-    await validate.async(data, constraints)
+    await validate.async(request.body, constraints)
   } catch (errors) {
     return response.status(400).json(errors)
   }
@@ -106,14 +89,6 @@ validators.create = async (request, response, next) => {
 }
 
 validators.update = async (request, response, next) => {
-  const { name, email, username } = request.body
-
-  const data = {
-    name,
-    email,
-    username
-  }
-
   const constraints = {
     name: {
       length: {
@@ -137,7 +112,31 @@ validators.update = async (request, response, next) => {
   }
 
   try {
-    await validate.async(data, constraints)
+    await validate.async(request.body, constraints)
+  } catch (errors) {
+    return response.status(400).json(errors)
+  }
+
+  next()
+}
+
+validators.updatePassword = async (request, response, next) => {
+  const constraints = {
+    current_password: {
+      presence: true,
+      type: 'string'
+    },
+    new_password: {
+      presence: true,
+      type: 'string',
+      length: {
+        minimum: 8
+      }
+    }
+  }
+
+  try {
+    await validate.async(request.body, constraints)
   } catch (errors) {
     return response.status(400).json(errors)
   }
