@@ -50,7 +50,7 @@
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.5",
     "faker": "^5.5.3",
-    "git-branch-is": "^3.1.0",
+    "git-branch-is": "^4.0.0",
     "hasha": "^5.2.2",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
