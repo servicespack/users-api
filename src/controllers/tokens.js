@@ -15,7 +15,7 @@ const {
 const User = mongoose.model('User')
 const controllers = {}
 
-controllers.post = async (request, response) => {
+controllers.create = async (request, response) => {
   const { username, password } = request.body
 
   const constraints = {
