@@ -61,7 +61,7 @@ if (DB_SOFT_DELETE) {
   userSchema.plugin(mongooseDelete)
 
   const filterDeletedUsers = function (next) {
-    this.where({deleted: false})
+    this.where({ deleted: false })
     next()
   }
 

@@ -65,7 +65,7 @@ describe('Testing the users lifecycle', () => {
   test('Should list a page of users', async () => {
     const response = await fetch(`${BASE_URL}/api/users`, {
       method: 'GET',
-      headers: { 'Authorization': token }
+      headers: { Authorization: token }
     })
 
     const data = await response.json()
@@ -94,7 +94,7 @@ describe('Testing the users lifecycle', () => {
 
     const response = await fetch(`${BASE_URL}/api/users/${id}`, {
       method: 'GET',
-      headers: { 'Authorization': token }
+      headers: { Authorization: token }
     })
 
     expect(response.status).toEqual(200)
@@ -113,7 +113,7 @@ describe('Testing the users lifecycle', () => {
 
     const response = await fetch(`${BASE_URL}/api/users/${id}`, {
       method: 'DELETE',
-      headers: { 'Authorization': token }
+      headers: { Authorization: token }
     })
 
     expect(response.status).toEqual(204)

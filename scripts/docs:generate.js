@@ -10,7 +10,7 @@ if (process.env.APP_ENV === 'development') {
   const md5 = fs.readFileSync('./docs.md5', { encoding: 'utf8' })
 
   hasha
-    .fromFile('./src/docs.apib', {algorithm: 'md5'})
+    .fromFile('./src/docs.apib', { algorithm: 'md5' })
     .then(hash => {
       if (hash !== md5) {
         shell.exec('snowboard html -o docs ./src/docs.apib')

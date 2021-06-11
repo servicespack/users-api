@@ -10,7 +10,7 @@ validate.validators.available = function (value, { field }) {
     const user = await User.findOne({ [field]: value })
 
     if (user) {
-      resolve(`not available`)
+      resolve('not available')
     } else {
       resolve()
     }
