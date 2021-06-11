@@ -58,7 +58,7 @@
     "ora": "^5.4.1",
     "shelljs": "^0.8.4",
     "snowboard": "^4.1.21",
-    "standard": "^11.0.1"
+    "standard": "^16.0.3"
   },
   "standard": {
     "env": [
