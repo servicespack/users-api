@@ -92,7 +92,7 @@ if (errors) {
 }
 
 if (process.env.APP_ENV === 'production') {
-  process.env = Object.freeze({...process.env})
+  process.env = Object.freeze({ ...process.env })
 }
 
 module.exports = result

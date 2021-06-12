@@ -27,7 +27,7 @@ controllers.create = async (request, response) => {
     }
   }
 
-  const errors = validate({username, password}, constraints)
+  const errors = validate({ username, password }, constraints)
   if (errors) {
     return response.status(400).json(errors)
   }

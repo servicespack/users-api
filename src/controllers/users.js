@@ -16,9 +16,9 @@ controllers.list = async (request, response) => {
 
   const query = {
     $or: [
-      { 'name': new RegExp(search, 'gi') },
-      { 'email': new RegExp(search, 'gi') },
-      { 'username': new RegExp(search, 'gi') }
+      { name: new RegExp(search, 'gi') },
+      { email: new RegExp(search, 'gi') },
+      { username: new RegExp(search, 'gi') }
     ]
   }
 
@@ -61,7 +61,7 @@ controllers.create = async (request, response) => {
     email: xss(email),
     username: xss(username),
     password,
-    email_verification_key: cryptoRandomString({length: 128})
+    email_verification_key: cryptoRandomString({ length: 128 })
   }
 
   data.password = bcrypt.hashSync(data.password, salt)
