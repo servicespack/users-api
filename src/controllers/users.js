@@ -3,6 +3,7 @@
 const bcrypt = require('bcryptjs')
 const cryptoRandomString = require('crypto-random-string')
 const mongoose = require('mongoose')
+const safe = require('safe-regex')
 const xss = require('xss')
 
 const UserEmitter = require('../emitters/UserEmitter')
@@ -13,6 +14,12 @@ const controllers = {}
 
 controllers.list = async (request, response) => {
   const { page = 1, size = 10, search = '' } = request.query
+
+  if (!safe(search)) {
+    return response.status(400).json({
+      error: 'Invalid search'
+    })
+  }
 
   const query = {
     $or: [
