@@ -43,6 +43,7 @@
     "mongoose": "^5.13.2",
     "mongoose-delete": "^0.5.3",
     "nodemailer": "^6.6.2",
+    "safe-regex": "^2.1.1",
     "validate.js": "^0.13.1",
     "xss": "^1.0.9"
   },
