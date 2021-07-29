@@ -40,7 +40,7 @@
     "forever": "^4.0.1",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.3",
+    "mongoose": "^5.13.4",
     "mongoose-delete": "^0.5.3",
     "nodemailer": "^6.6.3",
     "safe-regex": "^2.1.1",
