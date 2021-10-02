@@ -1,16 +1,17 @@
 version: '3.1'
 
 services:
-  #app: # Don't use this service! It doesn't work for while.
-  #  image: node
-  #  working_dir: /usr/app
-  #  volumes:
-  #    - .:/usr/app
-  #  command: bash -c "npm install && npm run dev"
-  #  ports:
-  #    - "3000:3000"
-  #  depends_on:
-  #    - mongo
+  app:
+    # build: .
+    image: node:14
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: bash -c "npm ci && npm run dev"
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
   mongo:
     image: mongo
     # restart: always
