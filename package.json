@@ -7,8 +7,7 @@
   "scripts": {
     "database:clear": "node ./scripts/database:clear",
     "database:populate": "node ./scripts/database:populate",
-    "dev": "npm run docker && nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
-    "docker": "docker-compose up -d",
+    "dev": "nodemon --exec 'npm run docs:generate && node index.js' --ignore docs/ --ext js,apib",
     "docs:generate": "node ./scripts/docs:generate",
     "lint": "standard",
     "start": "APP_PORT=$PORT forever index.js",
