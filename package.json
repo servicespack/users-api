@@ -54,7 +54,7 @@
     "husky": "^3.1.0",
     "jest": "^27.3.1",
     "node-fetch": "^2.6.6",
-    "nodemon": "^2.0.14",
+    "nodemon": "^2.0.15",
     "ora": "^5.4.1",
     "shelljs": "^0.8.4",
     "snowboard": "^4.1.21",
