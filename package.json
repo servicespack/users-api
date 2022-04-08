@@ -54,6 +54,7 @@
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.15",
     "ora": "^5.4.1",
+    "rimraf": "^3.0.2",
     "standard": "^16.0.4"
   },
   "standard": {
