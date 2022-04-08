@@ -7,7 +7,7 @@ async function main () {
     throw new Error('Script only allowed in development')
   }
 
-  const faker = require('faker')
+  const { faker } = require('@faker-js/faker')
   const mongoose = require('mongoose')
   const ora = require('ora')
   const { genSaltSync, hashSync } = require('bcryptjs')

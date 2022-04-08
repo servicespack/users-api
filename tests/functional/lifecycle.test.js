@@ -1,4 +1,4 @@
-const faker = require('faker')
+const { faker } = require('@faker-js/faker')
 const fetch = require('node-fetch')
 const jwt = require('jsonwebtoken')
 
