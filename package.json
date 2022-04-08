@@ -57,7 +57,6 @@
     "nodemon": "^2.0.15",
     "ora": "^5.4.1",
     "shelljs": "^0.8.5",
-    "snowboard": "^4.1.22",
     "standard": "^16.0.4"
   },
   "standard": {
