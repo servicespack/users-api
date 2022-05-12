@@ -7,7 +7,7 @@
   "scripts": {
     "database:clear": "node ./scripts/database:clear",
     "database:populate": "node ./scripts/database:populate",
-    "dev": "nodemon --exec 'node index.js' --ignore docs/ --ext js,apib",
+    "dev": "nodemon --exec 'node index.js' --ext js,apib",
     "lint": "standard",
     "reinstall": "rimraf node_modules && npm ci",
     "start": "APP_PORT=$PORT forever index.js",
@@ -61,9 +61,6 @@
   "standard": {
     "env": [
       "jest"
-    ],
-    "ignore": [
-      "/docs/"
     ]
   }
 }
