@@ -41,7 +41,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.14",
     "mongoose-delete": "^0.5.4",
-    "nodemailer": "^6.7.5",
+    "nodemailer": "^6.7.7",
     "safe-regex": "^2.1.1",
     "validate.js": "^0.13.1",
     "xss": "^1.0.13"
@@ -53,7 +53,7 @@
     "husky": "^3.1.0",
     "jest": "^27.5.1",
     "node-fetch": "^2.6.7",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "ora": "^5.4.1",
     "rimraf": "^3.0.2",
     "standard": "^16.0.4"
