@@ -1,7 +1,7 @@
 {
   "name": "ubox",
   "private": true,
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Users microservice ready and flexible for your system",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "database:populate": "node ./scripts/database:populate",
     "dev": "nodemon --exec 'node index.js' --ext js,apib",
     "lint": "standard",
-    "reinstall": "rimraf node_modules && npm ci",
+    "reinstall": "npx rimraf node_modules && npm ci",
     "start": "APP_PORT=$PORT forever index.js",
     "test": "jest"
   },
@@ -34,10 +34,10 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.3.1",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "forever": "^4.0.3",
-    "helmet": "^4.6.0",
+    "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.14",
     "mongoose-delete": "^0.5.4",
