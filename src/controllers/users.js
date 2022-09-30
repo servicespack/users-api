@@ -1,7 +1,7 @@
 'use strict'
 
 const bcrypt = require('bcryptjs')
-const cryptoRandomString = require('crypto-random-string')
+const crypto = require('crypto')
 const mongoose = require('mongoose')
 const safe = require('safe-regex')
 const xss = require('xss')
@@ -68,7 +68,7 @@ controllers.create = async (request, response) => {
     email: xss(email),
     username: xss(username),
     password,
-    email_verification_key: cryptoRandomString({ length: 128 })
+    email_verification_key: crypto.randomUUID()
   }
 
   data.password = bcrypt.hashSync(data.password, salt)
