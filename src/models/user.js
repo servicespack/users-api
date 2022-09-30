@@ -1,7 +1,5 @@
-'use strict'
-
-const mongoose = require('mongoose')
-const mongooseDelete = require('mongoose-delete')
+import mongoose from 'mongoose'
+import mongooseDelete from 'mongoose-delete'
 
 const userSchema = mongoose.Schema({
   name: {
@@ -70,4 +68,4 @@ if (DB_SOFT_DELETE) {
 }
 
 const User = mongoose.model('User', userSchema)
-module.exports = User
+export default User

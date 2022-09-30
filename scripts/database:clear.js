@@ -1,13 +1,11 @@
-'use strict'
+import mongoose from 'mongoose'
+import ora from 'ora'
 
-const { db } = require('../start/')
+import { db } from '../start.js'
 
 if (process.env.APP_ENV !== 'development') {
   throw new Error('Script only allowed in development')
 }
-
-const mongoose = require('mongoose')
-const ora = require('ora')
 
 const loading = ora('Cleaning database')
 loading.start()

@@ -1,7 +1,5 @@
-'use strict'
-
-const EventEmitter = require('events')
+import EventEmitter from 'events'
 
 class UserEmitter extends EventEmitter {}
 
-module.exports = new UserEmitter()
+export default new UserEmitter()

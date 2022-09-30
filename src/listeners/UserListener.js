@@ -1,7 +1,5 @@
-'use strict'
-
-const UserEmitter = require('../emitters/UserEmitter')
-const mailer = require('../helpers/mailer')
+import UserEmitter from '../emitters/UserEmitter.js'
+import mailer from '../helpers/mailer.js'
 
 const { MAILER_CONFIRM_URI } = process.env
 

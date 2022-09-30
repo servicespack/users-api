@@ -1,3 +1,1 @@
-'use strict'
-
-require('./UserListener')
+import('./UserListener.js')

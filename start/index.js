@@ -1,10 +1,8 @@
-'use strict'
+import cooldown from './cooldown.js'
+import env from './env.js'
+import db from './db.js'
 
-const cooldown = require('./cooldown')
-const env = require('./env')
-const db = require('./db')
-
-module.exports = {
+export {
   cooldown,
   env,
   db

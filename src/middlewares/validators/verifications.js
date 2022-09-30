@@ -1,6 +1,4 @@
-'use strict'
-
-const validate = require('validate.js')
+import validate from 'validate.js'
 
 const validators = {}
 
@@ -27,4 +25,4 @@ validators.create = (request, response, next) => {
   next()
 }
 
-module.exports = validators
+export default validators

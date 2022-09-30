@@ -1,11 +1,10 @@
-'use strict'
+import nodemailer from 'nodemailer'
+import sgMail from '@sendgrid/mail'
 
 const mailer = {}
 const { MAILER_CONNECTION } = process.env
 
 if (MAILER_CONNECTION === 'server') {
-  const nodemailer = require('nodemailer')
-
   const {
     MAILER_HOST,
     MAILER_PORT,
@@ -37,8 +36,6 @@ if (MAILER_CONNECTION === 'server') {
       .catch(() => {})
   }
 } else if (MAILER_CONNECTION === 'sendgrid') {
-  const sgMail = require('@sendgrid/mail')
-
   const { MAILER_SENDGRID_API_KEY, MAILER_SENDGRID_SENDER } = process.env
 
   sgMail.setApiKey(MAILER_SENDGRID_API_KEY)
@@ -56,4 +53,4 @@ if (MAILER_CONNECTION === 'server') {
   }
 }
 
-module.exports = mailer
+export default mailer

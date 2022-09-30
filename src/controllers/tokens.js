@@ -1,9 +1,7 @@
-'use strict'
-
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
-const validate = require('validate.js')
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
+import validate from 'validate.js'
 
 const {
   APP_URL,
@@ -55,4 +53,4 @@ controllers.create = async (request, response) => {
   })
 }
 
-module.exports = controllers
+export default controllers

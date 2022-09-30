@@ -1,6 +1,6 @@
-'use strict'
+import mongoose from 'mongoose'
 
-const mongoose = require('mongoose')
+import '../src/models/index.js'
 
 const { DB_CONNECTION } = process.env
 
@@ -21,10 +21,8 @@ if (DB_CONNECTION === 'mongodb') {
   db.once('open', () => {
     console.log('[db.js: Connected to the database]')
   })
-
-  require('../src/models/')
 } else if (DB_CONNECTION === 'mysql') {
   throw new Error('Database driver \'mysql\' not implemented yet.')
 }
 
-module.exports = db
+export default db
