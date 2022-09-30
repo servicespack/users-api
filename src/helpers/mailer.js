@@ -30,9 +30,9 @@ if (MAILER_CONNECTION === 'server') {
   mailer.sendMail = (to, subject, html) => {
     transporter.sendMail({
       from: 'example@example.com',
-      to: to,
-      subject: subject,
-      html: html
+      to,
+      subject,
+      html
     })
       .catch(() => {})
   }
