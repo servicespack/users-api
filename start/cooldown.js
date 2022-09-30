@@ -1,5 +1,3 @@
-'use strict'
-
 const cooldown = ({ server, db }) => {
   const close = code => () => {
     server.close(() => {
@@ -13,4 +11,4 @@ const cooldown = ({ server, db }) => {
   process.on('SIGTERM', close(128 + 15))
 }
 
-module.exports = cooldown
+export default cooldown

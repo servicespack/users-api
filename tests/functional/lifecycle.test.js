@@ -1,25 +1,25 @@
-const { faker } = require('@faker-js/faker')
-const fetch = require('node-fetch')
-const jwt = require('jsonwebtoken')
+import { faker } from '@faker-js/faker'
+import fetch from 'node-fetch'
+import jwt from 'jsonwebtoken'
 
 const BASE_URL = 'http://localhost:4000'
 
 describe('Testing the users lifecycle', () => {
   let ubox
 
-  beforeAll(() => {
+  beforeAll(async () => {
     process.env.APP_ENV = 'testing'
     process.env.DB_MONGODB_URI = process.env.MONGO_URL
 
-    ubox = require('../../index')
+    ubox = await import('../../index.js')
   })
 
   afterAll(() => {
-    ubox.turnOff()
+    ubox.default.turnOff()
   })
 
   const user = {
-    name: faker.name.findName(),
+    name: faker.name.fullName(),
     email: faker.internet.email(),
     username: faker.internet.userName(),
     password: faker.internet.password()

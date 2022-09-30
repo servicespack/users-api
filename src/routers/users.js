@@ -1,10 +1,9 @@
-'use strict'
+import express from 'express'
 
-const express = require('express')
+import auth from '../middlewares/auth.js'
+import validators from '../middlewares/validators/users.js'
+import controllers from '../controllers/users.js'
 
-const auth = require('../middlewares/auth')
-const validators = require('../middlewares/validators/users')
-const controllers = require('../controllers/users')
 const router = express.Router()
 
 router.post('/', [validators.create], controllers.create)
@@ -14,4 +13,4 @@ router.patch('/:id', [auth({ onlyTheOwner: true }), validators.update], controll
 router.put('/:id/password', [auth({ onlyTheOwner: true }), validators.updatePassword], controllers.updatePassword)
 router.delete('/:id', [auth({ onlyTheOwner: true })], controllers.delete)
 
-module.exports = router
+export default router

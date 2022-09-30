@@ -1,7 +1,5 @@
-'use strict'
-
-const { cooldown, db } = require('./start')
-const app = require('./src/app')
+import { cooldown, db } from './start/index.js'
+import app from './src/app.js'
 
 const { APP_PORT } = process.env
 
@@ -11,7 +9,7 @@ const server = app.listen(APP_PORT, () => {
 
 cooldown({ server, db })
 
-module.exports = {
+export default {
   turnOff () {
     db.close()
     server.close()

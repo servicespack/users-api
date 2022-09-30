@@ -1,7 +1,5 @@
-'use strict'
-
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
+import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 
@@ -51,4 +49,4 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request, res
   }
 }
 
-module.exports = auth
+export default auth

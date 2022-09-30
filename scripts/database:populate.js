@@ -1,16 +1,14 @@
-'use strict'
-
-const { db } = require('../start/')
+import { db } from '../start'
 
 async function main () {
   if (process.env.APP_ENV !== 'development') {
     throw new Error('Script only allowed in development')
   }
 
-  const { faker } = require('@faker-js/faker')
-  const mongoose = require('mongoose')
-  const ora = require('ora')
-  const { genSaltSync, hashSync } = require('bcryptjs')
+  const { faker } = await import('@faker-js/faker')
+  const mongoose = await import('mongoose')
+  const ora = await import('ora')
+  const { genSaltSync, hashSync } = await import('bcryptjs')
 
   const loading = ora('Populating the database')
   loading.start()

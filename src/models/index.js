@@ -1,7 +1,5 @@
-'use strict'
+import user from './user.js'
 
-const user = require('./user')
-
-module.exports = {
+export default {
   user
 }

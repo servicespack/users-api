@@ -1,7 +1,5 @@
-'use strict'
-
-const mongoose = require('mongoose')
-const validate = require('validate.js')
+import mongoose from 'mongoose'
+import validate from 'validate.js'
 
 const User = mongoose.model('User')
 
@@ -144,4 +142,4 @@ validators.updatePassword = async (request, response, next) => {
   next()
 }
 
-module.exports = validators
+export default validators

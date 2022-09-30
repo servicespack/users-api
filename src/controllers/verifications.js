@@ -1,6 +1,4 @@
-'use strict'
-
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const User = mongoose.model('User')
 const controllers = {}
@@ -39,4 +37,4 @@ controllers.create = async (request, response) => {
   })
 }
 
-module.exports = controllers
+export default controllers

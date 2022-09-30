@@ -1,12 +1,10 @@
-'use strict'
+import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
+import mongoose from 'mongoose'
+import safe from 'safe-regex'
+import xss from 'xss'
 
-const bcrypt = require('bcryptjs')
-const cryptoRandomString = require('crypto-random-string')
-const mongoose = require('mongoose')
-const safe = require('safe-regex')
-const xss = require('xss')
-
-const UserEmitter = require('../emitters/UserEmitter')
+import UserEmitter from '../emitters/UserEmitter.js'
 
 const User = mongoose.model('User')
 const salt = bcrypt.genSaltSync(10)
@@ -68,7 +66,7 @@ controllers.create = async (request, response) => {
     email: xss(email),
     username: xss(username),
     password,
-    email_verification_key: cryptoRandomString({ length: 128 })
+    email_verification_key: crypto.randomUUID()
   }
 
   data.password = bcrypt.hashSync(data.password, salt)
@@ -167,4 +165,4 @@ controllers.delete = async (request, response) => {
   return response.status(204).json({})
 }
 
-module.exports = controllers
+export default controllers

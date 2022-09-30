@@ -1,7 +1,5 @@
-'use strict'
-
-const dotenv = require('dotenv')
-const validate = require('validate.js')
+import dotenv from 'dotenv'
+import validate from 'validate.js'
 
 const result = dotenv.config({
   path: process.env.APP_ENV === 'testing' ? '.env.testing' : '.env'
@@ -95,4 +93,4 @@ if (process.env.APP_ENV === 'production') {
   process.env = Object.freeze({ ...process.env })
 }
 
-module.exports = result
+export default result

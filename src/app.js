@@ -1,8 +1,8 @@
-'use strict'
+import cors from 'cors'
+import express from 'express'
+import helmet from 'helmet'
 
-const cors = require('cors')
-const express = require('express')
-const helmet = require('helmet')
+import routers from './routers/index.js'
 
 const app = express()
 
@@ -10,11 +10,11 @@ app.use(cors())
 app.use(express.json())
 app.use(helmet())
 
-app.use('/api', require('./routes/index'))
-app.use('/api/users', require('./routes/users'))
-app.use('/api/tokens', require('./routes/tokens'))
-app.use('/api/verifications', require('./routes/verifications'))
+app.use('/api', routers.root)
+app.use('/api/users', routers.users)
+app.use('/api/tokens', routers.tokens)
+app.use('/api/verifications', routers.verifications)
 
-require('./listeners')
+import('./listeners')
 
-module.exports = app
+export default app

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   mongodbMemoryServerOptions: {
     instance: {
       dbName: 'db_ubox_testing'
