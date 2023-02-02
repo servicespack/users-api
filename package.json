@@ -12,7 +12,7 @@
     "lint": "npx standard .",
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
-    "start": "APP_PORT=$PORT forever index.js",
+    "start": "APP_PORT=$PORT node index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "husky": {
@@ -37,7 +37,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "forever": "^4.0.3",
     "helmet": "^6.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.15",
