@@ -5,7 +5,7 @@
 # UBox
 
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://standardjs.com/)
-![Testing](https://github.com/gabrielrufino/UBox/workflows/Testing/badge.svg)
+![CI](https://github.com/gabrielrufino/UBox/workflows/ci/badge.svg)
 
 Users microservice ready and flexible for your system
 
@@ -13,11 +13,11 @@ Users microservice ready and flexible for your system
 
 ### Setup
 
-```
-$ git clone https://github.com/gabrielrufino/UBox/
-$ cd UBox
-$ cp .env.example .env
-$ npm install
+```bash
+git clone https://github.com/gabrielrufino/UBox/
+cd UBox
+cp .env.example .env
+npm install
 ```
 
 ### Database
@@ -41,7 +41,7 @@ DB_NAME=db_ubox
 
 Now, you can start the UBox!
 
-```
+```bash
 npm run dev
 ```
 
