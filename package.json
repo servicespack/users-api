@@ -13,7 +13,8 @@
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
     "start": "APP_PORT=$PORT node index.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:cov": "npm run test -- --coverage"
   },
   "husky": {
     "hooks": {
