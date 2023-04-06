@@ -5,17 +5,17 @@ import jwt from 'jsonwebtoken'
 const BASE_URL = 'http://localhost:4000'
 
 describe('Testing the users lifecycle', () => {
-  let ubox
+  let api
 
   beforeAll(async () => {
     process.env.APP_ENV = 'testing'
     process.env.DB_MONGODB_URI = process.env.MONGO_URL
 
-    ubox = await import('../../index.js')
+    api = await import('../../index.js')
   })
 
   afterAll(() => {
-    ubox.default.turnOff()
+    api.default.turnOff()
   })
 
   const user = {

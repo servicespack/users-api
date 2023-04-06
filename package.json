@@ -1,5 +1,5 @@
 {
-  "name": "ubox",
+  "name": "@gabrielrufino/users-api",
   "private": true,
   "version": "4.0.4",
   "description": "Users microservice ready and flexible for your system",
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabrielrufino/UBox.git"
+    "url": "git+https://github.com/gabrielrufino/users-api.git"
   },
   "author": "Gabriel Rufino",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gabrielrufino/UBox/issues"
+    "url": "https://github.com/gabrielrufino/users-api/issues"
   },
-  "homepage": "https://github.com/gabrielrufino/UBox#readme",
+  "homepage": "https://github.com/gabrielrufino/users-api#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",

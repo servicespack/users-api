@@ -1,7 +1,7 @@
 export default {
   mongodbMemoryServerOptions: {
     instance: {
-      dbName: 'db_ubox_testing'
+      dbName: 'db_users_api_testing'
     },
     binary: {
       version: '4.0.3',
