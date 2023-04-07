@@ -1,7 +1,7 @@
 {
   "name": "@gabrielrufino/users-api",
   "private": true,
-  "version": "4.0.4",
+  "version": "5.0.0",
   "description": "Users microservice ready and flexible for your system",
   "main": "index.js",
   "type": "module",
