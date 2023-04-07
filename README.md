@@ -2,10 +2,10 @@
   <img src="./public/logo.png" width="200"/>
 </p>
 
-# UBox
+# Users API
 
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://standardjs.com/)
-![CI](https://github.com/gabrielrufino/UBox/workflows/ci/badge.svg)
+![CI](https://github.com/gabrielrufino/users-api/workflows/ci/badge.svg)
 
 Users microservice ready and flexible for your system
 
@@ -14,8 +14,8 @@ Users microservice ready and flexible for your system
 ### Setup
 
 ```bash
-git clone https://github.com/gabrielrufino/UBox/
-cd UBox
+git clone https://github.com/gabrielrufino/users-api/
+cd users-api
 cp .env.example .env
 npm install
 ```
@@ -27,25 +27,25 @@ Fill correctly the environment variables in .env!
 **example:**
 
 ```env
-# UBox/.env
+# users-api/.env
 
 DB_CONNECTION=mongodb
 DB_HOST=localhost
 DB_PORT=27017
 DB_USER=root
 DB_PASS=root
-DB_NAME=db_ubox
+DB_NAME=db_users_api
 ```
 
-### UBox Ready!
+### Users API Ready!
 
-Now, you can start the UBox!
+Now, you can start the Users API!
 
 ```bash
 npm run dev
 ```
 
-Access http://localhost:3000! UBox is ready.
+Access http://localhost:3000! Users API is ready.
 
 ## LICENSE
 

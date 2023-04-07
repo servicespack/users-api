@@ -1,7 +1,7 @@
 {
-  "name": "ubox",
+  "name": "@gabrielrufino/users-api",
   "private": true,
-  "version": "4.0.4",
+  "version": "5.0.0",
   "description": "Users microservice ready and flexible for your system",
   "main": "index.js",
   "type": "module",
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabrielrufino/UBox.git"
+    "url": "git+https://github.com/gabrielrufino/users-api.git"
   },
   "author": "Gabriel Rufino",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gabrielrufino/UBox/issues"
+    "url": "https://github.com/gabrielrufino/users-api/issues"
   },
-  "homepage": "https://github.com/gabrielrufino/UBox#readme",
+  "homepage": "https://github.com/gabrielrufino/users-api#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
@@ -40,7 +40,7 @@
     "express": "^4.18.2",
     "helmet": "^6.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.16",
+    "mongoose": "^5.13.17",
     "mongoose-delete": "^0.5.4",
     "nodemailer": "^6.9.1",
     "safe-regex": "^2.1.1",
