@@ -6,11 +6,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --ext ts --exec 'npm run build && npm start'",
     "lint": "npx standard .",
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
     "start": "APP_PORT=$PORT node -r dotenv/config dist/index.js",
+    "start:dev": "nodemon --ext ts --exec 'npm run build && npm start'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:cov": "npm run test -- --coverage"
   },
