@@ -1,7 +1,7 @@
 import express from 'express'
 
-import validators from '../middlewares/validators/verifications.js'
-import controllers from '../controllers/verifications.js'
+import validators from '../middlewares/validators/verifications'
+import controllers from '../controllers/verifications'
 
 const router = express.Router()
 

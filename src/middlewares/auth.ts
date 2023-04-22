@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
@@ -5,7 +6,7 @@ const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 
 const User = mongoose.model('User')
 
-const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request, response, next) => {
+const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Request, response: Response, next: NextFunction) => {
   const authorization = request.headers.authorization
 
   if (!authorization) {
@@ -23,7 +24,7 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request, res
   }
 
   try {
-    const { sub } = jwt.verify(token, TOKEN_SECRET)
+    const { sub } = jwt.verify(token, TOKEN_SECRET as string)
 
     const user = await User.findById(sub)
 

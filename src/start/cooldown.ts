@@ -1,5 +1,11 @@
-const cooldown = ({ server, db }) => {
-  const close = code => () => {
+import http from 'node:http'
+import { type Connection } from "mongoose"
+
+const cooldown = ({ server, db }: {
+  db: Connection,
+  server: http.Server
+}) => {
+  const close = (code: number) => () => {
     server.close(() => {
       db.close()
       process.exit(code)

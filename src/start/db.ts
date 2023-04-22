@@ -1,15 +1,15 @@
 import mongoose from 'mongoose'
 
-import '../models/index.js'
+import '../models'
 
 const { DB_CONNECTION } = process.env
 
-let db
+let db!: mongoose.Connection
 
 if (DB_CONNECTION === 'mongodb') {
   const { DB_MONGODB_URI } = process.env
 
-  mongoose.connect(DB_MONGODB_URI, {
+  mongoose.connect(DB_MONGODB_URI as string, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
