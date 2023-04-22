@@ -1,15 +1,4 @@
-import dotenv from 'dotenv'
 import validate from 'validate.js'
-
-const result = dotenv.config({
-  path: process.env.APP_ENV === 'testing' ? '.env.testing' : '.env'
-})
-
-/*
-if (result.error) {
-  throw new Error(result.error)
-}
-*/
 
 const constraints = {
   /**
@@ -93,4 +82,4 @@ if (process.env.APP_ENV === 'production') {
   process.env = Object.freeze({ ...process.env })
 }
 
-export default result
+export default process.env
