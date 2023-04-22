@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import '../src/models/index.js'
+import '../models/index.js'
 
 const { DB_CONNECTION } = process.env
 

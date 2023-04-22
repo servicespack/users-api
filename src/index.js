@@ -1,5 +1,5 @@
 import { cooldown, db } from './start/index.js'
-import app from './src/app.js'
+import app from './app.js'
 
 const { APP_PORT } = process.env
 

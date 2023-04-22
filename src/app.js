@@ -15,6 +15,6 @@ app.use('/api/users', routers.users)
 app.use('/api/tokens', routers.tokens)
 app.use('/api/verifications', routers.verifications)
 
-import('./listeners')
+import('./listeners/index.js')
 
 export default app
