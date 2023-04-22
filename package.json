@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --exec 'node dist/index.js' --ext js,apib",
+    "dev": "nodemon --ext ts --exec 'npm run build && npm start'",
     "lint": "npx standard .",
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
