@@ -6,8 +6,6 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "database:clear": "node ./scripts/database:clear",
-    "database:populate": "node ./scripts/database:populate",
     "dev": "nodemon --exec 'node dist/index.js' --ext js,apib",
     "lint": "npx standard .",
     "lint:fix": "npm run lint -- --fix",
@@ -59,7 +57,6 @@
     "jest": "^28.1.3",
     "node-fetch": "^3.3.1",
     "nodemon": "^2.0.22",
-    "ora": "^5.4.1",
     "rimraf": "^3.0.2",
     "standard": "^17.0.0",
     "typescript": "^5.0.4"
