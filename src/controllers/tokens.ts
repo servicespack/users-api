@@ -1,8 +1,10 @@
 import bcrypt from 'bcryptjs'
 import { type Request, type Response } from 'express'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
 import validate from 'validate.js'
+
+import { User } from '../entities/user'
+import { orm } from '../start/db'
 
 const {
   APP_URL,
@@ -11,7 +13,7 @@ const {
   TOKEN_EXPIRATION
 } = process.env
 
-const User = mongoose.model('User')
+const userRepository = orm.em.getRepository(User)
 
 export default {
   create: async (request: Request, response: Response) => {
@@ -31,7 +33,7 @@ export default {
       return response.status(400).json(errors)
     }
   
-    const user = await User.findOne({ username }).select('+password')
+    const user = await userRepository.findOne({ username })
   
     if (!user) {
       return response.status(404).json({ error: 'User not found' })
@@ -44,7 +46,7 @@ export default {
   
     const payload = {
       iss: APP_URL,
-      sub: user.id
+      // sub: user.id
     }
   
     const token = jwt.sign(payload, TOKEN_SECRET as string, { expiresIn: Number(TOKEN_EXPIRATION) * 60 })

@@ -1,13 +1,13 @@
+import { MikroORM } from '@mikro-orm/core'
 import http from 'node:http'
-import { type Connection } from "mongoose"
 
-const cooldown = ({ server, db }: {
-  db: Connection,
+const cooldown = ({ server, orm }: {
+  orm: MikroORM,
   server: http.Server
 }) => {
   const close = (code: number) => () => {
-    server.close(() => {
-      db.close()
+    server.close(async () => {
+      await orm.close()
       process.exit(code)
     })
   }

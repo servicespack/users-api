@@ -1,11 +1,12 @@
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { type Request, type Response } from 'express'
-import mongoose from 'mongoose'
 import safe from 'safe-regex'
 import xss from 'xss'
+import { User } from '../entities/user'
+import { orm } from '../start/db'
 
-const User = mongoose.model('User')
+const userRepository = orm.em.getRepository(User)
 const salt = bcrypt.genSaltSync(10)
 
 export default {
@@ -27,11 +28,12 @@ export default {
     }
   
     const [users, total] = await Promise.all([
-      User
-        .find(query)
-        .skip((Number(page) - 1) * Number(size))
-        .limit(Number(size)),
-      User.countDocuments(query)
+      userRepository
+        .find(query, {
+          offset: (Number(page) - 1) * Number(size),
+          limit: Number(size)
+        }),
+      userRepository.count(query)
     ])
   
     return response.status(200).json({
@@ -45,7 +47,7 @@ export default {
     })
   },
   show: async (request: Request, response: Response) => {
-    const user = await User.findById(request.params.id)
+    const user = await userRepository.findOne(request.params.id)
   
     if (!user) {
       return response.status(404).json({
@@ -63,24 +65,27 @@ export default {
       email: xss(email),
       username: xss(username),
       password,
-      email_verification_key: crypto.randomUUID()
+      emailVerificationKey: crypto.randomUUID()
     }
   
     data.password = bcrypt.hashSync(data.password, salt)
   
-    const newUser = new User(data)
-  
+    const newUser = {
+      ...new User(),
+      ...data
+    }
+    
     try {
+      await userRepository.flush();
+
       const {
-        _id,
         name,
         email,
         username,
-        email_verification_key: emailVerificationKey
-      } = await newUser.save()
+        emailVerificationKey
+      } = newUser;
   
       response.status(201).json({
-        _id,
         name,
         email,
         username
@@ -90,7 +95,7 @@ export default {
     }
   },
   update: async (request: Request, response: Response) => {
-    const user = await User.findById(request.params.id)
+    const user = await userRepository.findOne(request.params.id)
   
     if (!user) {
       return response.status(404).json({
@@ -103,15 +108,14 @@ export default {
     user.name = name || user.name
     user.email = email || user.email
     user.username = username || user.username
-    await user.save()
+    await userRepository.flush()
   
     return response.status(200).json(user)
   },
   updatePassword: async (request: Request, response: Response) => {
-    const user = await User
-      .findById(request.params.id)
-      .select('+password')
-  
+    const user = await userRepository
+      .findOne(request.params.id)
+
     if (!user) {
       return response.status(404).json({
         error: 'User not found'
@@ -130,14 +134,14 @@ export default {
   
     user.password = bcrypt.hashSync(newPassword, salt)
   
-    await user.save()
+    await userRepository.flush()
   
     return response.status(200).json({
       message: 'Password updated'
     })
   },
   delete: async (request: Request, response: Response) => {
-    const user = await User.findById(request.params.id)
+    const user = await userRepository.findOne(request.params.id)
   
     if (!user) {
       return response.status(404).json({
@@ -145,7 +149,7 @@ export default {
       })
     }
   
-    await user.delete()
+    await userRepository.nativeDelete(user)
   
     return response.status(204).json({})
   }

@@ -39,6 +39,7 @@
     "express": "^4.18.2",
     "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
+    "mikro-orm-soft-delete": "^0.1.0",
     "mongoose": "^5.13.17",
     "mongoose-delete": "^0.5.4",
     "safe-regex": "^2.1.1",
