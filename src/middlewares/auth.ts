@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { User } from '../entities/user'
 
-import { orm } from '../start/db'
+import { orm } from '../start/database'
 
 const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
 const userRepository = orm.em.getRepository(User)

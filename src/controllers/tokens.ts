@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import validate from 'validate.js'
 
 import { User } from '../entities/user'
-import { orm } from '../start/db'
+import { orm } from '../start/database'
 
 const {
   APP_URL,

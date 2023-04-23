@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { User } from '../entities/user'
-import { orm } from '../start/db'
+import { orm } from '../start/database'
 
 const userRepository = orm.em.getRepository(User)
 

@@ -4,7 +4,7 @@ import { type Request, type Response } from 'express'
 import safe from 'safe-regex'
 import xss from 'xss'
 import { User } from '../entities/user'
-import { orm } from '../start/db'
+import { orm } from '../start/database'
 
 const userRepository = orm.em.getRepository(User)
 const salt = bcrypt.genSaltSync(10)
