@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
+import { User } from '../entities/user'
+
+import { orm } from '../start/db'
 
 const { TOKEN_PREFIX, TOKEN_SECRET } = process.env
-
-const User = mongoose.model('User')
+const userRepository = orm.em.getRepository(User)
 
 const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Request, response: Response, next: NextFunction) => {
   const authorization = request.headers.authorization
@@ -26,7 +27,7 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Req
   try {
     const { sub } = jwt.verify(token, TOKEN_SECRET as string)
 
-    const user = await User.findById(sub)
+    const user = await userRepository.findOne({ id: Number(sub) })
 
     if (!user) {
       return response.status(401).json({

@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
-import mongoose from 'mongoose'
 import validate from 'validate.js'
+import { User } from '../../entities/user'
 
-const User = mongoose.model('User')
+import { orm } from '../start/db'
+
+const userRepository = orm.em.getRepository(User)
 
 export default {
   list: async (request: Request, response: Response, next: NextFunction) => {

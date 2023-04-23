@@ -5,7 +5,7 @@ import { SoftDeletable } from 'mikro-orm-soft-delete';
 @Entity()
 export class User {
   @PrimaryKey()
-  id!: string;
+  id!: number;
 
   @Property()
   name!: string;
