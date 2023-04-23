@@ -1,10 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
 import validate from 'validate.js'
-import { User } from '../../entities/user'
-
-import { orm } from '../start/db'
-
-const userRepository = orm.em.getRepository(User)
 
 export default {
   list: async (request: Request, response: Response, next: NextFunction) => {
