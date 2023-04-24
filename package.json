@@ -4,12 +4,13 @@
   "version": "5.0.0",
   "description": "Users microservice ready and flexible for your system",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "lint": "npx eslint .",
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
-    "start": "APP_PORT=$PORT node -r dotenv/config dist/index.js",
+    "start": "node --es-module-specifier-resolution=node -r dotenv/config dist/index.js",
     "start:dev": "nodemon --ext ts --exec 'npm run build && npm start'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:cov": "npm run test -- --coverage"
