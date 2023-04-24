@@ -47,7 +47,7 @@ export default {
     })
   },
   show: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id)
+    const user = await userRepository.findOne(request.params.id as any)
   
     if (!user) {
       return response.status(404).json({
@@ -95,7 +95,7 @@ export default {
     }
   },
   update: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id)
+    const user = await userRepository.findOne(request.params.id as any)
   
     if (!user) {
       return response.status(404).json({
@@ -114,7 +114,7 @@ export default {
   },
   updatePassword: async (request: Request, response: Response) => {
     const user = await userRepository
-      .findOne(request.params.id)
+      .findOne(request.params.id as any)
 
     if (!user) {
       return response.status(404).json({
@@ -141,7 +141,7 @@ export default {
     })
   },
   delete: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id)
+    const user = await userRepository.findOne(request.params.id as any)
   
     if (!user) {
       return response.status(404).json({

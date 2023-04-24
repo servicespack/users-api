@@ -1,12 +1,11 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
 import { SoftDeletable } from 'mikro-orm-soft-delete';
+
+import { InitialEntity } from './initial.entity';
 
 @SoftDeletable(() => User, 'deletedAt', () => new Date())
 @Entity()
-export class User {
-  @PrimaryKey()
-  id!: number;
-
+export class User extends InitialEntity {
   @Property()
   name!: string;
 

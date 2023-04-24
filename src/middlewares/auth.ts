@@ -27,7 +27,7 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Req
   try {
     const { sub } = jwt.verify(token, TOKEN_SECRET as string)
 
-    const user = await userRepository.findOne({ id: Number(sub) })
+    const user = await userRepository.findOne(sub as string)
 
     if (!user) {
       return response.status(401).json({
