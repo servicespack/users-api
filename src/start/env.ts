@@ -33,24 +33,8 @@ const constraints = {
   /**
    * Database environment variables constraints
    */
-  DB_CONNECTION: {
+  DATABASE_URI: {
     presence: true,
-    inclusion: ['mongodb', 'mysql']
-  },
-  DB_MONGODB_URL: {},
-  DB_MYSQL_HOST: {},
-  DB_MYSQL_PORT: {
-    numericality: {
-      onlyInteger: true,
-      greaterThan: 0
-    }
-  },
-  DB_MYSQL_USER: {},
-  DB_MYSQL_PASS: {},
-  DB_MYSQL_NAME: {
-    length: {
-      minimum: 2
-    }
   },
   /**
    * Token environment variables constraints

@@ -1,5 +1,6 @@
 import { MikroORM } from "@mikro-orm/core";
 import { MongoDriver } from "@mikro-orm/mongodb";
+import { User } from "../entities/user";
 
 const {
   DATABASE_URI,
@@ -7,8 +8,7 @@ const {
 } = process.env
 
 const orm = await MikroORM.init<MongoDriver>({
-  entities: ['./dist/entities'],
-  entitiesTs: ['./src/entities'],
+  entities: [User],
   clientUrl: DATABASE_URI,
   dbName: DATABASE_NAME,
   type: 'mongo',
