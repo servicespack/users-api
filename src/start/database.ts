@@ -1,6 +1,7 @@
 import { MikroORM } from '@mikro-orm/core'
 import { type MongoDriver } from '@mikro-orm/mongodb'
 import { User } from '../entities/user'
+import { logger } from '../logger'
 
 const {
   DATABASE_URI,
@@ -13,6 +14,6 @@ const orm = await MikroORM.init<MongoDriver>({
   dbName: DATABASE_NAME,
   type: 'mongo'
 })
-console.log('[db.js: Connected to the database]')
+logger.info('Connected to the database')
 
 export { orm }
