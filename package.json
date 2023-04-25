@@ -41,6 +41,7 @@
     "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
     "mikro-orm-soft-delete": "^0.1.0",
+    "pino": "^8.11.0",
     "pino-http": "^8.3.3",
     "safe-regex": "^2.1.1",
     "validate.js": "^0.13.1",
