@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/gabrielrufino/users-api#readme",
   "dependencies": {
-    "@mikro-orm/core": "^5.7.0",
-    "@mikro-orm/mongodb": "^5.7.0",
+    "@mikro-orm/core": "^5.7.1",
+    "@mikro-orm/mongodb": "^5.7.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
