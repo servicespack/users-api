@@ -1,8 +1,8 @@
-import { MikroORM } from '@mikro-orm/core'
-import http from 'node:http'
+import { type MikroORM } from '@mikro-orm/core'
+import type http from 'node:http'
 
 const cooldown = ({ server, orm }: {
-  orm: MikroORM,
+  orm: MikroORM
   server: http.Server
 }) => {
   const close = (code: number) => () => {

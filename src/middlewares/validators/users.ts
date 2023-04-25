@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import validate from 'validate.js'
 
 export default {
@@ -20,13 +20,13 @@ export default {
         type: 'string'
       }
     }
-  
+
     const errors = validate(request.query, constraints)
-  
+
     if (errors) {
       return response.status(400).json(errors)
     }
-  
+
     next()
   },
   create: async (request: Request, response: Response, next: NextFunction) => {
@@ -39,13 +39,13 @@ export default {
       },
       email: {
         presence: true,
-        email: true,
+        email: true
       },
       username: {
         presence: true,
         length: {
           minimum: 3
-        },
+        }
       },
       password: {
         presence: true,
@@ -54,13 +54,13 @@ export default {
         }
       }
     }
-  
+
     try {
       await validate.async(request.body, constraints)
     } catch (errors) {
       return response.status(400).json(errors)
     }
-  
+
     next()
   },
   update: async (request: Request, response: Response, next: NextFunction) => {
@@ -71,21 +71,21 @@ export default {
         }
       },
       email: {
-        email: true,
+        email: true
       },
       username: {
         length: {
           minimum: 3
-        },
+        }
       }
     }
-  
+
     try {
       await validate.async(request.body, constraints)
     } catch (errors) {
       return response.status(400).json(errors)
     }
-  
+
     next()
   },
   updatePassword: async (request: Request, response: Response, next: NextFunction) => {
@@ -102,13 +102,13 @@ export default {
         }
       }
     }
-  
+
     try {
       await validate.async(request.body, constraints)
     } catch (errors) {
       return response.status(400).json(errors)
     }
-  
+
     next()
   }
 }

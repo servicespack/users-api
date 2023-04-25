@@ -1,35 +1,35 @@
-import { Entity, Property } from '@mikro-orm/core';
-import { SoftDeletable } from 'mikro-orm-soft-delete';
+import { Entity, Property } from '@mikro-orm/core'
+import { SoftDeletable } from 'mikro-orm-soft-delete'
 
-import { InitialEntity } from './initial.entity';
+import { InitialEntity } from './initial.entity'
 
 @SoftDeletable(() => User, 'deletedAt', () => new Date())
 @Entity()
 export class User extends InitialEntity {
   @Property()
-  name!: string;
+    name!: string
 
   @Property()
-  email!: string;
-  
-  @Property()
-  emailVerificationKey!: string;
+    email!: string
 
   @Property()
-  isEmailVerified!: boolean;
+    emailVerificationKey!: string
 
   @Property()
-  username!: string;
+    isEmailVerified!: boolean
+
+  @Property()
+    username!: string
 
   @Property({ hidden: true })
-  password!: string;
+    password!: string
 
   @Property({ hidden: true })
-  createdAt: Date = new Date();
+    createdAt: Date = new Date()
 
   @Property({ hidden: true, onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+    updatedAt: Date = new Date()
 
   @Property({ hidden: true, nullable: true })
-  deletedAt!: Date | null;
+    deletedAt!: Date | null
 }

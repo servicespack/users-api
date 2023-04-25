@@ -18,7 +18,7 @@ const userRepository = orm.em.getRepository(User)
 export default {
   create: async (request: Request, response: Response) => {
     const { username, password } = request.body
-  
+
     const constraints = {
       username: {
         presence: true
@@ -27,30 +27,30 @@ export default {
         presence: true
       }
     }
-  
+
     const errors = validate({ username, password }, constraints)
     if (errors) {
       return response.status(400).json(errors)
     }
-  
+
     const user = await userRepository.findOne({ username })
-  
-    if (!user) {
+
+    if (user == null) {
       return response.status(404).json({ error: 'User not found' })
     }
-  
+
     const correctPassword = await bcrypt.compare(password, user.password)
     if (!correctPassword) {
       return response.status(401).json({ error: 'Invalid password' })
     }
-  
+
     const payload = {
-      iss: APP_URL,
+      iss: APP_URL
       // sub: user.id
     }
-  
+
     const token = jwt.sign(payload, TOKEN_SECRET as string, { expiresIn: Number(TOKEN_EXPIRATION) * 60 })
-  
+
     return response.status(201).json({
       Authorization: `${TOKEN_PREFIX} ${token}`
     })

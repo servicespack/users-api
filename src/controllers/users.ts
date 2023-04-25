@@ -12,13 +12,13 @@ const salt = bcrypt.genSaltSync(10)
 export default {
   list: async (request: Request, response: Response) => {
     const { page = 1, size = 10, search = '' } = request.query
-  
+
     if (!safe(search as string)) {
       return response.status(400).json({
         error: 'Invalid search'
       })
     }
-  
+
     const query = {
       $or: [
         { name: new RegExp(search as string, 'gi') },
@@ -26,7 +26,7 @@ export default {
         { username: new RegExp(search as string, 'gi') }
       ]
     }
-  
+
     const [users, total] = await Promise.all([
       userRepository
         .find(query, {
@@ -35,7 +35,7 @@ export default {
         }),
       userRepository.count(query)
     ])
-  
+
     return response.status(200).json({
       meta: {
         page: Number(page),
@@ -48,18 +48,18 @@ export default {
   },
   show: async (request: Request, response: Response) => {
     const user = await userRepository.findOne(request.params.id as any)
-  
-    if (!user) {
+
+    if (user == null) {
       return response.status(404).json({
         error: 'User not found'
       })
     }
-  
+
     return response.status(200).json(user)
-  },  
+  },
   create: async (request: Request, response: Response) => {
     const { name, email, username, password } = request.body
-  
+
     const data = {
       name: xss(name),
       email: xss(email),
@@ -67,24 +67,24 @@ export default {
       password,
       emailVerificationKey: crypto.randomUUID()
     }
-  
+
     data.password = bcrypt.hashSync(data.password, salt)
-  
+
     const newUser = {
       ...new User(),
       ...data
     }
-    
+
     try {
-      await userRepository.flush();
+      await userRepository.flush()
 
       const {
         name,
         email,
         username,
         emailVerificationKey
-      } = newUser;
-  
+      } = newUser
+
       response.status(201).json({
         name,
         email,
@@ -96,61 +96,61 @@ export default {
   },
   update: async (request: Request, response: Response) => {
     const user = await userRepository.findOne(request.params.id as any)
-  
-    if (!user) {
+
+    if (user == null) {
       return response.status(404).json({
         error: 'User not found'
       })
     }
-  
+
     const { name, email, username } = request.body
-  
+
     user.name = name || user.name
     user.email = email || user.email
     user.username = username || user.username
     await userRepository.flush()
-  
+
     return response.status(200).json(user)
   },
   updatePassword: async (request: Request, response: Response) => {
     const user = await userRepository
       .findOne(request.params.id as any)
 
-    if (!user) {
+    if (user == null) {
       return response.status(404).json({
         error: 'User not found'
       })
     }
-  
+
     const {
       current_password: currentPassword,
       new_password: newPassword
     } = request.body
-  
+
     const correctPassword = await bcrypt.compare(currentPassword, user.password)
     if (!correctPassword) {
       return response.status(401).json({ error: 'Invalid password' })
     }
-  
+
     user.password = bcrypt.hashSync(newPassword, salt)
-  
+
     await userRepository.flush()
-  
+
     return response.status(200).json({
       message: 'Password updated'
     })
   },
   delete: async (request: Request, response: Response) => {
     const user = await userRepository.findOne(request.params.id as any)
-  
-    if (!user) {
+
+    if (user == null) {
       return response.status(404).json({
         error: 'User not found'
       })
     }
-  
+
     await userRepository.nativeDelete(user)
-  
+
     return response.status(204).json({})
   }
 }

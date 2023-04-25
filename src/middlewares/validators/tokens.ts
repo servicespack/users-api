@@ -17,13 +17,13 @@ export default {
         }
       }
     }
-  
+
     const errors = validate(request.body, constraints)
-  
+
     if (errors) {
       return response.status(400).json(errors)
     }
-  
+
     next()
   }
 }

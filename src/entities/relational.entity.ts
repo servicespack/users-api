@@ -1,6 +1,6 @@
-import { PrimaryKey } from "@mikro-orm/core";
+import { PrimaryKey } from '@mikro-orm/core'
 
 export class RelationalEntity {
-    @PrimaryKey()
-    id!: string;
+  @PrimaryKey()
+    id!: string
 }

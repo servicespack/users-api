@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { User } from '../entities/user'
 
@@ -29,7 +29,7 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Req
 
     const user = await userRepository.findOne(sub as string)
 
-    if (!user) {
+    if (user == null) {
       return response.status(401).json({
         error: 'Token\'s user doesn\'t exist'
       })
@@ -43,7 +43,7 @@ const auth = ({ onlyTheOwner } = { onlyTheOwner: false }) => async (request: Req
       })
     }
 
-    return next()
+    next(); return
   } catch (error) {
     return response.status(401).json({
       error

@@ -34,7 +34,7 @@ const constraints = {
    * Database environment variables constraints
    */
   DATABASE_URI: {
-    presence: true,
+    presence: true
   },
   /**
    * Token environment variables constraints
