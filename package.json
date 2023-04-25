@@ -67,10 +67,5 @@
     "nodemon": "^2.0.22",
     "rimraf": "^3.0.2",
     "typescript": "^5.0.4"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
   }
 }
