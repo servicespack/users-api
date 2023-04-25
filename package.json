@@ -15,12 +15,6 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:cov": "npm run test -- --coverage"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "git-branch-is --not master && npm run lint",
-      "pre-push": "npm test"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gabrielrufino/users-api.git"
