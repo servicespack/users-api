@@ -12,11 +12,11 @@ export class User extends InitialEntity {
   @Property()
     email!: string
 
-  @Property()
-    emailVerificationKey!: string
+  @Property({ hidden: true })
+    emailVerificationKey: string = ''
 
   @Property()
-    isEmailVerified!: boolean
+    isEmailVerified: boolean = false
 
   @Property()
     username!: string
@@ -31,5 +31,5 @@ export class User extends InitialEntity {
     updatedAt: Date = new Date()
 
   @Property({ hidden: true, nullable: true })
-    deletedAt!: Date | null
+    deletedAt: Date | null = null;
 }

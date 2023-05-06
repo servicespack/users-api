@@ -76,7 +76,10 @@ export default {
     }
 
     try {
-      await userRepository.flush()
+      console.log({
+        newUser
+      })
+      await orm.em.persistAndFlush(newUser)
 
       const {
         name,

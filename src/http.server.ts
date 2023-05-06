@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
+import http from 'node:http'
 import pino from 'pino-http'
 
 import routers from './routers'
@@ -17,4 +18,4 @@ app.use('/api/users', routers.users)
 app.use('/api/tokens', routers.tokens)
 app.use('/api/verifications', routers.verifications)
 
-export default app
+export const server = http.createServer(app)

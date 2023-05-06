@@ -1,10 +1,10 @@
 import { cooldown, orm } from './start'
-import app from './app'
+import { server } from './http.server'
 import { logger } from './logger'
 
 const { APP_PORT } = process.env
 
-const server = app.listen(APP_PORT, () => {
+server.listen(APP_PORT, () => {
   logger.info(`Listening on ${APP_PORT}`)
 })
 

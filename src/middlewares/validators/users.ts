@@ -58,6 +58,7 @@ export default {
     try {
       await validate.async(request.body, constraints)
     } catch (errors) {
+      console.log({ errors })
       return response.status(400).json(errors)
     }
 
