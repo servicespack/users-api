@@ -31,5 +31,5 @@ export class User extends InitialEntity {
     updatedAt: Date = new Date()
 
   @Property({ hidden: true, nullable: true })
-    deletedAt: Date | null = null;
+    deletedAt: Date | null = null
 }

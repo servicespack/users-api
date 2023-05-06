@@ -1,3 +1,4 @@
+import { plainToClass } from 'class-transformer'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { type Request, type Response } from 'express'
@@ -70,32 +71,11 @@ export default {
 
     data.password = bcrypt.hashSync(data.password, salt)
 
-    const newUser = {
-      ...new User(),
-      ...data
-    }
+    const newUser = plainToClass<User, any>(User, data)
 
-    try {
-      console.log({
-        newUser
-      })
-      await orm.em.persistAndFlush(newUser)
+    await orm.em.fork().persistAndFlush(newUser)
 
-      const {
-        name,
-        email,
-        username,
-        emailVerificationKey
-      } = newUser
-
-      response.status(201).json({
-        name,
-        email,
-        username
-      })
-    } catch (error) {
-      return response.status(400).json({ error })
-    }
+    response.status(201).json(newUser)
   },
   update: async (request: Request, response: Response) => {
     const user = await userRepository.findOne(request.params.id as any)

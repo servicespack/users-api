@@ -3,7 +3,7 @@ import { ObjectId } from '@mikro-orm/mongodb'
 
 export class MongoDBEntity {
   @PrimaryKey()
-    '_id': ObjectId
+    '_id'!: ObjectId
 
   @SerializedPrimaryKey()
     id!: string
