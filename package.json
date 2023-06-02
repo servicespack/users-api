@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "database:sync": "node --es-module-specifier-resolution=node -r dotenv/config ./node_modules/.bin/mikro-orm schema:update --run",
     "lint": "npx eslint ./src",
     "lint:fix": "npm run lint -- --fix",
     "reinstall": "npx rimraf node_modules && npm ci",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@mikro-orm/cli": "^5.7.11",
     "@shelf/jest-mongodb": "^4.1.7",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.13",
