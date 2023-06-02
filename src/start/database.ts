@@ -1,19 +1,23 @@
-import { MikroORM } from '@mikro-orm/core'
-import { type MongoDriver } from '@mikro-orm/mongodb'
+import { type Connection, type IDatabaseDriver, MikroORM, type Options } from '@mikro-orm/core'
 import { User } from '../entities/user'
 import { logger } from '../logger'
 
 const {
+  DATABASE_DRIVER = 'sqlite',
   DATABASE_URI,
   DATABASE_NAME = 'users-api_db'
 } = process.env
 
-const orm = await MikroORM.init<MongoDriver>({
+const config: Options<IDatabaseDriver<Connection>> = {
   entities: [User],
-  clientUrl: DATABASE_URI,
+  clientUrl: DATABASE_DRIVER !== 'sqlite'
+    ? DATABASE_URI
+    : undefined,
   dbName: DATABASE_NAME,
-  type: 'mongo'
-})
+  type: DATABASE_DRIVER as 'mongo' | 'sqlite',
+  debug: true
+}
+const orm = await MikroORM.init(config)
 logger.info('Connected to the database')
 
-export { orm }
+export { config, orm }
