@@ -1,7 +1,7 @@
-import root from './root.js'
-import tokens from './tokens.js'
-import users from './users.js'
-import verifications from './verifications.js'
+import root from './root'
+import tokens from './tokens'
+import users from './users'
+import verifications from './verifications'
 
 export default {
   root,

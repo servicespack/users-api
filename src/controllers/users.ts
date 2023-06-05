@@ -1,13 +1,15 @@
+import { type FilterQuery } from '@mikro-orm/core'
+import { type Request, type Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
-import { type Request, type Response } from 'express'
 import safe from 'safe-regex'
 import xss from 'xss'
+
 import { User } from '../entities/user'
 import { orm } from '../start/database'
 
-const userRepository = orm.em.getRepository(User)
+const userRepository = orm.em.fork().getRepository(User)
 const salt = bcrypt.genSaltSync(10)
 
 export default {
@@ -20,12 +22,17 @@ export default {
       })
     }
 
-    const query = {
-      $or: [
-        { name: new RegExp(search as string, 'gi') },
-        { email: new RegExp(search as string, 'gi') },
-        { username: new RegExp(search as string, 'gi') }
-      ]
+    let query: FilterQuery<User> = {}
+
+    if (search !== '') {
+      query = {
+        ...query,
+        $or: [
+          { name: { $fulltext: search as string } },
+          { email: { $fulltext: search as string } },
+          { username: { $fulltext: search as string } }
+        ]
+      }
     }
 
     const [users, total] = await Promise.all([

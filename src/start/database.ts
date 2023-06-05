@@ -20,4 +20,7 @@ const config: Options<IDatabaseDriver<Connection>> = {
 const orm = await MikroORM.init(config)
 logger.info('Connected to the database')
 
+const generator = orm.getSchemaGenerator()
+await generator.updateSchema()
+
 export { config, orm }

@@ -2,33 +2,6 @@ import { type NextFunction, type Request, type Response } from 'express'
 import validate from 'validate.js'
 
 export default {
-  list: async (request: Request, response: Response, next: NextFunction) => {
-    const constraints = {
-      page: {
-        numericality: {
-          onlyInteger: true,
-          greaterThan: 0
-        }
-      },
-      size: {
-        numericality: {
-          onlyInteger: true,
-          greaterThan: 0
-        }
-      },
-      search: {
-        type: 'string'
-      }
-    }
-
-    const errors = validate(request.query, constraints)
-
-    if (errors) {
-      return response.status(400).json(errors)
-    }
-
-    next()
-  },
   create: async (request: Request, response: Response, next: NextFunction) => {
     const constraints = {
       name: {

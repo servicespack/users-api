@@ -1,10 +1,11 @@
 import express from 'express'
 
-import validators from '../middlewares/validators/tokens.js'
-import controllers from '../controllers/tokens.js'
+import { CreateTokenDto } from '../dto/create-token.dto'
+import { validator } from '../middlewares/validator'
+import controllers from '../controllers/tokens'
 
 const router = express.Router()
 
-router.post('/', [validators.create], controllers.create)
+router.post('/', [validator({ Dto: CreateTokenDto })], controllers.create)
 
 export default router
