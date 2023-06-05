@@ -4,11 +4,10 @@ import type http from 'node:http'
 const cooldown = ({ server, orm }: {
   orm: MikroORM
   server: http.Server
-}) => {
+}): void => {
   const close = (code: number) => () => {
-    server.close(async () => {
-      await orm.close()
-      process.exit(code)
+    server.close(() => {
+      orm.close().then(() => process.exit(code)).catch(console.error)
     })
   }
 

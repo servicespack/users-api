@@ -6,6 +6,7 @@ import crypto from 'crypto'
 import safe from 'safe-regex'
 import xss from 'xss'
 
+import { type UpdateUserDto } from '../dto/update-user.dto'
 import { User } from '../entities/user'
 import { orm } from '../start/database'
 
@@ -84,8 +85,8 @@ export default {
 
     response.status(201).json(newUser)
   },
-  update: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id as any)
+  update: async (request: Request<any, any, UpdateUserDto>, response: Response) => {
+    const user = await userRepository.findOne(request.params.id)
 
     if (user == null) {
       return response.status(404).json({
@@ -95,9 +96,9 @@ export default {
 
     const { name, email, username } = request.body
 
-    user.name = name || user.name
-    user.email = email || user.email
-    user.username = username || user.username
+    user.name = name ?? user.name
+    user.email = email ?? user.email
+    user.username = username ?? user.username
     await userRepository.flush()
 
     return response.status(200).json(user)

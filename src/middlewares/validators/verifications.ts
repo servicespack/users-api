@@ -18,7 +18,7 @@ export default {
 
     const errors = validate(request.body, constraints)
 
-    if (errors) {
+    if ([null, undefined].includes(errors)) {
       return response.status(400).json(errors)
     }
 

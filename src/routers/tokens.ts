@@ -6,6 +6,7 @@ import controllers from '../controllers/tokens'
 
 const router = express.Router()
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/', [validator({ Dto: CreateTokenDto })], controllers.create)
 
 export default router

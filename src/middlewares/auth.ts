@@ -6,7 +6,7 @@ const { TOKEN_SECRET = 'abcdef' } = process.env
 const auth = ({ onlyTheOwner = false } = {}) => async (request: Request, response: Response, next: NextFunction) => {
   const authorization = request.headers.authorization
 
-  if (!authorization) {
+  if (authorization === undefined) {
     return response.status(401).json({
       error: 'No token provided'
     })
