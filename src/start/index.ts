@@ -1,5 +1,5 @@
-import cooldown from './cooldown'
 import { orm } from './database'
+import cooldown from './cooldown'
 
 export {
   cooldown,

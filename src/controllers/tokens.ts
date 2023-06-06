@@ -1,5 +1,5 @@
+import type { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
-import { type Request, type Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../entities/user'

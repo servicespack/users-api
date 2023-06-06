@@ -1,5 +1,6 @@
-import { type MikroORM } from '@mikro-orm/core'
 import type http from 'node:http'
+
+import type { MikroORM } from '@mikro-orm/core'
 
 const cooldown = ({ server, orm }: {
   orm: MikroORM

@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
 
-import auth from '../middlewares/auth'
-import validators from '../middlewares/validators/users'
-import controllers from '../controllers/users'
-import { validator } from '../middlewares/validator'
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
+import { validator } from '../middlewares/validator'
+import auth from '../middlewares/auth'
+import controllers from '../controllers/users'
+import validators from '../middlewares/validators/users'
 
 const router = express.Router()
 

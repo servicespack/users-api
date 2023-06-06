@@ -1,7 +1,8 @@
+import http from 'node:http'
+
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
-import http from 'node:http'
 import pino from 'pino-http'
 
 import routers from './routers'

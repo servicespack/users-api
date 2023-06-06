@@ -1,4 +1,4 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 const { TOKEN_SECRET = 'abcdef' } = process.env

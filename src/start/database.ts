@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { type Connection, type IDatabaseDriver, MikroORM, type Options } from '@mikro-orm/core'
+import { type Connection, type IDatabaseDriver, type Options, MikroORM } from '@mikro-orm/core'
 
 import { User } from '../entities/user'
 import { configuration } from '../configuration'

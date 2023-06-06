@@ -1,12 +1,13 @@
-import { type FilterQuery } from '@mikro-orm/core'
-import { type Request, type Response } from 'express'
+import crypto from 'node:crypto'
+
+import type { FilterQuery } from '@mikro-orm/core'
+import type { Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
 import bcrypt from 'bcryptjs'
-import crypto from 'crypto'
 import safe from 'safe-regex'
 import xss from 'xss'
 
-import { type UpdateUserDto } from '../dto/update-user.dto'
+import type { UpdateUserDto } from '../dto/update-user.dto'
 import { User } from '../entities/user'
 import { orm } from '../start/database'
 

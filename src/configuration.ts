@@ -1,5 +1,5 @@
-import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 
 import { ConfigurationDto } from './dto/configuration.dto';
 import { logger } from './logger';
