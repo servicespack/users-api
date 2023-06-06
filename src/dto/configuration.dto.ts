@@ -13,6 +13,9 @@ export class ConfigurationDatabaseDto {
 }
 
 export class ConfigurationDto {
+  @IsIn(['development', 'production'])
+  environment!: 'development' | 'production'
+
   @Type(() => ConfigurationDatabaseDto)
   @ValidateNested() database!: ConfigurationDatabaseDto
 }

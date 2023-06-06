@@ -7,10 +7,12 @@ import { logger } from './logger';
 const {
   DATABASE_DRIVER,
   DATABASE_URI,
-  DATABASE_NAME
+  DATABASE_NAME,
+  NODE_ENV
 } = process.env
 
 const configuration = plainToInstance(ConfigurationDto, {
+  environment: NODE_ENV || 'development',
   database: {
     driver: (DATABASE_DRIVER  || 'sqlite') as any,
     uri: DATABASE_URI || './tmp',
