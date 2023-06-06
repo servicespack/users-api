@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { cooldown, orm } from './start'
 import { server } from './http.server'
 import { logger } from './logger'

@@ -1,16 +1,27 @@
-import { validateOrReject } from 'class-validator';
+import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 import { ConfigurationDto } from './dto/configuration.dto';
+import { logger } from './logger';
 
-const configuration: ConfigurationDto = {
+const {
+  DATABASE_DRIVER,
+  DATABASE_URI,
+  DATABASE_NAME
+} = process.env
+
+const configuration = plainToInstance(ConfigurationDto, {
   database: {
-    driver: (process.env.DATABASE_DRIVER  || 'sqlite') as any,
-    uri: process.env.DATABASE_URI || './tmp',
-    name: process.env.DATABASE_NAME || 'users-api'
+    driver: (DATABASE_DRIVER  || 'sqlite') as any,
+    uri: DATABASE_URI || './tmp',
+    name: DATABASE_NAME || 'users-api'
   },
-};
+} as ConfigurationDto);
 
-await validateOrReject(plainToInstance(ConfigurationDto, configuration));
+const errors = await validate(configuration);
+if (errors.length) {
+  logger.error(errors)
+  process.exit(1)
+}
 
 export { configuration };

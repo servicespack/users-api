@@ -41,6 +41,7 @@
     "mikro-orm-soft-delete": "^0.1.0",
     "pino": "^8.14.1",
     "pino-http": "^8.3.3",
+    "reflect-metadata": "^0.1.13",
     "safe-regex": "^2.1.1",
     "validate.js": "^0.13.1",
     "xss": "^1.0.14"

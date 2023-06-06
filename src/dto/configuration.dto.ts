@@ -1,8 +1,9 @@
-import { IsIn, IsObject, IsString } from 'class-validator'
+import { IsIn, IsString, ValidateNested } from 'class-validator'
+import { Type } from 'class-transformer';
 
 export class ConfigurationDatabaseDto {
   @IsIn(['mongo', 'sqlite'])
-  driver!: 'sqlite' | 'mongo';
+  driver!: 'mongo' | 'sqlite';
 
   @IsString()
   uri!: string
@@ -12,5 +13,6 @@ export class ConfigurationDatabaseDto {
 }
 
 export class ConfigurationDto {
-  @IsObject() database!: ConfigurationDatabaseDto
+  @Type(() => ConfigurationDatabaseDto)
+  @ValidateNested() database!: ConfigurationDatabaseDto
 }
