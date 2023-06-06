@@ -13,10 +13,10 @@ export class User extends InitialEntity {
     email!: string
 
   @Property({ hidden: true })
-    emailVerificationKey: string = ''
+    emailVerificationKey = ''
 
   @Property()
-    isEmailVerified: boolean = false
+    isEmailVerified = false
 
   @Property()
     username!: string
