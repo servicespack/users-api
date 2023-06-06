@@ -6,7 +6,6 @@ import { User } from '../entities/user'
 import { orm } from '../start/database'
 
 const {
-  APP_URL,
   TOKEN_SECRET = 'abcdef',
   TOKEN_EXPIRATION = 60
 } = process.env
@@ -29,7 +28,7 @@ export default {
     }
 
     const payload = {
-      iss: APP_URL,
+      iss: 'users-api',
       sub: user.id
     }
 
