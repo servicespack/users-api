@@ -1,13 +1,14 @@
 import 'reflect-metadata'
 
+import { configuration } from './configuration'
 import { cooldown, orm } from './start'
 import { server } from './http.server'
 import { logger } from './logger'
 
-const { APP_PORT = 3000 } = process.env
+const { servers } = configuration
 
-server.listen(APP_PORT, () => {
-  logger.info(`Listening on ${APP_PORT}`)
+server.listen(servers.http.port, () => {
+  logger.info(`Listening on ${servers.http.port}`)
 })
 
 cooldown({ server, orm })

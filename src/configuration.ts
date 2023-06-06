@@ -8,6 +8,7 @@ const {
   DATABASE_DRIVER,
   DATABASE_URI,
   DATABASE_NAME,
+  HTTP_SERVER_PORT,
   NODE_ENV
 } = process.env
 
@@ -18,6 +19,11 @@ const configuration = plainToInstance(ConfigurationDto, {
     uri: DATABASE_URI || './tmp',
     name: DATABASE_NAME || 'users-api'
   },
+  servers: {
+    http: {
+      port: HTTP_SERVER_PORT || '3000'
+    }
+  }
 } as ConfigurationDto);
 
 const errors = await validate(configuration);
