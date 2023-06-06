@@ -1,8 +1,7 @@
 import { MongoDBEntity } from './mongodb.entity'
 import { RelationalEntity } from './relational.entity'
+import { configuration } from '../configuration'
 
-const {
-  DATABASE_DRIVER = 'sqlite'
-} = process.env
+const { database: { driver } } = configuration;
 
-export const InitialEntity = DATABASE_DRIVER === 'mongodb' ? MongoDBEntity : RelationalEntity
+export const InitialEntity = driver === 'mongo' ? MongoDBEntity : RelationalEntity
