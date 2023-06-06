@@ -1,6 +1,5 @@
 # Users API
 
-[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://standardjs.com/)
 ![CI](https://github.com/gabrielrufino/users-api/workflows/ci/badge.svg)
 
 Users microservice ready and flexible for your system
@@ -12,25 +11,8 @@ Users microservice ready and flexible for your system
 ```bash
 git clone https://github.com/gabrielrufino/users-api/
 cd users-api
-cp .env.example .env
+cp .env.variables .env
 npm install
-```
-
-### Database
-
-Fill correctly the environment variables in .env!
-
-**example:**
-
-```env
-# users-api/.env
-
-DB_CONNECTION=mongodb
-DB_HOST=localhost
-DB_PORT=27017
-DB_USER=root
-DB_PASS=root
-DB_NAME=db_users_api
 ```
 
 ### Users API Ready!
@@ -38,7 +20,7 @@ DB_NAME=db_users_api
 Now, you can start the Users API!
 
 ```bash
-npm run dev
+npm run start:dev
 ```
 
 Access http://localhost:3000! Users API is ready.
