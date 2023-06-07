@@ -5,6 +5,7 @@ import express from 'express'
 import helmet from 'helmet'
 import pino from 'pino-http'
 
+import { options } from './logger'
 import routers from './routers'
 
 const app = express()
@@ -12,7 +13,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(helmet())
-app.use(pino())
+app.use(pino(options))
 
 app.use('/api', routers.root)
 app.use('/api/users', routers.users)
