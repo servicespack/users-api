@@ -1,8 +1,6 @@
 import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 
 import { ConfigurationDto } from './dto/configuration.dto';
-import { logger } from './logger';
 
 const {
   DATABASE_DRIVER,
@@ -25,11 +23,5 @@ const configuration = plainToInstance(ConfigurationDto, {
     }
   }
 } as ConfigurationDto);
-
-const errors = await validate(configuration);
-if (errors.length) {
-  logger.error(errors)
-  process.exit(1)
-}
 
 export { configuration };
