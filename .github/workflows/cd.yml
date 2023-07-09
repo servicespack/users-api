@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: docker image build -t gabrielrufino/users-api:latest -t gabrielrufino/users-api:$(npm pkg get version | sed 's/"//g') .
-      - run: docker login -u gabrielrufino -p ${{ secrets.DOCKER_HUB_TOKEN }}
-      - run: docker image push -a gabrielrufino/users-api
+      - run: docker image build -t servicespack/users-api:latest -t servicespack/users-api:$(npm pkg get version | sed 's/"//g') .
+      - run: docker login -u servicespack -p ${{ secrets.DOCKER_HUB_TOKEN }}
+      - run: docker image push -a servicespack/users-api
       - uses: peter-evans/dockerhub-description@v3
         with:
-          username: gabrielrufino
+          username: servicespack
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: gabrielrufino/users-api
+          repository: servicespack/users-api

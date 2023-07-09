@@ -1,6 +1,6 @@
 # Users API
 
-![CI](https://github.com/gabrielrufino/users-api/workflows/ci/badge.svg)
+![CI](https://github.com/servicespack/users-api/workflows/ci/badge.svg)
 
 Users microservice ready and flexible for your system
 
@@ -9,7 +9,7 @@ Users microservice ready and flexible for your system
 ### Setup
 
 ```bash
-git clone https://github.com/gabrielrufino/users-api/
+git clone https://github.com/servicespack/users-api/
 cd users-api
 cp .env.variables .env
 npm install

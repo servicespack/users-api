@@ -1,5 +1,5 @@
 {
-  "name": "@gabrielrufino/users-api",
+  "name": "@servicespack/users-api",
   "private": true,
   "version": "5.0.0",
   "description": "Users microservice ready and flexible for your system",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabrielrufino/users-api.git"
+    "url": "git+https://github.com/servicespack/users-api.git"
   },
   "author": "Gabriel Rufino <contato@gabrielrufino.com>",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/gabrielrufino/users-api/issues"
+    "url": "https://github.com/servicespack/users-api/issues"
   },
-  "homepage": "https://github.com/gabrielrufino/users-api#readme",
+  "homepage": "https://github.com/servicespack/users-api#readme",
   "dependencies": {
     "@mikro-orm/core": "^5.7.11",
     "@mikro-orm/mongodb": "^5.7.11",
