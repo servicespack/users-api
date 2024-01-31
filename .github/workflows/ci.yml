@@ -12,3 +12,9 @@ jobs:
         with:
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
+  dockerfile-ci:
+    name: Dockerfile CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gabrielrufino/dockerfile-ci@v1
