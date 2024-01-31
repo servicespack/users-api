@@ -9,8 +9,16 @@ on:
       - master
 
 jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: exit 0
   publish:
     name: Publish Image
+    needs:
+      - ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
