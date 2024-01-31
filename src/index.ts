@@ -1,22 +1,22 @@
-import 'reflect-metadata'
+import 'reflect-metadata';
 
-import { validate } from 'class-validator'
+import { validate } from 'class-validator';
 
-import { configuration } from './configuration'
-import { cooldown, orm } from './start'
-import { server } from './http.server'
-import { logger } from './logger'
+import { configuration } from './configuration';
+import { server } from './http.server';
+import { logger } from './logger';
+import { cooldown, orm } from './start';
 
 const errors = await validate(configuration);
 if (errors.length) {
-  logger.error(errors)
-  process.exit(1)
+  logger.error(errors);
+  process.exit(1);
 }
 
-const { servers } = configuration
+const { servers } = configuration;
 
 server.listen(servers.http.port, () => {
-  logger.info(`Listening on ${servers.http.port}`)
-})
+  logger.info(`Listening on ${servers.http.port}`);
+});
 
-cooldown({ server, orm })
+cooldown({ server, orm });

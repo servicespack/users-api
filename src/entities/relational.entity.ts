@@ -1,8 +1,8 @@
-import { randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto';
 
-import { PrimaryKey } from '@mikro-orm/core'
+import { PrimaryKey } from '@mikro-orm/core';
 
 export class RelationalEntity {
   @PrimaryKey()
-    id: string = randomUUID()
+    id: string = randomUUID();
 }

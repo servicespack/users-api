@@ -1,34 +1,37 @@
-import { IsIn, IsNumber, IsPort, IsString, ValidateNested } from 'class-validator'
+/* eslint-disable max-classes-per-file */
 import { Type } from 'class-transformer';
+import {
+  IsIn, IsNumber, IsPort, IsString, ValidateNested,
+} from 'class-validator';
 
 export class ConfigurationDatabaseDto {
   @IsIn(['mongo', 'sqlite'])
-  driver!: 'mongo' | 'sqlite';
+    driver!: 'mongo' | 'sqlite';
 
   @IsString()
-  uri!: string
+    uri!: string;
 
   @IsString()
-  name!: string
+    name!: string;
 }
 
 export class ConfigurationServersHttpDto {
   @IsPort()
-  port!: string
+    port!: string;
 }
 
 export class ConfigurationServersDto {
   @Type(() => ConfigurationServersHttpDto)
-  @ValidateNested() http!: ConfigurationServersHttpDto
+  @ValidateNested() http!: ConfigurationServersHttpDto;
 }
 
 export class ConfigurationDto {
   @IsIn(['development', 'production'])
-  environment!: 'development' | 'production'
+    environment!: 'development' | 'production';
 
   @Type(() => ConfigurationDatabaseDto)
-  @ValidateNested() database!: ConfigurationDatabaseDto
+  @ValidateNested() database!: ConfigurationDatabaseDto;
 
   @Type(() => ConfigurationServersDto)
-  @ValidateNested() servers!: ConfigurationServersDto
+  @ValidateNested() servers!: ConfigurationServersDto;
 }

@@ -1,9 +1,9 @@
-import express from 'express'
+import express from 'express';
 
-import controllers from '../controllers/root'
+import controllers from '../controllers/root';
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', controllers.get)
+router.get('/', controllers.get);
 
-export default router
+export default router;

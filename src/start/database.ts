@@ -1,12 +1,14 @@
-import path from 'node:path'
+import path from 'node:path';
 
-import { type Connection, type IDatabaseDriver, type Options, MikroORM } from '@mikro-orm/core'
+import {
+  type Connection, type IDatabaseDriver, type Options, MikroORM,
+} from '@mikro-orm/core';
 
-import { User } from '../entities/user'
-import { configuration } from '../configuration'
-import { logger } from '../logger'
+import { configuration } from '../configuration';
+import { User } from '../entities/user';
+import { logger } from '../logger';
 
-const { database } = configuration
+const { database } = configuration;
 
 const config: Options<IDatabaseDriver<Connection>> = {
   entities: [User],
@@ -17,12 +19,12 @@ const config: Options<IDatabaseDriver<Connection>> = {
     ? path.join(database.uri, `${database.name}.sqlite`)
     : database.name,
   type: database.driver,
-  debug: true
-}
-const orm = await MikroORM.init(config)
-logger.info('Connected to the database')
+  debug: true,
+};
+const orm = await MikroORM.init(config);
+logger.info('Connected to the database');
 
-const generator = orm.getSchemaGenerator()
-await generator.updateSchema()
+const generator = orm.getSchemaGenerator();
+await generator.updateSchema();
 
-export { config, orm }
+export { config, orm };
