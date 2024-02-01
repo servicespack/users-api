@@ -1,33 +1,18 @@
-import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 import supertest from 'supertest';
 
 import { server } from '../../src/http.server';
 import { orm } from '../../src/start/database';
+import { mockUser } from '../__mocks__/user';
 
-describe('Testing the users lifecycle', () => {
-  // let app: any
+describe('Users (e2e)', () => {
   let token: string;
-
-  beforeEach(() => {
-    // process.env.APP_ENV = 'testing'
-    // process.env.DB_MONGODB_URI = process.env.MONGO_URL
-    // process.env.TOKEN_SECRET = faker.datatype.string()
-
-    // const { server } = await import('../../src/http.server')
-    // app = server
-  });
 
   afterAll(async () => {
     await orm.close();
   });
 
-  const user = {
-    name: faker.name.fullName(),
-    email: faker.internet.email().toLowerCase(),
-    username: faker.internet.userName().toLowerCase(),
-    password: faker.internet.password(),
-  };
+  const user = mockUser();
 
   test('Should create an user', () => supertest(server)
     .post('/api/users')
