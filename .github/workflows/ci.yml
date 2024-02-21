@@ -20,4 +20,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: gabrielrufino/dockerfile-ci@v1
+      - uses: gabrielrufino/dockerfile-ci@v2
