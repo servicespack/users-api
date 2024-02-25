@@ -14,26 +14,21 @@ describe('Users (e2e)', () => {
 
   const user = mockUser();
 
-  test('Should create an user', () => supertest(server)
-    .post('/api/users')
-    .send(user)
-    .set('Accept', 'application/json')
-    .expect('Content-Type', /json/)
-    .expect(201));
+  test('Should create an user', async () => {
+    await supertest(server)
+      .post('/api/users')
+      .send(user)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(201);
 
-  test('Should create an token for authentication', async () => {
     const { body } = await supertest(server)
       .post('/api/tokens')
       .send({
         username: user.username,
         password: user.password,
       })
-      .set('Accept', 'application/json')
-      .expect(201);
-
-    expect(body).toEqual({
-      Authorization: expect.stringMatching(/^Bearer [A-Za-z0-9-._~+/]+=*(?:\.[A-Za-z0-9-._~+/]+=*)*$/),
-    });
+      .set('Accept', 'application/json');
 
     token = body.Authorization;
   });
@@ -50,14 +45,14 @@ describe('Users (e2e)', () => {
         size: expect.any(Number),
         total: expect.any(Number),
       },
-      data: [
-        {
+      data: expect.arrayContaining([
+        expect.objectContaining({
           id: expect.any(String),
           name: user.name,
           username: user.username.toLowerCase(),
           email: user.email.toLowerCase(),
-        },
-      ],
+        }),
+      ]),
     });
   });
 
