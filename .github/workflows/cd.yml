@@ -21,7 +21,7 @@ jobs:
       - ci
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: docker image build -t servicespack/users-api:latest -t servicespack/users-api:$(npm pkg get version | sed 's/"//g') .
       - run: docker login -u servicespack -p ${{ secrets.DOCKER_HUB_TOKEN }}
       - run: docker image push -a servicespack/users-api

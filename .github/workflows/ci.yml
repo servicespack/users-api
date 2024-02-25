@@ -17,6 +17,8 @@ jobs:
           sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
   dockerfile-ci:
     name: Dockerfile CI
+    needs:
+      - node-ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
