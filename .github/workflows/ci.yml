@@ -1,27 +1,25 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  - pull_request
+  - push
+  - workflow_dispatch
 
 jobs:
-  lint:
+  node-ci:
+    name: Node CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: gabrielrufino/node-ci@v2
         with:
-          node-version: 18
-      - run: npm ci
-      - run: npm run lint
-  tests:
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+          sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
+  dockerfile-ci:
+    name: Dockerfile CI
+    needs:
+      - node-ci
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm ci
-      - run: npm run test:cov
-      - uses: actions/upload-artifact@v3
-        with:
-          name: coverage
-          path: coverage
+      - uses: actions/checkout@v4
+      - uses: gabrielrufino/dockerfile-ci@v2
