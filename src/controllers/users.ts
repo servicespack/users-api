@@ -7,6 +7,7 @@ import type { Request, Response } from 'express';
 import safe from 'safe-regex';
 import xss from 'xss';
 
+import type { UpdatePasswordDto } from '../dto/update-password.dto';
 import type { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user';
 import { orm } from '../start/database';
@@ -106,7 +107,7 @@ export default {
 
     return response.status(200).json(user);
   },
-  updatePassword: async (request: Request, response: Response) => {
+  updatePassword: async (request: Request<any, any, UpdatePasswordDto>, response: Response) => {
     const user = await userRepository
       .findOne(request.params.id as any);
 
@@ -116,10 +117,7 @@ export default {
       });
     }
 
-    const {
-      current_password: currentPassword,
-      new_password: newPassword,
-    } = request.body;
+    const { currentPassword, newPassword } = request.body;
 
     const correctPassword = await bcrypt.compare(currentPassword, user.password);
     if (!correctPassword) {

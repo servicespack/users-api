@@ -18,7 +18,6 @@ describe('Users (e2e)', () => {
     await supertest(server)
       .post('/api/users')
       .send(user)
-      .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(201);
 
@@ -27,8 +26,7 @@ describe('Users (e2e)', () => {
       .send({
         username: user.username,
         password: user.password,
-      })
-      .set('Accept', 'application/json');
+      });
 
     token = body.Authorization;
   });
