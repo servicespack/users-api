@@ -1,11 +1,11 @@
 import express from 'express';
 
-import controllers from '../controllers/verifications';
-import validators from '../middlewares/validators/verifications';
+import { VerificationsController } from '../controllers/verifications.controller';
+import { orm } from '../start/database';
 
 const router = express.Router();
+const verificationsController = new VerificationsController(orm.em.fork());
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/', [validators.create], controllers.create);
+router.post('/', verificationsController.create);
 
 export default router;

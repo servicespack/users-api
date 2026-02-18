@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Type } from 'class-transformer';
 import {
-  IsIn, IsNumber, IsPort, IsString, ValidateNested,
+  IsIn, IsPort, IsString, ValidateNested,
 } from 'class-validator';
 
 export class ConfigurationDatabaseDto {

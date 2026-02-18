@@ -1,22 +1,23 @@
+import type { EntityRepository } from '@mikro-orm/core';
 import bcrypt from 'bcryptjs';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { User } from '../entities/user';
-import { orm } from '../start/database';
 
-const {
-  TOKEN_SECRET = 'abcdef',
-  TOKEN_EXPIRATION = 60,
-} = process.env;
+export class TokensController {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private readonly userRepository: EntityRepository<User>) { }
 
-const userRepository = orm.em.fork().getRepository(User);
+  create = async (request: Request, response: Response) => {
+    const {
+      TOKEN_SECRET = 'abcdef',
+      TOKEN_EXPIRATION = 60,
+    } = process.env;
 
-export default {
-  create: async (request: Request, response: Response) => {
     const { username, password } = request.body;
 
-    const user = await userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({ username });
 
     if (user === null) {
       return response.status(404).json({ error: 'User not found' });
@@ -37,5 +38,5 @@ export default {
     return response.status(201).json({
       Authorization: `Bearer ${token}`,
     });
-  },
-};
+  };
+}

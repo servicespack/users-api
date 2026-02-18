@@ -1,16 +1,16 @@
+import type { EntityManager } from '@mikro-orm/core';
 import type { Request, Response } from 'express';
 
 import { User } from '../entities/user';
-import { orm } from '../start/database';
 
-const em = orm.em.fork();
+export class VerificationsController {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private readonly em: EntityManager) { }
 
-export default {
-  create: async (request: Request, response: Response) => {
+  create = async (request: Request, response: Response) => {
     const { user_id: userId, key } = request.body;
 
-    const user = await em
-      .findOne(User, { id: userId });
+    const user = await this.em.findOne(User, { id: userId });
 
     if (user == null) {
       return response.status(404).json({
@@ -27,10 +27,10 @@ export default {
       });
     }
 
-    await em.flush();
+    await this.em.flush();
 
     return response.status(201).json({
       success: 'Email verified',
     });
-  },
-};
+  };
+}
