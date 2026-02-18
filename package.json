@@ -1,5 +1,5 @@
 {
-  "name": "@servicespack/users-api",
+  "name": "@servicespack/users-service",
   "private": true,
   "version": "5.0.0",
   "main": "dist/index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/servicespack/users-api.git"
+    "url": "git+https://github.com/servicespack/users-service.git"
   },
   "author": "Gabriel Rufino <contato@gabrielrufino.com>",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/servicespack/users-api/issues"
+    "url": "https://github.com/servicespack/users-service/issues"
   },
-  "homepage": "https://github.com/servicespack/users-api#readme",
+  "homepage": "https://github.com/servicespack/users-service#readme",
   "dependencies": {
     "@mikro-orm/core": "^6.4.3",
     "@mikro-orm/mongodb": "^6.6.7",

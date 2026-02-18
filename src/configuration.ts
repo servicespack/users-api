@@ -15,7 +15,7 @@ const configuration = plainToInstance(ConfigurationDto, {
   database: {
     driver: (DATABASE_DRIVER || 'sqlite') as any,
     uri: DATABASE_URI || './tmp',
-    name: DATABASE_NAME || 'users-api',
+    name: DATABASE_NAME || 'users-service',
   },
   servers: {
     http: {

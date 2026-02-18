@@ -15,11 +15,11 @@ jobs:
     steps:
       - uses: actalog/check-ci@v1
       - uses: actions/checkout@v4
-      - run: docker image build -t servicespack/users-api:latest -t servicespack/users-api:$(npm pkg get version | sed 's/"//g') .
+      - run: docker image build -t servicespack/users-service:latest -t servicespack/users-service:$(npm pkg get version | sed 's/"//g') .
       - run: docker login -u servicespack -p ${{ secrets.DOCKER_HUB_TOKEN }}
-      - run: docker image push -a servicespack/users-api
+      - run: docker image push -a servicespack/users-service
       - uses: peter-evans/dockerhub-description@v3
         with:
           username: servicespack
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: servicespack/users-api
+          repository: servicespack/users-service

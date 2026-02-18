@@ -28,7 +28,7 @@ export default {
     }
 
     const payload = {
-      iss: 'users-api',
+      iss: 'users-service',
       sub: user.id,
     };
 
