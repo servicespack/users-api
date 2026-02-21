@@ -1,9 +1,10 @@
 import express from 'express';
 
-import controllers from '../controllers/root';
+import { RootController } from '../controllers/root.controller';
 
 const router = express.Router();
+const rootController = new RootController();
 
-router.get('/', controllers.get);
+router.get('/', rootController.get);
 
 export default router;

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-import { wrap, type FilterQuery } from '@mikro-orm/core';
+import { type EntityRepository, type FilterQuery } from '@mikro-orm/core';
 import bcrypt from 'bcryptjs';
 import { plainToClass } from 'class-transformer';
 import type { Request, Response } from 'express';
@@ -10,14 +10,14 @@ import xss from 'xss';
 import type { UpdatePasswordDto } from '../dto/update-password.dto';
 import type { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user';
-import { orm } from '../start/database';
 
-const userRepository = orm.em.fork().getRepository(User);
-const em = orm.em.fork();
-const salt = bcrypt.genSaltSync(10);
+export class UsersController {
+  private readonly salt = bcrypt.genSaltSync(10);
 
-export default {
-  list: async (request: Request, response: Response) => {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private readonly userRepository: EntityRepository<User>) { }
+
+  list = async (request: Request, response: Response) => {
     const { page = 1, size = 10, search = '' } = request.query;
 
     if (!safe(search as string)) {
@@ -40,12 +40,12 @@ export default {
     }
 
     const [users, total] = await Promise.all([
-      userRepository
+      this.userRepository
         .find(query, {
           offset: (Number(page) - 1) * Number(size),
           limit: Number(size),
         }),
-      userRepository.count(query),
+      this.userRepository.count(query),
     ]);
 
     return response.status(200).json({
@@ -57,9 +57,10 @@ export default {
       },
       data: users,
     });
-  },
-  show: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id as any);
+  };
+
+  show = async (request: Request, response: Response) => {
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -68,8 +69,9 @@ export default {
     }
 
     return response.status(200).json(user);
-  },
-  create: async (request: Request, response: Response) => {
+  };
+
+  create = async (request: Request, response: Response) => {
     const {
       name, email, username, password,
     } = request.body;
@@ -82,16 +84,17 @@ export default {
       emailVerificationKey: crypto.randomUUID(),
     };
 
-    data.password = bcrypt.hashSync(data.password, salt);
+    data.password = bcrypt.hashSync(data.password, this.salt);
 
     const newUser = plainToClass<User, any>(User, data);
 
-    await orm.em.fork().persistAndFlush(newUser);
+    await this.userRepository.getEntityManager().persistAndFlush(newUser);
 
-    response.status(201).json(newUser);
-  },
-  update: async (request: Request<any, any, UpdateUserDto>, response: Response) => {
-    const user = await userRepository.findOne(request.params.id);
+    return response.status(201).json(newUser);
+  };
+
+  update = async (request: Request<any, any, UpdateUserDto>, response: Response) => {
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -104,13 +107,14 @@ export default {
     user.name = name ?? user.name;
     user.email = email ?? user.email;
     user.username = username ?? user.username;
-    await orm.em.fork().flush();
+
+    await this.userRepository.getEntityManager().flush();
 
     return response.status(200).json(user);
-  },
-  updatePassword: async (request: Request<any, any, UpdatePasswordDto>, response: Response) => {
-    const user = await em
-      .findOne(User, request.params.id as any);
+  };
+
+  updatePassword = async (request: Request<any, any, UpdatePasswordDto>, response: Response) => {
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -125,16 +129,17 @@ export default {
       return response.status(401).json({ error: 'Invalid password' });
     }
 
-    user.password = bcrypt.hashSync(newPassword, salt);
+    user.password = bcrypt.hashSync(newPassword, this.salt);
 
-    await em.flush();
+    await this.userRepository.getEntityManager().flush();
 
     return response.status(200).json({
       message: 'Password updated',
     });
-  },
-  delete: async (request: Request, response: Response) => {
-    const user = await userRepository.findOne(request.params.id as any);
+  };
+
+  delete = async (request: Request, response: Response) => {
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -142,8 +147,8 @@ export default {
       });
     }
 
-    await userRepository.nativeDelete(user);
+    await this.userRepository.nativeDelete(user);
 
     return response.status(204).json({});
-  },
-};
+  };
+}
