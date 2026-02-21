@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 import type { EntityRepository } from '@mikro-orm/core';
 import bcrypt from 'bcryptjs';
 import type { Request, Response } from 'express';
@@ -6,15 +8,14 @@ import jwt from 'jsonwebtoken';
 import { User } from '../entities/user';
 
 export class TokensController {
+  private readonly TOKEN_SECRET = process.env.TOKEN_SECRET || 'abcdef';
+
+  private readonly TOKEN_EXPIRATION = Number(process.env.TOKEN_EXPIRATION || 60);
+
   // eslint-disable-next-line no-useless-constructor
   constructor(private readonly userRepository: EntityRepository<User>) { }
 
   create = async (request: Request, response: Response) => {
-    const {
-      TOKEN_SECRET = 'abcdef',
-      TOKEN_EXPIRATION = 60,
-    } = process.env;
-
     const { username, password } = request.body;
 
     const user = await this.userRepository.findOne({ username });
@@ -33,7 +34,7 @@ export class TokensController {
       sub: user.id,
     };
 
-    const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: Number(TOKEN_EXPIRATION) * 60 });
+    const token = jwt.sign(payload, this.TOKEN_SECRET, { expiresIn: this.TOKEN_EXPIRATION * 60 });
 
     return response.status(201).json({
       Authorization: `Bearer ${token}`,
