@@ -15,8 +15,8 @@ const usersController = new UsersController(orm.em.fork().getRepository(User));
 router.post('/', [validator({ Dto: CreateUserDto })], usersController.create);
 router.get('/', [auth()], usersController.list);
 router.get('/:id', [auth()], usersController.show);
-router.patch('/:id', [auth(), validator({ Dto: UpdateUserDto })], usersController.update);
-router.put('/:id/password', [auth(), validator({ Dto: UpdateUserPasswordDto })], usersController.updatePassword);
-router.delete('/:id', [auth()], usersController.delete);
+router.patch('/:id', [auth({ onlyTheOwner: true }), validator({ Dto: UpdateUserDto })], usersController.update);
+router.put('/:id/password', [auth({ onlyTheOwner: true }), validator({ Dto: UpdateUserPasswordDto })], usersController.updatePassword);
+router.delete('/:id', [auth({ onlyTheOwner: true })], usersController.delete);
 
 export default router;

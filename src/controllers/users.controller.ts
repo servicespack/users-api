@@ -60,7 +60,7 @@ export class UsersController {
   };
 
   show = async (request: Request, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id as any);
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -94,7 +94,7 @@ export class UsersController {
   };
 
   update = async (request: Request<any, any, UpdateUserDto>, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id as any);
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -114,7 +114,7 @@ export class UsersController {
   };
 
   updatePassword = async (request: Request<any, any, UpdatePasswordDto>, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id as any);
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -139,7 +139,7 @@ export class UsersController {
   };
 
   delete = async (request: Request, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id as any);
+    const user = await this.userRepository.findOne(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -147,7 +147,7 @@ export class UsersController {
       });
     }
 
-    await this.userRepository.nativeDelete(user as any);
+    await this.userRepository.nativeDelete(user);
 
     return response.status(204).json({});
   };
