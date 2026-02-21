@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 import { type EntityRepository, type FilterQuery } from '@mikro-orm/core';
-import bcrypt from 'bcryptjs';
+import argon2 from 'argon2';
 import { plainToClass } from 'class-transformer';
 import type { Request, Response } from 'express';
 import safe from 'safe-regex';
@@ -12,8 +12,6 @@ import type { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user';
 
 export class UsersController {
-  private readonly salt = bcrypt.genSaltSync(10);
-
   // eslint-disable-next-line no-useless-constructor
   constructor(private readonly userRepository: EntityRepository<User>) { }
 
@@ -84,7 +82,7 @@ export class UsersController {
       emailVerificationKey: crypto.randomUUID(),
     };
 
-    data.password = bcrypt.hashSync(data.password, this.salt);
+    data.password = await argon2.hash(data.password);
 
     const newUser = plainToClass<User, any>(User, data);
 
@@ -124,12 +122,12 @@ export class UsersController {
 
     const { currentPassword, newPassword } = request.body;
 
-    const correctPassword = await bcrypt.compare(currentPassword, user.password);
+    const correctPassword = await argon2.verify(user.password, currentPassword);
     if (!correctPassword) {
       return response.status(401).json({ error: 'Invalid password' });
     }
 
-    user.password = bcrypt.hashSync(newPassword, this.salt);
+    user.password = await argon2.hash(newPassword);
 
     await this.userRepository.getEntityManager().flush();
 
