@@ -8,7 +8,7 @@
     "lint": "npx eslint ./src",
     "lint:fix": "npm run lint -- --fix",
     "start": "node --es-module-specifier-resolution=node dist/index.js",
-    "start:dev": "nodemon --ext ts --exec 'ts-node -r dotenv/config src/index.ts'",
+    "start:dev": "tsx watch --env-file=.env src/index.ts",
     "test": "vitest run",
     "test:cov": "npm run test -- --coverage",
     "test:watch": "vitest"
@@ -54,12 +54,10 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitest/coverage-v8": "^2.1.9",
-    "dotenv": "^16.6.1",
     "eslint": "^8.57.1",
-    "nodemon": "^2.0.22",
     "pino-pretty": "^10.3.1",
     "supertest": "^6.3.4",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^2.1.8"
   }
