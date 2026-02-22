@@ -1,5 +1,5 @@
 import type { EntityRepository } from '@mikro-orm/core';
-import bcrypt from 'bcryptjs';
+import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -11,18 +11,23 @@ import { User } from '../entities/user';
 
 import { TokensController } from './tokens.controller';
 
-vi.mock('bcryptjs');
+vi.mock('@node-rs/argon2');
 vi.mock('jsonwebtoken');
 
 describe('TokensController', () => {
   let tokensController: TokensController;
   let userRepository: EntityRepository<User>;
+  let entityManager: any;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
+    entityManager = {
+      flush: vi.fn(),
+    };
     userRepository = {
       findOne: vi.fn(),
+      getEntityManager: vi.fn().mockReturnValue(entityManager),
     } as unknown as EntityRepository<User>;
     tokensController = new TokensController(userRepository);
     request = {
@@ -47,7 +52,7 @@ describe('TokensController', () => {
     it('should return 401 if password is incorrect', async () => {
       const user = { username: 'testuser', password: 'hashedpassword' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
-      vi.mocked(bcrypt.compare).mockResolvedValue(false as never);
+      vi.mocked(verify).mockResolvedValue(false);
 
       await tokensController.create(request, response);
 
@@ -58,7 +63,7 @@ describe('TokensController', () => {
     it('should return 201 with token if credentials are correct', async () => {
       const user = { id: 'user-id', username: 'testuser', password: 'hashedpassword' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
-      vi.mocked(bcrypt.compare).mockResolvedValue(true as never);
+      vi.mocked(verify).mockResolvedValue(true);
       vi.mocked(jwt.sign).mockReturnValue('mocked-token' as any);
 
       await tokensController.create(request, response);

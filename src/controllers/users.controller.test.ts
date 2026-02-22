@@ -1,5 +1,5 @@
 import type { EntityRepository, EntityManager } from '@mikro-orm/core';
-import bcrypt from 'bcryptjs';
+import { hash, verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
@@ -10,7 +10,7 @@ import { User } from '../entities/user';
 
 import { UsersController } from './users.controller';
 
-vi.mock('bcryptjs');
+vi.mock('@node-rs/argon2');
 vi.mock('xss', () => ({ default: (s: string) => s }));
 vi.mock('class-transformer', async (importOriginal) => {
   const actual = await importOriginal<typeof import('class-transformer')>();
@@ -100,7 +100,7 @@ describe('UsersController', () => {
       request.body = {
         name: 'Name', email: 'email@test.com', username: 'user', password: 'password',
       };
-      vi.mocked(bcrypt.hashSync).mockReturnValue('hashed' as any);
+      vi.mocked(hash).mockResolvedValue('hashed');
 
       await usersController.create(request, response);
 
@@ -136,7 +136,7 @@ describe('UsersController', () => {
       const user = { id: '1', password: 'hashed' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
       request.body = { currentPassword: 'wrong', newPassword: 'new' };
-      vi.mocked(bcrypt.compare).mockResolvedValue(false as never);
+      vi.mocked(verify).mockResolvedValue(false);
 
       await usersController.updatePassword(request, response);
 
@@ -147,8 +147,8 @@ describe('UsersController', () => {
       const user = { id: '1', password: 'hashed' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
       request.body = { currentPassword: 'old', newPassword: 'new' };
-      vi.mocked(bcrypt.compare).mockResolvedValue(true as never);
-      vi.mocked(bcrypt.hashSync).mockReturnValue('new-hashed' as any);
+      vi.mocked(verify).mockResolvedValue(true);
+      vi.mocked(hash).mockResolvedValue('new-hashed');
 
       await usersController.updatePassword(request, response);
 

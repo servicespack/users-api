@@ -1,7 +1,7 @@
 import process from 'node:process';
 
 import type { EntityRepository } from '@mikro-orm/core';
-import bcrypt from 'bcryptjs';
+import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -24,7 +24,8 @@ export class TokensController {
       return response.status(404).json({ error: 'User not found' });
     }
 
-    const correctPassword = await bcrypt.compare(password, user.password);
+    const correctPassword = await verify(user.password, password);
+
     if (!correctPassword) {
       return response.status(401).json({ error: 'Invalid password' });
     }
