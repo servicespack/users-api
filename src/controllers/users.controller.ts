@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 import { type EntityRepository, type FilterQuery } from '@mikro-orm/core';
-import argon2 from 'argon2';
+import { hash, verify } from '@node-rs/argon2';
 import { plainToClass } from 'class-transformer';
 import type { Request, Response } from 'express';
 import safe from 'safe-regex';
@@ -82,7 +82,7 @@ export class UsersController {
       emailVerificationKey: crypto.randomUUID(),
     };
 
-    data.password = await argon2.hash(data.password);
+    data.password = await hash(data.password);
 
     const newUser = plainToClass<User, any>(User, data);
 
@@ -122,12 +122,12 @@ export class UsersController {
 
     const { currentPassword, newPassword } = request.body;
 
-    const correctPassword = await argon2.verify(user.password, currentPassword);
+    const correctPassword = await verify(user.password, currentPassword);
     if (!correctPassword) {
       return response.status(401).json({ error: 'Invalid password' });
     }
 
-    user.password = await argon2.hash(newPassword);
+    user.password = await hash(newPassword);
 
     await this.userRepository.getEntityManager().flush();
 

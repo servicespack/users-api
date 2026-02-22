@@ -1,5 +1,5 @@
 import type { EntityRepository } from '@mikro-orm/core';
-import argon2 from 'argon2';
+import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -11,7 +11,7 @@ import { User } from '../entities/user';
 
 import { TokensController } from './tokens.controller';
 
-vi.mock('argon2');
+vi.mock('@node-rs/argon2');
 vi.mock('jsonwebtoken');
 
 describe('TokensController', () => {
@@ -52,7 +52,7 @@ describe('TokensController', () => {
     it('should return 401 if password is incorrect', async () => {
       const user = { username: 'testuser', password: 'hashedpassword' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
-      vi.mocked(argon2.verify).mockResolvedValue(false);
+      vi.mocked(verify).mockResolvedValue(false);
 
       await tokensController.create(request, response);
 
@@ -63,7 +63,7 @@ describe('TokensController', () => {
     it('should return 201 with token if credentials are correct', async () => {
       const user = { id: 'user-id', username: 'testuser', password: 'hashedpassword' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
-      vi.mocked(argon2.verify).mockResolvedValue(true);
+      vi.mocked(verify).mockResolvedValue(true);
       vi.mocked(jwt.sign).mockReturnValue('mocked-token' as any);
 
       await tokensController.create(request, response);
