@@ -6,7 +6,7 @@ import {
 
 import { RootController } from './root.controller';
 
-describe('RootController', () => {
+describe(RootController.name, () => {
   it('should return 200 with healthcheck live', () => {
     const rootController = new RootController();
     const request = {} as Request;

@@ -9,7 +9,7 @@ import { User } from '../entities/user';
 
 import { VerificationsController } from './verifications.controller';
 
-describe('VerificationsController', () => {
+describe(VerificationsController.name, () => {
   let verificationsController: VerificationsController;
   let entityManager: EntityManager;
   let request: Request;

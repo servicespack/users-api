@@ -21,7 +21,7 @@ vi.mock('class-transformer', async (importOriginal) => {
 });
 vi.mock('node:crypto', () => ({ default: { randomUUID: () => 'mock-uuid' } }));
 
-describe('UsersController', () => {
+describe(UsersController.name, () => {
   let usersController: UsersController;
   let userRepository: EntityRepository<User>;
   let entityManager: EntityManager;

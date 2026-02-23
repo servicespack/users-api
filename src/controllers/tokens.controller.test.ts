@@ -14,7 +14,7 @@ import { TokensController } from './tokens.controller';
 vi.mock('@node-rs/argon2');
 vi.mock('jsonwebtoken');
 
-describe('TokensController', () => {
+describe(TokensController.name, () => {
   let tokensController: TokensController;
   let userRepository: EntityRepository<User>;
   let entityManager: any;
