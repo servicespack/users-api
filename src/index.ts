@@ -20,9 +20,7 @@ async function main() {
     logger.info(`Listening on ${servers.http.port}`);
   });
 
-  await orm
-    .getSchemaGenerator()
-    .updateSchema();
+  await orm.schema.updateSchema();
 
   cooldown({ server, orm });
 }

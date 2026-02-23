@@ -13,7 +13,7 @@ const {
 const configuration = plainToInstance(ConfigurationDto, {
   environment: NODE_ENV || 'development',
   database: {
-    driver: (DATABASE_DRIVER || 'sqlite') as any,
+    driver: (DATABASE_DRIVER || 'sqlite'),
     uri: DATABASE_URI || './tmp',
     name: DATABASE_NAME || 'users-service',
   },

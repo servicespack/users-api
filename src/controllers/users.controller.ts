@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 
 import { type EntityRepository, type FilterQuery } from '@mikro-orm/core';
 import { hash, verify } from '@node-rs/argon2';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import type { Request, Response } from 'express';
 import safe from 'safe-regex';
 import xss from 'xss';
@@ -84,7 +84,7 @@ export class UsersController {
 
     data.password = await hash(data.password);
 
-    const newUser = plainToClass<User, any>(User, data);
+    const newUser = plainToInstance(User, data);
 
     await this.userRepository.getEntityManager().persistAndFlush(newUser);
 
