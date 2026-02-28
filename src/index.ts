@@ -14,13 +14,15 @@ async function main() {
     process.exit(1);
   }
 
-  const { servers } = configuration;
+  const { servers, updateSchema } = configuration;
 
   server.listen(servers.http.port, () => {
     logger.info(`Listening on ${servers.http.port}`);
   });
 
-  await orm.schema.updateSchema();
+  if (updateSchema) {
+    await orm.schema.updateSchema();
+  }
 
   cooldown({ server, orm });
 }

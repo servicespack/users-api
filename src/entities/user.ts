@@ -1,9 +1,9 @@
 import { Entity, Property } from '@mikro-orm/core';
 
-import { InitialEntity } from './initial.entity';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class User extends InitialEntity {
+export class User extends BaseEntity {
   @Property()
     name!: string;
 

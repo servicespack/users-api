@@ -5,8 +5,8 @@ import {
 } from 'class-validator';
 
 export class ConfigurationDatabaseDto {
-  @IsIn(['mongo', 'sqlite'])
-    driver!: 'mongo' | 'sqlite';
+  @IsIn(['postgresql', 'sqlite'])
+    driver!: 'postgresql' | 'sqlite';
 
   @IsString()
     uri!: string;
@@ -34,4 +34,6 @@ export class ConfigurationDto {
 
   @Type(() => ConfigurationServersDto)
   @ValidateNested() servers!: ConfigurationServersDto;
+
+  updateSchema?: boolean;
 }
