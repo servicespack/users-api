@@ -5,14 +5,14 @@ import {
 } from 'vitest';
 
 import { server } from '../../src/http.server';
-import { orm } from '../../src/start/database';
+import { knex } from '../../src/start/database';
 import { mockUser } from '../__mocks__/user';
 
 describe('Users (e2e)', () => {
   let token: string;
 
   afterAll(async () => {
-    await orm.close();
+    await knex.destroy();
   });
 
   const user = mockUser();

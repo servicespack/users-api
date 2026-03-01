@@ -1,10 +1,12 @@
 import express from 'express';
 
 import { VerificationsController } from '../controllers/verifications.controller';
-import { orm } from '../start/database';
+import { UserRepository } from '../repositories/user.repository';
+import { knex } from '../start/database';
 
 const router = express.Router();
-const verificationsController = new VerificationsController(orm.em.fork());
+const userRepository = new UserRepository(knex);
+const verificationsController = new VerificationsController(userRepository);
 
 router.post('/', verificationsController.create);
 

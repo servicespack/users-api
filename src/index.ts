@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { configuration } from './configuration';
 import { server } from './http.server';
 import { logger } from './logger';
-import { cooldown, orm } from './start';
+import { cooldown, knex } from './start';
 
 async function main() {
   const errors = await validate(configuration);
@@ -21,10 +21,10 @@ async function main() {
   });
 
   if (updateSchema) {
-    await orm.schema.updateSchema();
+    await knex.migrate.latest();
   }
 
-  cooldown({ server, orm });
+  cooldown({ server, knex });
 }
 
 main();

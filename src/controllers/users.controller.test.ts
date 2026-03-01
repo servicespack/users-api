@@ -1,4 +1,3 @@
-import type { EntityRepository, EntityManager } from '@mikro-orm/core';
 import { hash, verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -6,7 +5,8 @@ import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 
-import { User } from '../entities/user';
+import { type User } from '../entities/user';
+import { type UserRepository } from '../repositories/user.repository';
 
 import { UsersController } from './users.controller';
 
@@ -19,27 +19,29 @@ vi.mock('class-transformer', async (importOriginal) => {
     plainToClass: vi.fn((_, data) => data),
   };
 });
-vi.mock('node:crypto', () => ({ default: { randomUUID: () => 'mock-uuid' } }));
+vi.mock('node:crypto', () => {
+  const randomUUID = () => 'mock-uuid';
+  return {
+    randomUUID,
+    default: { randomUUID },
+  };
+});
 
 describe(UsersController.name, () => {
   let usersController: UsersController;
-  let userRepository: EntityRepository<User>;
-  let entityManager: EntityManager;
+  let userRepository: UserRepository;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
-    entityManager = ({
-      persistAndFlush: vi.fn(),
-      flush: vi.fn(),
-    } as unknown as EntityManager);
     userRepository = ({
       find: vi.fn(),
       count: vi.fn(),
       findOne: vi.fn(),
-      nativeDelete: vi.fn(),
-      getEntityManager: vi.fn().mockReturnValue(entityManager),
-    } as unknown as EntityRepository<User>);
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    } as unknown as UserRepository);
     usersController = new UsersController(userRepository);
     request = ({
       query: {},
@@ -73,6 +75,17 @@ describe(UsersController.name, () => {
         data: [],
       }));
     });
+
+    it('should pass search string to repository', async () => {
+      request.query.search = 'test';
+      vi.mocked(userRepository.find).mockResolvedValue([]);
+      vi.mocked(userRepository.count).mockResolvedValue(0);
+
+      await usersController.list(request, response);
+
+      expect(userRepository.find).toHaveBeenCalledWith('test', expect.any(Object));
+      expect(userRepository.count).toHaveBeenCalledWith('test');
+    });
   });
 
   describe('show', () => {
@@ -105,7 +118,7 @@ describe(UsersController.name, () => {
       await usersController.create(request, response);
 
       expect(response.status).toHaveBeenCalledWith(201);
-      expect(entityManager.persistAndFlush).toHaveBeenCalled();
+      expect(userRepository.create).toHaveBeenCalled();
     });
   });
 
@@ -121,12 +134,12 @@ describe(UsersController.name, () => {
     it('should return 200 and update user', async () => {
       const user = { id: '1', name: 'Old' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      request.params = { id: '1' };
       request.body = { name: 'New' };
 
       await usersController.update(request, response);
 
-      expect(user.name).toBe('New');
-      expect(entityManager.flush).toHaveBeenCalled();
+      expect(userRepository.update).toHaveBeenCalledWith('1', expect.objectContaining({ name: 'New' }));
       expect(response.status).toHaveBeenCalledWith(200);
     });
   });
@@ -135,6 +148,7 @@ describe(UsersController.name, () => {
     it('should return 401 if current password is wrong', async () => {
       const user = { id: '1', password: 'hashed' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      request.params = { id: '1' };
       request.body = { currentPassword: 'wrong', newPassword: 'new' };
       vi.mocked(verify).mockResolvedValue(false);
 
@@ -146,14 +160,14 @@ describe(UsersController.name, () => {
     it('should return 200 and update password', async () => {
       const user = { id: '1', password: 'hashed' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      request.params = { id: '1' };
       request.body = { currentPassword: 'old', newPassword: 'new' };
       vi.mocked(verify).mockResolvedValue(true);
       vi.mocked(hash).mockResolvedValue('new-hashed');
 
       await usersController.updatePassword(request, response);
 
-      expect(user.password).toBe('new-hashed');
-      expect(entityManager.flush).toHaveBeenCalled();
+      expect(userRepository.update).toHaveBeenCalledWith('1', expect.objectContaining({ password: 'new-hashed' }));
       expect(response.status).toHaveBeenCalledWith(200);
     });
   });
@@ -170,10 +184,11 @@ describe(UsersController.name, () => {
     it('should return 204 and delete user', async () => {
       const user = { id: '1' } as User;
       vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      request.params = { id: '1' };
 
       await usersController.delete(request, response);
 
-      expect(userRepository.nativeDelete).toHaveBeenCalledWith(user);
+      expect(userRepository.delete).toHaveBeenCalledWith('1');
       expect(response.status).toHaveBeenCalledWith(204);
     });
   });

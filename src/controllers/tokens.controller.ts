@@ -1,11 +1,10 @@
 import process from 'node:process';
 
-import type { EntityRepository } from '@mikro-orm/core';
 import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { User } from '../entities/user';
+import { type UserRepository } from '../repositories/user.repository';
 
 export class TokensController {
   private readonly TOKEN_SECRET = process.env.TOKEN_SECRET || 'abcdef';
@@ -13,7 +12,7 @@ export class TokensController {
   private readonly TOKEN_EXPIRATION = Number(process.env.TOKEN_EXPIRATION || 60);
 
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly userRepository: EntityRepository<User>) { }
+  constructor(private readonly userRepository: UserRepository) { }
 
   create = async (request: Request, response: Response) => {
     const { username, password } = request.body;

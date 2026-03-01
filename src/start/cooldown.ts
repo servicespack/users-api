@@ -1,14 +1,16 @@
 import type http from 'node:http';
 
-import type { MikroORM } from '@mikro-orm/core';
+import { type Knex } from 'knex';
 
-const cooldown = ({ server, orm }: {
-  orm: MikroORM
+import { logger } from '../logger';
+
+const cooldown = ({ server, knex }: {
+  knex: Knex
   server: http.Server
 }): void => {
   const close = (code: number) => () => {
     server.close(() => {
-      orm.close().then(() => process.exit(code)).catch(console.error);
+      knex.destroy().then(() => process.exit(code)).catch(logger.error);
     });
   };
 

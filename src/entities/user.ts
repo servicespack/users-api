@@ -1,30 +1,19 @@
-import { Entity, Property } from '@mikro-orm/core';
-
 import { BaseEntity } from './base.entity';
 
-@Entity()
 export class User extends BaseEntity {
-  @Property()
-    name!: string;
+  name!: string;
 
-  @Property()
-    email!: string;
+  email!: string;
 
-  @Property({ hidden: true })
-    emailVerificationKey = '';
+  emailVerificationKey = '';
 
-  @Property()
-    isEmailVerified = false;
+  isEmailVerified = false;
 
-  @Property()
-    username!: string;
+  username!: string;
 
-  @Property({ hidden: true })
-    password!: string;
+  password!: string;
 
-  @Property({ hidden: true })
-    createdAt: Date = new Date();
+  createdAt: Date = new Date();
 
-  @Property({ hidden: true, onUpdate: () => new Date() })
-    updatedAt: Date = new Date();
+  updatedAt: Date = new Date();
 }

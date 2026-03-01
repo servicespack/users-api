@@ -1,26 +1,26 @@
-import type { EntityManager } from '@mikro-orm/core';
 import type { Request, Response } from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 
-import { User } from '../entities/user';
+import { type User } from '../entities/user';
+import { type UserRepository } from '../repositories/user.repository';
 
 import { VerificationsController } from './verifications.controller';
 
 describe(VerificationsController.name, () => {
   let verificationsController: VerificationsController;
-  let entityManager: EntityManager;
+  let userRepository: UserRepository;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
-    entityManager = ({
+    userRepository = ({
       findOne: vi.fn(),
-      flush: vi.fn(),
-    } as unknown as EntityManager);
-    verificationsController = new VerificationsController(entityManager);
+      update: vi.fn(),
+    } as unknown as UserRepository);
+    verificationsController = new VerificationsController(userRepository);
     request = ({
       body: { user_id: '1', key: 'correct-key' },
     } as Request);
@@ -32,7 +32,7 @@ describe(VerificationsController.name, () => {
 
   describe('create', () => {
     it('should return 404 if user is not found', async () => {
-      vi.mocked(entityManager.findOne).mockResolvedValue(null);
+      vi.mocked(userRepository.findOne).mockResolvedValue(null);
 
       await verificationsController.create(request, response);
 
@@ -42,7 +42,7 @@ describe(VerificationsController.name, () => {
 
     it('should return 401 if key is wrong', async () => {
       const user = { id: '1', emailVerificationKey: 'other-key' } as User;
-      vi.mocked(entityManager.findOne).mockResolvedValue(user);
+      vi.mocked(userRepository.findOne).mockResolvedValue(user);
 
       await verificationsController.create(request, response);
 
@@ -52,13 +52,16 @@ describe(VerificationsController.name, () => {
 
     it('should return 201 and verify email if key is correct', async () => {
       const user = { id: '1', emailVerificationKey: 'correct-key', isEmailVerified: false } as User;
-      vi.mocked(entityManager.findOne).mockResolvedValue(user);
+      vi.mocked(userRepository.findOne).mockResolvedValue(user);
 
       await verificationsController.create(request, response);
 
       expect(user.isEmailVerified).toBe(true);
       expect(user.emailVerificationKey).toBe('');
-      expect(entityManager.flush).toHaveBeenCalled();
+      expect(userRepository.update).toHaveBeenCalledWith('1', {
+        isEmailVerified: true,
+        emailVerificationKey: '',
+      });
       expect(response.status).toHaveBeenCalledWith(201);
       expect(response.json).toHaveBeenCalledWith({ success: 'Email verified' });
     });

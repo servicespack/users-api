@@ -1,4 +1,3 @@
-import type { EntityRepository } from '@mikro-orm/core';
 import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -7,7 +6,8 @@ import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 
-import { User } from '../entities/user';
+import { type User } from '../entities/user';
+import { type UserRepository } from '../repositories/user.repository';
 
 import { TokensController } from './tokens.controller';
 
@@ -16,19 +16,14 @@ vi.mock('jsonwebtoken');
 
 describe(TokensController.name, () => {
   let tokensController: TokensController;
-  let userRepository: EntityRepository<User>;
-  let entityManager: any;
+  let userRepository: UserRepository;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
-    entityManager = {
-      flush: vi.fn(),
-    };
     userRepository = {
       findOne: vi.fn(),
-      getEntityManager: vi.fn().mockReturnValue(entityManager),
-    } as unknown as EntityRepository<User>;
+    } as unknown as UserRepository;
     tokensController = new TokensController(userRepository);
     request = {
       body: { username: 'testuser', password: 'password123' },

@@ -1,41 +1,10 @@
-import path from 'node:path';
+import knex from 'knex';
 
-import { defineConfig, MikroORM } from '@mikro-orm/core';
-import { Migrator } from '@mikro-orm/migrations';
-import { PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { SqliteDriver } from '@mikro-orm/sqlite';
-
-import { configuration } from '../configuration';
-import { User } from '../entities/user';
+import config from '../../knexfile';
 import { logger } from '../logger';
 
-const { database } = configuration;
+const db = knex(config);
 
-const isSqlite = database.driver === 'sqlite';
-const isMemory = database.uri === ':memory:';
-
-const sqliteDbName = isMemory
-  ? ':memory:'
-  : path.join(database.uri, `${database.name}.sqlite`);
-
-const dbName = isSqlite ? sqliteDbName : database.name;
-
-const config = defineConfig({
-  clientUrl: !isSqlite ? database.uri : undefined,
-  dbName,
-  entities: [User],
-  driver: (isSqlite ? SqliteDriver : PostgreSqlDriver) as any,
-  metadataProvider: TsMorphMetadataProvider,
-  extensions: [Migrator],
-  debug: true,
-  migrations: {
-    path: path.join(__dirname, '..', '..', 'src', 'migrations'),
-    emit: 'ts',
-  },
-});
-
-const orm = MikroORM.initSync(config);
 logger.info('Connected to the database');
 
-export { config, orm };
+export { db as knex };
