@@ -13,12 +13,13 @@
     "test": "vitest run",
     "test:cov": "npm run test -- --coverage",
     "test:watch": "vitest",
-    "migration:make": "knex migrate:make --knexfile knexfile.ts",
-    "migration:up": "knex migrate:up --knexfile knexfile.ts",
-    "migration:latest": "knex migrate:latest --knexfile knexfile.ts",
-    "migration:rollback": "knex migrate:rollback --knexfile knexfile.ts",
-    "migration:down": "knex migrate:down --knexfile knexfile.ts",
-    "migration:status": "knex migrate:status --knexfile knexfile.ts"
+    "knex": "node --env-file=.env ./node_modules/.bin/knex --knexfile knexfile.ts",
+    "migration:make": "npm run knex -- migrate:make",
+    "migration:up": "npm run knex -- migrate:up",
+    "migration:latest": "npm run knex -- migrate:latest",
+    "migration:rollback": "npm run knex -- migrate:rollback",
+    "migration:down": "npm run knex -- migrate:down",
+    "migration:status": "npm run knex -- migrate:status"
   },
   "repository": {
     "type": "git",

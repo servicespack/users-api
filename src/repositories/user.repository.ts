@@ -8,8 +8,12 @@ export class UserRepository {
   // eslint-disable-next-line no-useless-constructor
   constructor(private readonly knex: Knex) { }
 
+  private get query() {
+    return this.knex<User>(UserRepository.TABLE_NAME);
+  }
+
   async find(search: string, options: { offset: number, limit: number }) {
-    let q = this.knex<User>(UserRepository.TABLE_NAME).select('*');
+    let q = this.query.select('*');
 
     if (search !== '') {
       q = q.where(function () {
@@ -30,7 +34,7 @@ export class UserRepository {
   }
 
   async count(search: string): Promise<number> {
-    let q = this.knex(UserRepository.TABLE_NAME);
+    let q = this.query;
 
     if (search !== '') {
       q = q.where(function () {
@@ -46,7 +50,7 @@ export class UserRepository {
 
   async findOne(id: string | { id: string } | { email: string } | { username: string }) {
     const where = typeof id === 'string' ? { id } : id;
-    const user = await this.knex<User>(UserRepository.TABLE_NAME).where(where).first();
+    const user = await this.query.where(where).first();
 
     if (!user) {
       return null;
@@ -61,10 +65,7 @@ export class UserRepository {
   }
 
   async create(user: User) {
-    await this.knex(UserRepository.TABLE_NAME).insert({
-      ...user,
-      isEmailVerified: user.isEmailVerified ? 1 : 0,
-    });
+    await this.query.insert(user);
     return user;
   }
 
@@ -75,11 +76,11 @@ export class UserRepository {
       updateData.isEmailVerified = updateData.isEmailVerified ? 1 : 0;
     }
 
-    await this.knex(UserRepository.TABLE_NAME).where({ id }).update(updateData);
+    await this.query.where({ id }).update(updateData);
   }
 
   async delete(id: string | User) {
     const userId = typeof id === 'string' ? id : id.id;
-    await this.knex(UserRepository.TABLE_NAME).where({ id: userId }).delete();
+    await this.query.where({ id: userId }).delete();
   }
 }
