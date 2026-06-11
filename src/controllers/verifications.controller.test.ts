@@ -1,26 +1,22 @@
-import type { EntityManager } from '@mikro-orm/core';
 import type { Request, Response } from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 
-import { User } from '../entities/user';
-
 import { VerificationsController } from './verifications.controller';
 
 describe(VerificationsController.name, () => {
   let verificationsController: VerificationsController;
-  let entityManager: EntityManager;
+  let userModel: any;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
-    entityManager = ({
-      findOne: vi.fn(),
-      flush: vi.fn(),
-    } as unknown as EntityManager);
-    verificationsController = new VerificationsController(entityManager);
+    userModel = {
+      findById: vi.fn(),
+    };
+    verificationsController = new VerificationsController(userModel);
     request = ({
       body: { user_id: '1', key: 'correct-key' },
     } as Request);
@@ -32,7 +28,7 @@ describe(VerificationsController.name, () => {
 
   describe('create', () => {
     it('should return 404 if user is not found', async () => {
-      vi.mocked(entityManager.findOne).mockResolvedValue(null);
+      userModel.findById.mockResolvedValue(null);
 
       await verificationsController.create(request, response);
 
@@ -41,8 +37,8 @@ describe(VerificationsController.name, () => {
     });
 
     it('should return 401 if key is wrong', async () => {
-      const user = { id: '1', emailVerificationKey: 'other-key' } as User;
-      vi.mocked(entityManager.findOne).mockResolvedValue(user);
+      const user = { id: '1', emailVerificationKey: 'other-key', save: vi.fn() };
+      userModel.findById.mockResolvedValue(user);
 
       await verificationsController.create(request, response);
 
@@ -51,14 +47,16 @@ describe(VerificationsController.name, () => {
     });
 
     it('should return 201 and verify email if key is correct', async () => {
-      const user = { id: '1', emailVerificationKey: 'correct-key', isEmailVerified: false } as User;
-      vi.mocked(entityManager.findOne).mockResolvedValue(user);
+      const user = {
+        id: '1', emailVerificationKey: 'correct-key', isEmailVerified: false, save: vi.fn(),
+      };
+      userModel.findById.mockResolvedValue(user);
 
       await verificationsController.create(request, response);
 
       expect(user.isEmailVerified).toBe(true);
       expect(user.emailVerificationKey).toBe('');
-      expect(entityManager.flush).toHaveBeenCalled();
+      expect(user.save).toHaveBeenCalled();
       expect(response.status).toHaveBeenCalledWith(201);
       expect(response.json).toHaveBeenCalledWith({ success: 'Email verified' });
     });

@@ -3,9 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ConfigurationDto } from './dto/configuration.dto';
 
 const {
-  DATABASE_DRIVER,
   DATABASE_URI,
-  DATABASE_NAME,
   HTTP_SERVER_PORT,
   NODE_ENV,
 } = process.env;
@@ -13,9 +11,7 @@ const {
 const configuration = plainToInstance(ConfigurationDto, {
   environment: NODE_ENV || 'development',
   database: {
-    driver: (DATABASE_DRIVER || 'sqlite'),
-    uri: DATABASE_URI || './tmp',
-    name: DATABASE_NAME || 'users-service',
+    uri: DATABASE_URI || 'mongodb://localhost:27017/users-service',
   },
   servers: {
     http: {

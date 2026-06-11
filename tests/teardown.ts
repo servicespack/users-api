@@ -1,6 +1,10 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import mongoose from 'mongoose';
 
 export default async () => {
-  await fs.rm(path.join(__dirname, '..', 'tmp', 'tests', 'users-service.sqlite'));
+  await mongoose.disconnect();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mongod = (globalThis as any).__MONGOD__;
+  if (mongod) {
+    await mongod.stop();
+  }
 };

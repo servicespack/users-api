@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { configuration } from './configuration';
 import { server } from './http.server';
 import { logger } from './logger';
-import { cooldown, orm } from './start';
+import { cooldown, connectDatabase } from './start';
 
 async function main() {
   const errors = await validate(configuration);
@@ -16,13 +16,13 @@ async function main() {
 
   const { servers } = configuration;
 
+  await connectDatabase();
+
   server.listen(servers.http.port, () => {
     logger.info(`Listening on ${servers.http.port}`);
   });
 
-  await orm.schema.updateSchema();
-
-  cooldown({ server, orm });
+  cooldown({ server });
 }
 
 main();

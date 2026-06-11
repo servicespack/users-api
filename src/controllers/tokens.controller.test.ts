@@ -1,4 +1,3 @@
-import type { EntityRepository } from '@mikro-orm/core';
 import { verify } from '@node-rs/argon2';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -7,8 +6,6 @@ import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 
-import { User } from '../entities/user';
-
 import { TokensController } from './tokens.controller';
 
 vi.mock('@node-rs/argon2');
@@ -16,20 +13,15 @@ vi.mock('jsonwebtoken');
 
 describe(TokensController.name, () => {
   let tokensController: TokensController;
-  let userRepository: EntityRepository<User>;
-  let entityManager: any;
+  let userModel: any;
   let request: Request;
   let response: Response;
 
   beforeEach(() => {
-    entityManager = {
-      flush: vi.fn(),
-    };
-    userRepository = {
+    userModel = {
       findOne: vi.fn(),
-      getEntityManager: vi.fn().mockReturnValue(entityManager),
-    } as unknown as EntityRepository<User>;
-    tokensController = new TokensController(userRepository);
+    };
+    tokensController = new TokensController(userModel);
     request = {
       body: { username: 'testuser', password: 'password123' },
     } as Request;
@@ -41,7 +33,7 @@ describe(TokensController.name, () => {
 
   describe('create', () => {
     it('should return 404 if user is not found', async () => {
-      vi.mocked(userRepository.findOne).mockResolvedValue(null);
+      userModel.findOne.mockResolvedValue(null);
 
       await tokensController.create(request, response);
 
@@ -50,8 +42,8 @@ describe(TokensController.name, () => {
     });
 
     it('should return 401 if password is incorrect', async () => {
-      const user = { username: 'testuser', password: 'hashedpassword' } as User;
-      vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      const user = { username: 'testuser', password: 'hashedpassword' };
+      userModel.findOne.mockResolvedValue(user);
       vi.mocked(verify).mockResolvedValue(false);
 
       await tokensController.create(request, response);
@@ -61,8 +53,8 @@ describe(TokensController.name, () => {
     });
 
     it('should return 201 with token if credentials are correct', async () => {
-      const user = { id: 'user-id', username: 'testuser', password: 'hashedpassword' } as User;
-      vi.mocked(userRepository.findOne).mockResolvedValue(user);
+      const user = { id: 'user-id', username: 'testuser', password: 'hashedpassword' };
+      userModel.findOne.mockResolvedValue(user);
       vi.mocked(verify).mockResolvedValue(true);
       vi.mocked(jwt.sign).mockReturnValue('mocked-token' as any);
 

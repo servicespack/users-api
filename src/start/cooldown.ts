@@ -1,14 +1,15 @@
 import type http from 'node:http';
 
-import type { MikroORM } from '@mikro-orm/core';
+import mongoose from 'mongoose';
 
-const cooldown = ({ server, orm }: {
-  orm: MikroORM
+import { logger } from '../logger';
+
+const cooldown = ({ server }: {
   server: http.Server
 }): void => {
   const close = (code: number) => () => {
     server.close(() => {
-      orm.close().then(() => process.exit(code)).catch(console.error);
+      mongoose.disconnect().then(() => process.exit(code)).catch((error) => logger.error(error));
     });
   };
 

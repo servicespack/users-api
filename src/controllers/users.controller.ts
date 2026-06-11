@@ -1,19 +1,18 @@
 import crypto from 'node:crypto';
 
-import { type EntityRepository, type FilterQuery } from '@mikro-orm/core';
 import { hash, verify } from '@node-rs/argon2';
-import { plainToInstance } from 'class-transformer';
 import type { Request, Response } from 'express';
+import type { Model } from 'mongoose';
 import safe from 'safe-regex';
 import xss from 'xss';
 
 import type { UpdatePasswordDto } from '../dto/update-password.dto';
 import type { UpdateUserDto } from '../dto/update-user.dto';
-import { User } from '../entities/user';
+import type { IUser } from '../entities/user';
 
 export class UsersController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly userRepository: EntityRepository<User>) { }
+  constructor(private readonly userModel: Model<IUser>) { }
 
   list = async (request: Request, response: Response) => {
     const { page = 1, size = 10, search = '' } = request.query;
@@ -24,26 +23,21 @@ export class UsersController {
       });
     }
 
-    let query: FilterQuery<User> = {};
+    let query = {};
 
     if (search !== '') {
       query = {
         ...query,
-        $or: [
-          { name: { $fulltext: search as string } },
-          { email: { $fulltext: search as string } },
-          { username: { $fulltext: search as string } },
-        ],
+        $text: { $search: search as string },
       };
     }
 
     const [users, total] = await Promise.all([
-      this.userRepository
-        .find(query, {
-          offset: (Number(page) - 1) * Number(size),
-          limit: Number(size),
-        }),
-      this.userRepository.count(query),
+      this.userModel
+        .find(query)
+        .skip((Number(page) - 1) * Number(size))
+        .limit(Number(size)),
+      this.userModel.countDocuments(query),
     ]);
 
     return response.status(200).json({
@@ -58,7 +52,7 @@ export class UsersController {
   };
 
   show = async (request: Request, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id);
+    const user = await this.userModel.findById(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -84,15 +78,13 @@ export class UsersController {
 
     data.password = await hash(data.password);
 
-    const newUser = plainToInstance(User, data);
-
-    await this.userRepository.getEntityManager().persistAndFlush(newUser);
+    const newUser = await this.userModel.create(data);
 
     return response.status(201).json(newUser);
   };
 
   update = async (request: Request<any, any, UpdateUserDto>, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id);
+    const user = await this.userModel.findById(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -106,13 +98,13 @@ export class UsersController {
     user.email = email ?? user.email;
     user.username = username ?? user.username;
 
-    await this.userRepository.getEntityManager().flush();
+    await user.save();
 
     return response.status(200).json(user);
   };
 
   updatePassword = async (request: Request<any, any, UpdatePasswordDto>, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id);
+    const user = await this.userModel.findById(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -129,7 +121,7 @@ export class UsersController {
 
     user.password = await hash(newPassword);
 
-    await this.userRepository.getEntityManager().flush();
+    await user.save();
 
     return response.status(200).json({
       message: 'Password updated',
@@ -137,7 +129,7 @@ export class UsersController {
   };
 
   delete = async (request: Request, response: Response) => {
-    const user = await this.userRepository.findOne(request.params.id);
+    const user = await this.userModel.findById(request.params.id);
 
     if (user == null) {
       return response.status(404).json({
@@ -145,7 +137,7 @@ export class UsersController {
       });
     }
 
-    await this.userRepository.nativeDelete(user);
+    await this.userModel.findByIdAndDelete(user._id);
 
     return response.status(204).json({});
   };

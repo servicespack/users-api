@@ -1,11 +1,14 @@
 import 'reflect-metadata';
 
-process.env.DATABASE_DRIVER = 'sqlite';
-process.env.DATABASE_URI = ':memory:';
-process.env.DATABASE_NAME = 'users-service';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 
-const { orm } = await import('../src/start/database');
+const mongod = await MongoMemoryServer.create();
+const uri = mongod.getUri();
 
-await orm
-  .getSchemaGenerator()
-  .refreshDatabase();
+process.env.DATABASE_URI = uri;
+
+await mongoose.connect(uri);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(globalThis as any).__MONGOD__ = mongod;

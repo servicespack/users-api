@@ -5,14 +5,8 @@ import {
 } from 'class-validator';
 
 export class ConfigurationDatabaseDto {
-  @IsIn(['mongo', 'sqlite'])
-    driver!: 'mongo' | 'sqlite';
-
   @IsString()
     uri!: string;
-
-  @IsString()
-    name!: string;
 }
 
 export class ConfigurationServersHttpDto {

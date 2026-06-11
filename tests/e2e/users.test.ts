@@ -5,14 +5,13 @@ import {
 } from 'vitest';
 
 import { server } from '../../src/http.server';
-import { orm } from '../../src/start/database';
 import { mockUser } from '../__mocks__/user';
 
 describe('Users (e2e)', () => {
   let token: string;
 
-  afterAll(async () => {
-    await orm.close();
+  afterAll(() => {
+    server.close();
   });
 
   const user = mockUser();

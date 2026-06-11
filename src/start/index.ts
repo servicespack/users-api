@@ -1,7 +1,7 @@
 import cooldown from './cooldown';
-import { orm } from './database';
+import { connectDatabase } from './database';
 
 export {
   cooldown,
-  orm,
+  connectDatabase,
 };

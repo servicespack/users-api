@@ -1,34 +1,30 @@
-import path from 'node:path';
-
-import { defineConfig, MikroORM } from '@mikro-orm/core';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { SqliteDriver } from '@mikro-orm/sqlite';
+import mongoose from 'mongoose';
 
 import { configuration } from '../configuration';
-import { User } from '../entities/user';
+import { userValidationRules } from '../entities/user';
 import { logger } from '../logger';
 
 const { database } = configuration;
 
-const isSqlite = database.driver === 'sqlite';
-const isMemory = database.uri === ':memory:';
+export async function connectDatabase(): Promise<typeof mongoose> {
+  const connection = await mongoose.connect(database.uri);
+  logger.info('Connected to the database');
 
-const sqliteDbName = isMemory
-  ? ':memory:'
-  : path.join(database.uri, `${database.name}.sqlite`);
+  const { db } = connection.connection;
 
-const dbName = isSqlite ? sqliteDbName : database.name;
+  if (!db) {
+    throw new Error('Database connection not established');
+  }
 
-const config = defineConfig({
-  clientUrl: !isSqlite ? database.uri : undefined,
-  dbName,
-  entities: [User],
-  driver: SqliteDriver,
-  metadataProvider: TsMorphMetadataProvider,
-  debug: true,
-});
+  const collections = await db.listCollections({ name: 'users' }).toArray();
 
-const orm = MikroORM.initSync(config);
-logger.info('Connected to the database');
+  if (collections.length > 0) {
+    await db.command({ collMod: 'users', validator: userValidationRules });
+  } else {
+    await db.createCollection('users', { validator: userValidationRules });
+  }
 
-export { config, orm };
+  logger.info('Schema validation applied to users collection');
+
+  return connection;
+}

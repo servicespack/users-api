@@ -1,5 +1,2 @@
-import { User } from './user';
-
-export default {
-  User,
-};
+export { User, userValidationRules } from './user';
+export type { IUser } from './user';
