@@ -1,7 +1,7 @@
 {
   "name": "@servicespack/users-service",
   "private": true,
-  "version": "5.0.0",
+  "version": "5.0.1",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsdown",
