@@ -1,55 +1,52 @@
-import mongoose, { Schema, type Document } from 'mongoose';
+import type { Document } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
 export interface IUser extends Document {
-  name: string;
-  email: string;
-  emailVerificationKey: string;
-  isEmailVerified: boolean;
-  username: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  name: string
+  email: string
+  emailVerificationKey: string
+  isEmailVerified: boolean
+  username: string
+  password: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     emailVerificationKey: { type: String, default: '' },
     isEmailVerified: { type: Boolean, default: false },
-    username: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
   },
   {
     timestamps: true,
     toJSON: {
-      /* eslint-disable no-param-reassign, @typescript-eslint/no-explicit-any */
       transform(_doc, ret: any) {
-        ret.id = ret._id.toHexString();
-        delete ret._id;
-        delete ret.__v;
-        delete ret.password;
-        delete ret.emailVerificationKey;
-        delete ret.createdAt;
-        delete ret.updatedAt;
+        ret.id = ret._id.toHexString()
+        delete ret._id
+        delete ret.__v
+        delete ret.password
+        delete ret.emailVerificationKey
+        delete ret.createdAt
+        delete ret.updatedAt
       },
-      /* eslint-enable no-param-reassign, @typescript-eslint/no-explicit-any */
     },
     toObject: {
-      /* eslint-disable no-param-reassign, @typescript-eslint/no-explicit-any */
       transform(_doc, ret: any) {
-        ret.id = ret._id.toHexString();
-        delete ret._id;
-        delete ret.__v;
+        ret.id = ret._id.toHexString()
+        delete ret._id
+        delete ret.__v
       },
-      /* eslint-enable no-param-reassign, @typescript-eslint/no-explicit-any */
     },
   },
-);
+)
 
-userSchema.index({ name: 'text', email: 'text', username: 'text' });
+userSchema.index({ name: 'text', email: 'text', username: 'text' })
 
-export const User = mongoose.model<IUser>('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema)
 
 export const userValidationRules = {
   $jsonSchema: {
@@ -64,4 +61,4 @@ export const userValidationRules = {
       password: { bsonType: 'string', description: 'must be a string and is required' },
     },
   },
-};
+}

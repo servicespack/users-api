@@ -1,28 +1,25 @@
-import 'reflect-metadata';
+import { validate } from 'class-validator'
 
-import { validate } from 'class-validator';
-
-import { configuration } from './configuration';
-import { server } from './http.server';
-import { logger } from './logger';
-import { cooldown, connectDatabase } from './start';
+import { configuration, connectDatabase, cooldown, logger } from './config'
+import { server } from './http.server'
+import 'reflect-metadata'
 
 async function main() {
-  const errors = await validate(configuration);
+  const errors = await validate(configuration)
   if (errors.length) {
-    logger.error(errors);
-    process.exit(1);
+    logger.error(errors)
+    process.exit(1)
   }
 
-  const { servers } = configuration;
+  const { servers } = configuration
 
-  await connectDatabase();
+  await connectDatabase()
 
   server.listen(servers.http.port, () => {
-    logger.info(`Listening on ${servers.http.port}`);
-  });
+    logger.info(`Listening on ${servers.http.port}`)
+  })
 
-  cooldown({ server });
+  cooldown({ server })
 }
 
-main();
+main()

@@ -1,31 +1,44 @@
-/* eslint-disable max-classes-per-file */
-import { Type } from 'class-transformer';
+import { Type } from 'class-transformer'
 import {
-  IsIn, IsPort, IsString, ValidateNested,
-} from 'class-validator';
+  IsIn,
+  IsPort,
+  IsString,
+  ValidateNested,
+} from 'class-validator'
 
 export class ConfigurationDatabaseDto {
   @IsString()
-    uri!: string;
+  uri!: string
 }
 
 export class ConfigurationServersHttpDto {
   @IsPort()
-    port!: string;
+  port!: string
 }
 
 export class ConfigurationServersDto {
   @Type(() => ConfigurationServersHttpDto)
-  @ValidateNested() http!: ConfigurationServersHttpDto;
+  @ValidateNested() http!: ConfigurationServersHttpDto
+}
+
+export class ConfigurationAuthDto {
+  @IsString()
+  jwtSecret!: string
+
+  @IsString()
+  jwtExpiration!: string
 }
 
 export class ConfigurationDto {
   @IsIn(['development', 'production'])
-    environment!: 'development' | 'production';
+  environment!: 'development' | 'production'
 
   @Type(() => ConfigurationDatabaseDto)
-  @ValidateNested() database!: ConfigurationDatabaseDto;
+  @ValidateNested() database!: ConfigurationDatabaseDto
 
   @Type(() => ConfigurationServersDto)
-  @ValidateNested() servers!: ConfigurationServersDto;
+  @ValidateNested() servers!: ConfigurationServersDto
+
+  @Type(() => ConfigurationAuthDto)
+  @ValidateNested() auth!: ConfigurationAuthDto
 }

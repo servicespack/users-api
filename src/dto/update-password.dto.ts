@@ -1,9 +1,9 @@
-import { IsString } from 'class-validator';
+import { IsString } from 'class-validator'
 
 export class UpdatePasswordDto {
   @IsString()
-    currentPassword!: string;
+  currentPassword!: string
 
   @IsString()
-    newPassword!: string;
+  newPassword!: string
 }
