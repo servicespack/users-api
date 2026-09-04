@@ -7,7 +7,7 @@ import {
   it,
 } from 'vitest'
 
-import { server } from '../../src/http.server'
+import { server } from '../../src/presentation/http/server'
 import { mockUser } from '../__mocks__/user'
 
 describe('users (e2e)', () => {
@@ -108,6 +108,79 @@ describe('users (e2e)', () => {
       email: user.email.toLowerCase(),
       username: user.username.toLowerCase(),
     })
+  })
+
+  it('should return 400 Bad Request on missing fields when creating user', async () => {
+    await supertest(server)
+      .post('/api/users')
+      .send({})
+      .expect(400)
+  })
+
+  it('should update the user', async () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    const { body } = await supertest(server)
+      .patch(`/api/users/${id}`)
+      .set('Authorization', token)
+      .send({ name: 'Updated Name' })
+      .expect(200)
+
+    expect(body.name).toBe('Updated Name')
+  })
+
+  it('should return 400 Bad Request on invalid email format when updating user', async () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    await supertest(server)
+      .patch(`/api/users/${id}`)
+      .set('Authorization', token)
+      .send({ email: 'invalid-email' })
+      .expect(400)
+  })
+
+  it('should return 401 Unauthorized when updating another user', async () => {
+    const otherUser = mockUser()
+    let otherToken = ''
+
+    // Create other user
+    await supertest(server).post('/api/users').send(otherUser).expect(201)
+
+    // Login with other user
+    const { body } = await supertest(server)
+      .post('/api/tokens')
+      .send({ username: otherUser.username, password: otherUser.password })
+
+    otherToken = body.Authorization
+
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    await supertest(server)
+      .patch(`/api/users/${id}`)
+      .set('Authorization', otherToken)
+      .send({ name: 'Hacked Name' })
+      .expect(401)
+  })
+
+  it('should return 401 Unauthorized when deleting another user', async () => {
+    const otherUser = mockUser()
+
+    // Create other user
+    await supertest(server).post('/api/users').send(otherUser).expect(201)
+
+    // Login with other user
+    const { body } = await supertest(server)
+      .post('/api/tokens')
+      .send({ username: otherUser.username, password: otherUser.password })
+
+    const otherToken = body.Authorization
+
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    await supertest(server)
+      .delete(`/api/users/${id}`)
+      .set('Authorization', otherToken)
+      .expect(401)
   })
 
   it('should delete the user', () => {

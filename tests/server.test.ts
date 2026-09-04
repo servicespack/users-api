@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { describe, expect, it } from 'vitest'
-import { server } from '../src/http.server'
+import { server } from '../src/presentation/http/server'
 
 describe('http server', () => {
   it('should handle invalid JSON syntax errors', async () => {

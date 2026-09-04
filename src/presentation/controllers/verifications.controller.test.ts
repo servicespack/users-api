@@ -1,4 +1,7 @@
 import type { Request, Response } from 'express'
+import type { Mock } from 'vitest'
+import type { VerifyEmailUseCase } from '../../application/use-cases/verifications/verify-email.use-case'
+
 import {
   beforeEach,
   describe,
@@ -6,20 +9,25 @@ import {
   it,
   vi,
 } from 'vitest'
+import {
+  EmailAlreadyVerifiedError,
+  UserNotFoundError,
+  WrongVerificationKeyError,
+} from '../../domain/errors'
 
 import { VerificationsController } from './verifications.controller'
 
 describe(VerificationsController.name, () => {
   let verificationsController: VerificationsController
-  let userModel: any
+  let verifyEmailUseCase: { execute: Mock }
   let request: Request
   let response: Response
 
   beforeEach(() => {
-    userModel = {
-      findById: vi.fn(),
+    verifyEmailUseCase = {
+      execute: vi.fn(),
     }
-    verificationsController = new VerificationsController(userModel)
+    verificationsController = new VerificationsController(verifyEmailUseCase as unknown as VerifyEmailUseCase)
     request = ({
       body: { user_id: '1', key: 'correct-key' },
     } as Request)
@@ -31,7 +39,7 @@ describe(VerificationsController.name, () => {
 
   describe('create', () => {
     it('should return 404 if user is not found', async () => {
-      userModel.findById.mockResolvedValue(null)
+      verifyEmailUseCase.execute.mockRejectedValue(new UserNotFoundError())
 
       await verificationsController.create(request, response)
 
@@ -40,8 +48,7 @@ describe(VerificationsController.name, () => {
     })
 
     it('should return 401 if key is wrong', async () => {
-      const user = { id: '1', emailVerificationKey: 'other-key', save: vi.fn() }
-      userModel.findById.mockResolvedValue(user)
+      verifyEmailUseCase.execute.mockRejectedValue(new WrongVerificationKeyError())
 
       await verificationsController.create(request, response)
 
@@ -50,8 +57,7 @@ describe(VerificationsController.name, () => {
     })
 
     it('should return 400 if email is already verified', async () => {
-      const user = { id: '1', isEmailVerified: true, save: vi.fn() }
-      userModel.findById.mockResolvedValue(user)
+      verifyEmailUseCase.execute.mockRejectedValue(new EmailAlreadyVerifiedError())
 
       await verificationsController.create(request, response)
 
@@ -60,19 +66,14 @@ describe(VerificationsController.name, () => {
     })
 
     it('should return 201 and verify email if key is correct', async () => {
-      const user = {
-        id: '1',
-        emailVerificationKey: 'correct-key',
-        isEmailVerified: false,
-        save: vi.fn(),
-      }
-      userModel.findById.mockResolvedValue(user)
+      verifyEmailUseCase.execute.mockResolvedValue(undefined)
 
       await verificationsController.create(request, response)
 
-      expect(user.isEmailVerified).toBe(true)
-      expect(user.emailVerificationKey).toBe('')
-      expect(user.save).toHaveBeenCalled()
+      expect(verifyEmailUseCase.execute).toHaveBeenCalledWith({
+        userId: '1',
+        key: 'correct-key',
+      })
       expect(response.status).toHaveBeenCalledWith(201)
       expect(response.json).toHaveBeenCalledWith({ success: 'Email verified' })
     })

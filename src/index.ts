@@ -1,7 +1,7 @@
 import { validate } from 'class-validator'
 
 import { configuration, connectDatabase, cooldown, logger } from './config'
-import { server } from './http.server'
+import { server } from './presentation/http/server'
 import 'reflect-metadata'
 
 async function main() {

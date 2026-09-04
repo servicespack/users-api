@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express'
-import { hash, verify } from '@node-rs/argon2'
+import type { Mock } from 'vitest'
+import type { UsersControllerDependencies } from './users.controller'
+
 import {
   beforeEach,
   describe,
@@ -7,33 +9,30 @@ import {
   it,
   vi,
 } from 'vitest'
+import {
+  InvalidPasswordError,
+  InvalidSearchQueryError,
+  UserNotFoundError,
+} from '../../domain/errors'
 
 import { UsersController } from './users.controller'
 
-vi.mock('@node-rs/argon2')
-vi.mock('xss', () => ({ default: (s: string) => s }))
-vi.mock('node:crypto', () => ({ default: { randomUUID: () => 'mock-uuid' } }))
-
 describe(UsersController.name, () => {
   let usersController: UsersController
-  let userModel: any
+  let dependencies: Record<string, { execute: Mock }>
   let request: Request
   let response: Response
 
   beforeEach(() => {
-    userModel = {
-      find: vi.fn().mockReturnValue({
-        skip: vi.fn().mockReturnValue({
-          limit: vi.fn().mockResolvedValue([]),
-        }),
-      }),
-      countDocuments: vi.fn().mockResolvedValue(0),
-      findById: vi.fn(),
-      findByIdAndDelete: vi.fn(),
-      findOne: vi.fn(),
-      create: vi.fn(),
+    dependencies = {
+      createUserUseCase: { execute: vi.fn() },
+      listUsersUseCase: { execute: vi.fn() },
+      getUserByIdUseCase: { execute: vi.fn() },
+      updateUserUseCase: { execute: vi.fn() },
+      updateUserPasswordUseCase: { execute: vi.fn() },
+      deleteUserUseCase: { execute: vi.fn() },
     }
-    usersController = new UsersController(userModel)
+    usersController = new UsersController(dependencies as unknown as UsersControllerDependencies)
     request = ({
       query: {},
       params: {},
@@ -47,7 +46,8 @@ describe(UsersController.name, () => {
 
   describe('list', () => {
     it('should return 400 if search is unsafe', async () => {
-      request.query.search = '(a+)+$' // Truly unsafe regex for safe-regex
+      request.query.search = '(a+)+$'
+      dependencies.listUsersUseCase.execute.mockRejectedValue(new InvalidSearchQueryError())
 
       await usersController.list(request, response)
 
@@ -55,19 +55,22 @@ describe(UsersController.name, () => {
     })
 
     it('should return 200 with list of users', async () => {
+      const mockResult = {
+        meta: { page: 1, size: 10, pages: 1, total: 0 },
+        data: [],
+      }
+      dependencies.listUsersUseCase.execute.mockResolvedValue(mockResult)
+
       await usersController.list(request, response)
 
       expect(response.status).toHaveBeenCalledWith(200)
-      expect(response.json).toHaveBeenCalledWith(expect.objectContaining({
-        meta: expect.any(Object),
-        data: [],
-      }))
+      expect(response.json).toHaveBeenCalledWith(mockResult)
     })
   })
 
   describe('show', () => {
     it('should return 404 if user not found', async () => {
-      userModel.findById.mockResolvedValue(null)
+      dependencies.getUserByIdUseCase.execute.mockRejectedValue(new UserNotFoundError())
 
       await usersController.show(request, response)
 
@@ -76,7 +79,7 @@ describe(UsersController.name, () => {
 
     it('should return 200 if user found', async () => {
       const user = { id: '1' }
-      userModel.findById.mockResolvedValue(user)
+      dependencies.getUserByIdUseCase.execute.mockResolvedValue(user)
 
       await usersController.show(request, response)
 
@@ -93,68 +96,65 @@ describe(UsersController.name, () => {
         username: 'user',
         password: 'password',
       }
-      vi.mocked(hash).mockResolvedValue('hashed')
-      userModel.create.mockResolvedValue({ id: '1', name: 'Name' })
+      const created = { id: '1', name: 'Name' }
+      dependencies.createUserUseCase.execute.mockResolvedValue(created)
 
       await usersController.create(request, response)
 
       expect(response.status).toHaveBeenCalledWith(201)
-      expect(userModel.create).toHaveBeenCalled()
+      expect(response.json).toHaveBeenCalledWith(created)
     })
   })
 
   describe('update', () => {
     it('should return 404 if user not found', async () => {
-      userModel.findById.mockResolvedValue(null)
+      dependencies.updateUserUseCase.execute.mockRejectedValue(new UserNotFoundError())
 
-      await usersController.update(request, response)
+      await usersController.update(request as Parameters<typeof usersController.update>[0], response)
 
       expect(response.status).toHaveBeenCalledWith(404)
     })
 
     it('should return 200 and update user', async () => {
-      const user = { id: '1', name: 'Old', save: vi.fn() }
-      userModel.findById.mockResolvedValue(user)
+      const updatedUser = { id: '1', name: 'New' }
+      dependencies.updateUserUseCase.execute.mockResolvedValue(updatedUser)
+      request.params = { id: '1' }
       request.body = { name: 'New' }
 
-      await usersController.update(request, response)
+      await usersController.update(request as Parameters<typeof usersController.update>[0], response)
 
-      expect(user.name).toBe('New')
-      expect(user.save).toHaveBeenCalled()
       expect(response.status).toHaveBeenCalledWith(200)
+      expect(response.json).toHaveBeenCalledWith(updatedUser)
     })
   })
 
   describe('updatePassword', () => {
     it('should return 401 if current password is wrong', async () => {
-      const user = { id: '1', password: 'hashed', save: vi.fn() }
-      userModel.findById.mockResolvedValue(user)
+      dependencies.updateUserPasswordUseCase.execute.mockRejectedValue(new InvalidPasswordError())
+      request.params = { id: '1' }
       request.body = { currentPassword: 'wrong', newPassword: 'new' }
-      vi.mocked(verify).mockResolvedValue(false)
 
-      await usersController.updatePassword(request, response)
+      await usersController.updatePassword(request as Parameters<typeof usersController.updatePassword>[0], response)
 
       expect(response.status).toHaveBeenCalledWith(401)
     })
 
     it('should return 200 and update password', async () => {
-      const user = { id: '1', password: 'hashed', save: vi.fn() }
-      userModel.findById.mockResolvedValue(user)
+      dependencies.updateUserPasswordUseCase.execute.mockResolvedValue(undefined)
+      request.params = { id: '1' }
       request.body = { currentPassword: 'old', newPassword: 'new' }
-      vi.mocked(verify).mockResolvedValue(true)
-      vi.mocked(hash).mockResolvedValue('new-hashed')
 
-      await usersController.updatePassword(request, response)
+      await usersController.updatePassword(request as Parameters<typeof usersController.updatePassword>[0], response)
 
-      expect(user.password).toBe('new-hashed')
-      expect(user.save).toHaveBeenCalled()
       expect(response.status).toHaveBeenCalledWith(200)
+      expect(response.json).toHaveBeenCalledWith({ message: 'Password updated' })
     })
   })
 
   describe('delete', () => {
     it('should return 404 if user not found', async () => {
-      userModel.findById.mockResolvedValue(null)
+      dependencies.deleteUserUseCase.execute.mockRejectedValue(new UserNotFoundError())
+      request.params = { id: '1' }
 
       await usersController.delete(request, response)
 
@@ -162,13 +162,11 @@ describe(UsersController.name, () => {
     })
 
     it('should return 204 and delete user', async () => {
-      const user = { _id: 'object-id-1', id: '1' }
-      userModel.findById.mockResolvedValue(user)
-      userModel.findByIdAndDelete.mockResolvedValue(user)
+      dependencies.deleteUserUseCase.execute.mockResolvedValue(undefined)
+      request.params = { id: '1' }
 
       await usersController.delete(request, response)
 
-      expect(userModel.findByIdAndDelete).toHaveBeenCalledWith('object-id-1')
       expect(response.status).toHaveBeenCalledWith(204)
     })
   })
