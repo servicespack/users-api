@@ -17,12 +17,12 @@ import { UserModel } from '../../infrastructure/database/mongoose/models/user.mo
 import { MongooseUserRepository } from '../../infrastructure/database/mongoose/repositories/mongoose-user.repository'
 import { Argon2PasswordHasher } from '../../infrastructure/security/argon2-password-hasher'
 import { JwtTokenProvider } from '../../infrastructure/security/jwt-token-provider'
-import auth from '../../middlewares/auth'
-import { validator } from '../../middlewares/validator'
 import { RootController } from '../controllers/root.controller'
 import { TokensController } from '../controllers/tokens.controller'
 import { UsersController } from '../controllers/users.controller'
 import { VerificationsController } from '../controllers/verifications.controller'
+import auth from '../middlewares/auth'
+import { validator } from '../middlewares/validator'
 
 const router = express.Router()
 

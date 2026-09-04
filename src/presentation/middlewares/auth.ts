@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { configuration } from '../config'
+import { configuration } from '../../config'
 
 const TOKEN_SECRET = configuration.auth.jwtSecret
 

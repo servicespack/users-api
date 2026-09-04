@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import auth from './auth'
 
 vi.mock('jsonwebtoken')
-vi.mock('../config', () => ({
+vi.mock('../../config', () => ({
   configuration: {
     auth: {
       jwtSecret: 'secret',
