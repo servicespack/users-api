@@ -5,8 +5,8 @@ import type { GetUserByIdUseCase } from '../../application/use-cases/users/get-u
 import type { ListUsersUseCase } from '../../application/use-cases/users/list-users.use-case'
 import type { UpdateUserPasswordUseCase } from '../../application/use-cases/users/update-user-password.use-case'
 import type { UpdateUserUseCase } from '../../application/use-cases/users/update-user.use-case'
-import type { UpdatePasswordDto } from '../../dto/update-password.dto'
-import type { UpdateUserDto } from '../../dto/update-user.dto'
+import type { UpdatePasswordDto } from '../dtos/update-password.dto'
+import type { UpdateUserDto } from '../dtos/update-user.dto'
 import { handleHttpError } from '../helpers/http-error.helper'
 
 export interface UsersControllerDependencies {
