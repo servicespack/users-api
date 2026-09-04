@@ -9,8 +9,8 @@ RUN npm ci
 COPY tsconfig.json tsdown.config.mts ./
 COPY src/ ./src/
 
-RUN npm run build
-RUN npm prune --omit=dev
+RUN npm run build && \
+    npm prune --omit=dev
 
 # Production stage
 FROM node:24-alpine AS runner
