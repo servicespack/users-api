@@ -15,9 +15,9 @@ export class UpdateUserUseCase {
     }
 
     user.updateProfile({
-      name: request.name ? xss(request.name) : undefined,
-      email: request.email ? xss(request.email) : undefined,
-      username: request.username ? xss(request.username) : undefined,
+      name: request.name !== undefined ? xss(request.name) : undefined,
+      email: request.email !== undefined ? xss(request.email) : undefined,
+      username: request.username !== undefined ? xss(request.username) : undefined,
     })
 
     return this.userRepository.update(user)

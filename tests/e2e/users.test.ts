@@ -191,4 +191,29 @@ describe('users (e2e)', () => {
       .set('Authorization', token)
       .expect(204)
   })
+
+  it('should return 404 when detailing a non-existent user', async () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    await supertest(server)
+      .get(`/api/users/${id}`)
+      .set('Authorization', token)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.error).toBe('User not found')
+      })
+  })
+
+  it('should return 404 when updating a non-existent user', async () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
+
+    await supertest(server)
+      .patch(`/api/users/${id}`)
+      .set('Authorization', token)
+      .send({ name: 'Hacked Name' })
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.error).toBe('User not found')
+      })
+  })
 })

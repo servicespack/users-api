@@ -3,7 +3,7 @@ import { User } from '../../../../domain/entities/user.entity'
 
 export class UserMapper {
   static toDomain(doc: IUserDoc): User {
-    const id = doc.id || (doc._id ? doc._id.toString() : undefined)
+    const id = doc.id ? doc.id : (doc._id as string | object).toString()
 
     return new User({
       id,
