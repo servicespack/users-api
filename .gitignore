@@ -107,3 +107,4 @@ dist
 *.sqlite
 tmp/
 temp/
+.stryker-tmp/
