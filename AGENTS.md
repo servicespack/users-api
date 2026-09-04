@@ -37,44 +37,43 @@ This document serves as the primary technical guide and reference manual for AI 
 
 ## 3. Directory Structure and Architecture
 
-The codebase adheres to a modular, layered architecture designed for separation of concerns and high testability.
+The codebase adheres to a Clean Architecture layout designed for strict separation of concerns, framework independence, and high testability.
 
 ```
 ├── .agents/
-│   └── rules/
-│       └── coding-style.md     # ESLint code style rules and conventions
+│   ├── rules/
+│   │   └── coding-style.md     # ESLint code style rules and conventions
+│   └── skills/
+│       └── clean-architecture/ # Clean Architecture skill, standards and diagnostics
 ├── src/
-│   ├── http.server.ts          # Express setup, global middlewares, and error handler
-│   ├── index.ts                # Application entrypoint (bootstraps DB, validation, HTTP listener)
+│   ├── index.ts                # Application entrypoint (bootstraps DB, HTTP listener)
+│   ├── domain/                 # Circle 1: Enterprise Business Rules (Pure TypeScript)
+│   │   ├── entities/           # Pure domain entities (User) with domain methods
+│   │   ├── errors/             # Specific domain errors (UserNotFoundError, etc.)
+│   │   └── repositories/       # Pure repository interfaces (IUserRepository)
+│   ├── application/            # Circle 2: Application Business Rules (Use Cases & Ports)
+│   │   ├── ports/              # Output ports (IPasswordHasher, ITokenProvider)
+│   │   ├── dtos/               # Boundary Request/Response models (readonly)
+│   │   └── use-cases/          # Focused single-responsibility use cases (users, auth, verifications)
+│   ├── infrastructure/         # Circles 3 & 4: Frameworks, Drivers, and Adapters
+│   │   ├── database/mongoose/  # Mongoose models, schemas, user mapper, and repository adapter
+│   │   └── security/           # Argon2 and JWT provider adapter implementations
+│   ├── presentation/           # Circle 3: Delivery Adapters (HTTP)
+│   │   ├── http/               # HTTP web server & router composition root
+│   │   │   ├── server.ts       # Express setup, global middlewares, and error handler
+│   │   │   └── router.ts       # Composition Root: wires infra, use cases, and controllers
+│   │   ├── helpers/            # HTTP error mapping helpers
+│   │   └── controllers/        # Express controllers (Humble Objects)
 │   ├── config/                 # Application configuration, logger, and lifecycle hooks
 │   │   ├── configuration.ts    # Loads, validates, and exports environment config
 │   │   ├── cooldown.ts         # Handles termination signals (SIGHUP, SIGINT, SIGTERM)
 │   │   ├── database.ts         # MongoDB connection & schema validation enforcement
-│   │   ├── index.ts
 │   │   └── logger.ts           # Pino logger configuration
-│   ├── controllers/            # Decoupled controllers with injected dependencies
-│   │   ├── root.controller.ts
-│   │   ├── tokens.controller.ts
-│   │   ├── users.controller.ts
-│   │   └── verifications.controller.ts
+│   ├── dto/                    # Request payload DTOs (class-validator)
+│   ├── middlewares/            # Express middlewares (auth, validator)
 │   ├── docs/                   # OpenAPI / Swagger specification
-│   │   └── swagger.ts
-│   ├── dto/                    # Data Transfer Objects with validation decorators
-│   │   ├── configuration.dto.ts
-│   │   ├── create-token.dto.ts
-│   │   ├── create-user.dto.ts
-│   │   ├── create-verification.dto.ts
-│   │   ├── update-password.dto.ts
-│   │   ├── update-user-password.dto.ts
-│   │   └── update-user.dto.ts
-│   ├── entities/               # Mongoose schemas, models, and collection validation rules
-│   │   ├── index.ts
-│   │   └── user.ts
-│   ├── middlewares/            # Express middlewares (JWT auth, DTO validation)
-│   │   ├── auth.ts
-│   │   └── validator.ts
-│   └── router.ts               # Express router definition and route-level middleware binding
-└── tests/                      # End-to-end tests, configuration tests, and test utilities
+│   └── entities/               # Mongoose model exports and aliases
+└── tests/                      # End-to-end tests, unit tests, and test utilities
     ├── __mocks__/              # Mock factories and fixtures
     ├── e2e/                    # Integration / E2E endpoint tests using supertest
     │   ├── docs.test.ts
@@ -82,52 +81,39 @@ The codebase adheres to a modular, layered architecture designed for separation 
     │   ├── update-password.test.ts
     │   └── users.test.ts
     ├── configuration.test.ts
-    ├── http.server.test.ts
+    ├── server.test.ts
     ├── setup.ts                # Global test setup (spawns mongodb-memory-server)
     └── teardown.ts             # Global test teardown (disconnects and stops mongo server)
 ```
 
 ### Architectural Details
 
-- **`src/controllers/`**:
-  - Class-based controllers receiving database models (e.g., `Model<IUser>`) via dependency injection in their constructors.
-  - Action methods are declared as arrow functions (e.g. `create = async (req, res) => { ... }`), preserving the lexical `this` binding without requiring manual `.bind(this)`.
-  - Keep controllers isolated from direct network or database concerns to facilitate fast, clean unit testing with mocked models.
+- **`src/domain/` (Enterprise Business Rules)**:
+  - Pure domain entities (e.g. `User`) containing enterprise business rules (`verifyEmail`, `changePassword`, `updateProfile`), protecting invariants with zero framework or ORM dependencies.
+  - Domain error classes (`UserNotFoundError`, `InvalidCredentialsError`, `WrongVerificationKeyError`, etc.).
+  - Pure repository contracts (`IUserRepository`) with zero runtime overhead.
+- **`src/application/` (Application Business Rules)**:
+  - Single-operation Use Cases (e.g., `CreateUserUseCase`, `ListUsersUseCase`, `CreateTokenUseCase`, `VerifyEmailUseCase`).
+  - Readonly boundary Request/Response models.
+  - Abstract ports for external dependencies (`IPasswordHasher`, `ITokenProvider`).
+- **`src/infrastructure/` (Adapters & External Drivers)**:
+  - `MongooseUserRepository` implements `IUserRepository` using Mongoose and `UserMapper`.
+  - `Argon2PasswordHasher` implements `IPasswordHasher` using `@node-rs/argon2`.
+  - `JwtTokenProvider` implements `ITokenProvider` using `jsonwebtoken`.
+  - Mongoose schemas, BSON validation rules (`userValidationRules`), and database indexes.
+- **`src/presentation/` (Interface Adapters & Delivery)**:
+  - `src/presentation/controllers/`: Controllers act as Humble Objects: they parse HTTP requests, invoke use cases, and format HTTP responses.
+  - `src/presentation/helpers/`: `handleHttpError` translates domain errors to HTTP status codes (`400`, `401`, `404`, `409`).
+  - `src/presentation/http/router.ts` (Composition Root): Central place where infrastructure adapters and use cases are instantiated and injected into controllers.
+  - `src/presentation/http/server.ts`: Initializes Express, mounts global middlewares (`cors`, `helmet`, `pino-http`, `express.json`), and mounts router.
 - **`src/dto/`**:
-  - Encapsulate incoming request payloads and validate them using `class-validator` (e.g., `@IsString()`, `@IsEmail()`, `@MinLength(8)`) and `class-transformer` (e.g., `@Type()`).
-  - **Definite Assignment Assertion**: Because TypeScript enforces `strictPropertyInitialization`, all DTO properties must use the definite assignment assertion operator (`!`):
-    ```typescript
-    export class CreateUserDto {
-      @IsString()
-      name!: string
-
-      @IsEmail()
-      email!: string
-    }
-    ```
-- **`src/entities/`**:
-  - Houses Mongoose schemas and model definitions.
-  - Implements `toJSON` transforms to convert `_id` to string `id` and purge sensitive/internal attributes (`password`, `emailVerificationKey`, `__v`, `createdAt`, `updatedAt`).
-  - Exports BSON schema validation rules (`userValidationRules`) applied directly to the MongoDB collection on startup.
+  - Encapsulate incoming request payloads and validate them using `class-validator` and `class-transformer`.
+  - Definite Assignment Assertion: All DTO properties use the definite assignment assertion operator (`!`).
 - **`src/middlewares/`**:
-  - `auth({ onlyTheOwner?: boolean })`: Inspects the `Authorization: Bearer <token>` header, verifies the JWT with `TOKEN_SECRET`, and optionally checks if the token subject (`sub`) matches `request.params.id`. Returns `401` on unauthorized access.
-  - `validator({ Dto: ClassConstructor })`: Instantiates the DTO from `request.body` (or `request.query` for `GET` requests) via `plainToInstance` and validates it with `validate()`. Responds with `400` containing validation errors if invalid.
-- **`src/router.ts`**:
-  - Centralized Express router mounted on `/api`.
-  - Connects validation and authentication middlewares prior to invoking controller actions.
-- **`src/config/`**:
-  - `configuration.ts`: Loads and validates environment variables.
-  - `logger.ts`: Pino logger configuration and instance.
-  - `database.ts`: Establishes Mongoose connection and ensures MongoDB collection validation rules are applied.
-  - `cooldown.ts`: Listens for `SIGHUP`, `SIGINT`, and `SIGTERM` signals to cleanly close HTTP connections and disconnect from MongoDB before exiting.
+  - `auth({ onlyTheOwner?: boolean })`: Inspects JWT and validates permissions.
+  - `validator({ Dto: ClassConstructor })`: Validates request body/query using class-validator.
 - **`src/docs/`**:
-  - `swagger.ts`: Defines the OpenAPI 3.0 specification (`swaggerDocument`) detailing all endpoints (`/api`, `/api/tokens`, `/api/users`, `/api/verifications`), request/response schemas (`User`, DTOs, `ErrorResponse`), and Bearer JWT security scheme (`bearerAuth`).
-- **`src/http.server.ts`**:
-  - Initializes the Express instance, mounts security middlewares (`cors`, `helmet`, `pino-http`, `express.json`), and mounts router.
-  - Serves OpenAPI documentation via Swagger UI at `/docs` and as raw JSON at `/docs/swagger.json` (with redirect aliases at `/api/docs`). Configures `helmet` with `contentSecurityPolicy: false` so that Swagger UI assets are not blocked.
-  - Global error handler catches unexpected exceptions and formats standard responses, including mapping MongoDB duplicate key violations (`MongoServerError` code 11000) to HTTP `409 Conflict`.
-- **`tests/`**:
-  - Uses `mongodb-memory-server` in `tests/setup.ts` to spin up a live MongoDB instance in memory for end-to-end tests without requiring external database dependencies.
+  - OpenAPI 3.0 specification (`swaggerDocument`).
 
 ---
 
@@ -199,10 +185,12 @@ Whenever an AI agent modifies or adds code in this repository, it must adhere to
    If lint issues can be fixed automatically, run `npm run lint:fix` and rerun the checks.
 3. **Feature Addition Protocol**:
    - Define DTOs in `src/dto/` with `class-validator` rules and `!` assertions.
-   - Update Mongoose models/schemas in `src/entities/` if schema changes are involved.
-   - Implement business logic in `src/controllers/` using constructor dependency injection.
-   - Bind routes and middlewares in `src/router.ts`.
-   - Add comprehensive unit tests and e2e tests covering both happy and error paths.
+   - Define domain entities and errors in `src/domain/` if new business rules or entities are introduced.
+   - Define use cases in `src/application/use-cases/` and abstract ports in `src/application/ports/`.
+   - Implement infrastructure adapters in `src/infrastructure/` (e.g. Mongoose repositories, security providers).
+   - Implement thin controllers in `src/controllers/` injecting use cases.
+   - Bind routes, middlewares, and wire dependencies in `src/router.ts`.
+   - Add comprehensive unit tests (domain entities, use cases, controllers) and e2e tests covering both happy and error paths.
 4. **API Documentation Maintenance Protocol**:
    - Sempre que houver adição, alteração ou exclusão de rotas, a especificação Swagger/OpenAPI deve ser obrigatoriamente atualizada.
 
