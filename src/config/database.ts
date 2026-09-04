@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { userValidationRules } from '../entities/user'
+import { userValidationRules } from '../infrastructure/database/mongoose/models/user.model'
 import { configuration } from './configuration'
 import { logger } from './logger'
 
