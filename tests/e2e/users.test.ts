@@ -1,43 +1,57 @@
-import jwt from 'jsonwebtoken';
-import supertest from 'supertest';
+import jwt from 'jsonwebtoken'
+import supertest from 'supertest'
 import {
-  describe, it, afterAll, expect,
-} from 'vitest';
+  afterAll,
+  describe,
+  expect,
+  it,
+} from 'vitest'
 
-import { server } from '../../src/http.server';
-import { mockUser } from '../__mocks__/user';
+import { server } from '../../src/http.server'
+import { mockUser } from '../__mocks__/user'
 
-describe('Users (e2e)', () => {
-  let token: string;
+describe('users (e2e)', () => {
+  let token: string
 
   afterAll(() => {
-    server.close();
-  });
+    server.close()
+  })
 
-  const user = mockUser();
+  const user = mockUser()
 
-  it('Should create an user', async () => {
+  it('should create an user', async () => {
     await supertest(server)
       .post('/api/users')
       .send(user)
       .expect('Content-Type', /json/)
-      .expect(201);
+      .expect(201)
 
     const { body } = await supertest(server)
       .post('/api/tokens')
       .send({
         username: user.username,
         password: user.password,
-      });
+      })
 
-    token = body.Authorization;
-  });
+    token = body.Authorization
+  })
 
-  it('Should list a page of users', async () => {
+  it('should not create user with duplicate email/username (409 Conflict)', async () => {
+    await supertest(server)
+      .post('/api/users')
+      .send(user)
+      .expect('Content-Type', /json/)
+      .expect(409)
+      .expect((res) => {
+        expect(res.body.error).toBe('Duplicate key error')
+      })
+  })
+
+  it('should list a page of users', async () => {
     const { body } = await supertest(server)
       .get('/api/users')
       .set('Authorization', token)
-      .expect(200);
+      .expect(200)
 
     expect(body).toMatchObject({
       meta: {
@@ -53,30 +67,55 @@ describe('Users (e2e)', () => {
           email: user.email.toLowerCase(),
         }),
       ]),
-    });
-  });
+    })
+  })
 
-  it('Should detail the user', async () => {
-    const id = jwt.decode(token.split(' ')[1])?.sub;
+  it('should return 401 when no token is provided', async () => {
+    await supertest(server)
+      .get('/api/users')
+      .expect(401)
+      .expect((res) => {
+        expect(res.body.error).toBe('No token provided')
+      })
+  })
+
+  it('should return 401 when an invalid token is provided', async () => {
+    await supertest(server)
+      .get('/api/users')
+      .set('Authorization', 'Bearer invalidtoken')
+      .expect(401)
+  })
+
+  it('should list users with search query', async () => {
+    const { body } = await supertest(server)
+      .get(`/api/users?search=${user.username}`)
+      .set('Authorization', token)
+      .expect(200)
+
+    expect(body.data).toBeInstanceOf(Array)
+  })
+
+  it('should detail the user', async () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
 
     const { body } = await supertest(server)
       .get(`/api/users/${id}`)
       .set('Authorization', token)
-      .expect(200);
+      .expect(200)
 
     expect(body).toMatchObject({
       name: user.name,
       email: user.email.toLowerCase(),
       username: user.username.toLowerCase(),
-    });
-  });
+    })
+  })
 
-  it('Should delete the user', () => {
-    const id = jwt.decode(token.split(' ')[1])?.sub;
+  it('should delete the user', () => {
+    const id = jwt.decode(token.split(' ')[1])?.sub
 
     return supertest(server)
       .delete(`/api/users/${id}`)
       .set('Authorization', token)
-      .expect(204);
-  });
-});
+      .expect(204)
+  })
+})

@@ -1,22 +1,25 @@
-import supertest from 'supertest';
+import supertest from 'supertest'
 import {
-  describe, afterAll, it, expect,
-} from 'vitest';
+  afterAll,
+  describe,
+  expect,
+  it,
+} from 'vitest'
 
-import { server } from '../../src/http.server';
-import { mockUser } from '../__mocks__/user';
+import { server } from '../../src/http.server'
+import { mockUser } from '../__mocks__/user'
 
-describe('Tokens (e2e)', () => {
+describe('tokens (e2e)', () => {
   afterAll(() => {
-    server.close();
-  });
+    server.close()
+  })
 
-  it('Should create a token', async () => {
-    const user = mockUser();
+  it('should create a token', async () => {
+    const user = mockUser()
 
     await supertest(server)
       .post('/api/users')
-      .send(user);
+      .send(user)
 
     const { body } = await supertest(server)
       .post('/api/tokens')
@@ -24,10 +27,11 @@ describe('Tokens (e2e)', () => {
         username: user.username,
         password: user.password,
       })
-      .expect(201);
+      .expect(201)
 
     expect(body).toEqual({
-      Authorization: expect.stringMatching(/^Bearer [A-Za-z0-9-._~+/]+=*(?:\.[A-Za-z0-9-._~+/]+=*)*$/),
-    });
-  });
-});
+      // eslint-disable-next-line regexp/no-super-linear-backtracking, regexp/strict
+      Authorization: expect.stringMatching(/^Bearer [\w-.~+/]+=*(?:\.[\w-.~+/]+=*)*$/),
+    })
+  })
+})

@@ -1,26 +1,26 @@
-import { faker } from '@faker-js/faker';
-import supertest from 'supertest';
-import { describe, it } from 'vitest';
+import { faker } from '@faker-js/faker'
+import supertest from 'supertest'
+import { describe, it } from 'vitest'
 
-import { server } from '../../src/http.server';
-import { mockUser } from '../__mocks__/user';
+import { server } from '../../src/http.server'
+import { mockUser } from '../__mocks__/user'
 
-describe('Update password (e2e)', () => {
-  it('Should update an user password', async () => {
-    const initialUser = mockUser();
+describe('update password (e2e)', () => {
+  it('should update an user password', async () => {
+    const initialUser = mockUser()
 
     const { body } = await supertest(server)
       .post('/api/users')
-      .send(initialUser);
+      .send(initialUser)
 
     const { body: { Authorization } } = await supertest(server)
       .post('/api/tokens')
       .send({
         username: initialUser.username,
         password: initialUser.password,
-      });
+      })
 
-    const newPassword = faker.internet.password();
+    const newPassword = faker.internet.password()
 
     await supertest(server)
       .put(`/api/users/${body.id}/password`)
@@ -29,7 +29,7 @@ describe('Update password (e2e)', () => {
         currentPassword: initialUser.password,
         newPassword,
       })
-      .expect(200);
+      .expect(200)
 
     await supertest(server)
       .post('/api/tokens')
@@ -37,7 +37,7 @@ describe('Update password (e2e)', () => {
         username: initialUser.username,
         password: initialUser.password,
       })
-      .expect(401);
+      .expect(401)
 
     await supertest(server)
       .post('/api/tokens')
@@ -45,6 +45,6 @@ describe('Update password (e2e)', () => {
         username: initialUser.username,
         password: newPassword,
       })
-      .expect(201);
-  });
-});
+      .expect(201)
+  })
+})

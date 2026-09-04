@@ -1,14 +1,13 @@
-import 'reflect-metadata';
+import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+import 'reflect-metadata'
 
-const mongod = await MongoMemoryServer.create();
-const uri = mongod.getUri();
+const mongod = await MongoMemoryServer.create()
+const uri = mongod.getUri()
 
-process.env.DATABASE_URI = uri;
+process.env.DATABASE_URI = uri
 
 await mongoose.connect(uri);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(globalThis as any).__MONGOD__ = mongod;
+(globalThis as any).__MONGOD__ = mongod
