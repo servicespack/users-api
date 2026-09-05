@@ -7,7 +7,7 @@ import {
   it,
 } from 'vitest'
 
-import { server } from '../../src/presentation/http/server'
+import { server } from '../../src/infrastructure/http/server'
 import { mockUser } from '../__mocks__/user'
 
 describe('users (e2e)', () => {

@@ -7,7 +7,7 @@ import {
 } from 'vitest'
 
 import { swaggerDocument } from '../../src/docs/swagger'
-import { server } from '../../src/presentation/http/server'
+import { server } from '../../src/infrastructure/http/server'
 
 describe('docs (e2e)', () => {
   afterAll(() => {

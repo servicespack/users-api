@@ -7,7 +7,7 @@ import {
 } from 'vitest'
 
 import { UserModel } from '../../src/infrastructure/database/mongoose/models/user.model'
-import { server } from '../../src/presentation/http/server'
+import { server } from '../../src/infrastructure/http/server'
 import { mockUser } from '../__mocks__/user'
 
 describe('verifications (e2e)', () => {

@@ -6,7 +6,7 @@ import {
   it,
 } from 'vitest'
 
-import { server } from '../../src/presentation/http/server'
+import { server } from '../../src/infrastructure/http/server'
 import { mockUser } from '../__mocks__/user'
 
 describe('tokens (e2e)', () => {
