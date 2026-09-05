@@ -2,7 +2,7 @@ name: CD
 
 on:
   workflow_run:
-    workflows: ['CI']
+    workflows: [CI]
     types:
       - completed
     branches:
@@ -10,19 +10,23 @@ on:
 
 jobs:
   publish:
-    name: Publish on Docker Hub
+    name: Publish Image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Build image
-        run: docker image build -t gabrielrufino/users-api:latest -t gabrielrufino/users-api:$(npm pkg get version | sed 's/"//g') .
-      - name: Log in docker hub
-        run: docker login -u gabrielrufino -p ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Publish image
-        run: docker image push -a gabrielrufino/users-api
-      - name: Set docker hub description
-        uses: peter-evans/dockerhub-description@v3
+      - uses: actalog/check-ci@v1
+      - uses: actions/checkout@v7
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
         with:
-          username: gabrielrufino
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: gabrielrufino/users-api
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
+        run: |
+          IMAGE_NAME="ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')"
+          VERSION=$(npm pkg get version | sed 's/"//g')
+          docker image build -t "$IMAGE_NAME:latest" -t "$IMAGE_NAME:$VERSION" .
+          docker image push -a "$IMAGE_NAME"
