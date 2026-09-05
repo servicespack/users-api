@@ -80,6 +80,20 @@ describe('auth Middleware', () => {
     await middleware(mockRequest as Request, mockResponse as Response, nextFunction)
 
     expect(mockResponse.status).toHaveBeenCalledWith(401)
-    expect(mockResponse.json).toHaveBeenCalledWith({ error })
+    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'Invalid token' })
+  })
+
+  it('should return 401 with default error message if thrown value is not an Error instance', async () => {
+    mockRequest.headers = { authorization: 'Bearer invalid-token' }
+    vi.mocked(jwt.verify).mockImplementation(() => {
+      // eslint-disable-next-line no-throw-literal
+      throw 'string error'
+    })
+
+    const middleware = auth()
+    await middleware(mockRequest as Request, mockResponse as Response, nextFunction)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(401)
+    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'Invalid token' })
   })
 })

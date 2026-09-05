@@ -1,6 +1,5 @@
 import { plainToInstance } from 'class-transformer'
-
-import { ConfigurationDto } from '../presentation/dtos/configuration.dto'
+import { ConfigurationDto } from './configuration.dto'
 
 const {
   DATABASE_URI,

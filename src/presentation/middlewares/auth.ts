@@ -35,8 +35,9 @@ function auth({ onlyTheOwner = false } = {}) {
       return next()
     }
     catch (error) {
+      const message = error instanceof Error ? error.message : 'Invalid token'
       return response.status(401).json({
-        error,
+        error: message,
       })
     }
   }

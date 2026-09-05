@@ -64,4 +64,14 @@ describe('userModel transformations', () => {
     expect((ret as any)._id).toBeUndefined()
     expect((ret as any).__v).toBeUndefined()
   })
+
+  it('should define email and username with lowercase and trim options', () => {
+    const emailPath = userSchema.path('email') as any
+    const usernamePath = userSchema.path('username') as any
+
+    expect(emailPath.options.lowercase).toBe(true)
+    expect(emailPath.options.trim).toBe(true)
+    expect(usernamePath.options.lowercase).toBe(true)
+    expect(usernamePath.options.trim).toBe(true)
+  })
 })

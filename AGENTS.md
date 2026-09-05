@@ -65,14 +65,20 @@ The codebase adheres to a Clean Architecture layout designed for strict separati
 │   │   ├── helpers/            # HTTP error mapping helpers
 │   │   └── controllers/        # Express controllers (Humble Objects)
 │   ├── config/                 # Application configuration, logger, and lifecycle hooks
+│   │   ├── configuration.dto.ts# Configuration DTO and environment validation schemas
 │   │   ├── configuration.ts    # Loads, validates, and exports environment config
 │   │   ├── cooldown.ts         # Handles termination signals (SIGHUP, SIGINT, SIGTERM)
 │   │   ├── database.ts         # MongoDB connection & schema validation enforcement
 │   │   └── logger.ts           # Pino logger configuration
-│   ├── dto/                    # Request payload DTOs (class-validator)
-│   ├── middlewares/            # Express middlewares (auth, validator)
 │   ├── docs/                   # OpenAPI / Swagger specification
-│   └── entities/               # Mongoose model exports and aliases
+│   └── presentation/           # Circle 3: Delivery Adapters (HTTP)
+│       ├── controllers/        # Express controllers (Humble Objects)
+│       ├── dtos/               # Request payload DTOs (class-validator)
+│       ├── helpers/            # HTTP error mapping helpers
+│       ├── http/               # HTTP web server & router composition root
+│       │   ├── router.ts       # Composition Root: wires infra, use cases, and controllers
+│       │   └── server.ts       # Express setup, global middlewares, and error handler
+│       └── middlewares/        # Express middlewares (auth, validator)
 └── tests/                      # End-to-end tests, unit tests, and test utilities
     ├── __mocks__/              # Mock factories and fixtures
     ├── e2e/                    # Integration / E2E endpoint tests using supertest
@@ -103,15 +109,11 @@ The codebase adheres to a Clean Architecture layout designed for strict separati
   - Mongoose schemas, BSON validation rules (`userValidationRules`), and database indexes.
 - **`src/presentation/` (Interface Adapters & Delivery)**:
   - `src/presentation/controllers/`: Controllers act as Humble Objects: they parse HTTP requests, invoke use cases, and format HTTP responses.
+  - `src/presentation/dtos/`: Encapsulate incoming request payloads and validate them using `class-validator` and `class-transformer` with definite assignment assertions (`!`).
+  - `src/presentation/middlewares/`: Express middlewares (`auth`, `validator`).
   - `src/presentation/helpers/`: `handleHttpError` translates domain errors to HTTP status codes (`400`, `401`, `404`, `409`).
   - `src/presentation/http/router.ts` (Composition Root): Central place where infrastructure adapters and use cases are instantiated and injected into controllers.
   - `src/presentation/http/server.ts`: Initializes Express, mounts global middlewares (`cors`, `helmet`, `pino-http`, `express.json`), and mounts router.
-- **`src/dto/`**:
-  - Encapsulate incoming request payloads and validate them using `class-validator` and `class-transformer`.
-  - Definite Assignment Assertion: All DTO properties use the definite assignment assertion operator (`!`).
-- **`src/middlewares/`**:
-  - `auth({ onlyTheOwner?: boolean })`: Inspects JWT and validates permissions.
-  - `validator({ Dto: ClassConstructor })`: Validates request body/query using class-validator.
 - **`src/docs/`**:
   - OpenAPI 3.0 specification (`swaggerDocument`).
 

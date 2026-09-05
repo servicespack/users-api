@@ -34,4 +34,14 @@ describe('tokens (e2e)', () => {
       Authorization: expect.stringMatching(/^Bearer [\w-.~+/]+=*(?:\.[\w-.~+/]+=*)*$/),
     })
   })
+
+  it('should return 400 Bad Request when username or password is empty', async () => {
+    await supertest(server)
+      .post('/api/tokens')
+      .send({
+        username: '',
+        password: '',
+      })
+      .expect(400)
+  })
 })

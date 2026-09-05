@@ -671,12 +671,6 @@ export const swaggerDocument = {
             description: 'New email address',
             example: 'john@example.com',
           },
-          password: {
-            type: 'string',
-            format: 'password',
-            description: 'New password',
-            example: 'newPassword123',
-          },
         },
       },
       UpdateUserPasswordDto: {

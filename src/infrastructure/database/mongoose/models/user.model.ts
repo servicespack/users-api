@@ -15,10 +15,10 @@ export interface IUserDoc extends Document {
 export const userSchema = new Schema<IUserDoc>(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     emailVerificationKey: { type: String, default: '' },
     isEmailVerified: { type: Boolean, default: false },
-    username: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
   },
   {
