@@ -12,14 +12,21 @@ jobs:
   publish:
     name: Publish Image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actalog/check-ci@v1
-      - uses: actions/checkout@v4
-      - run: docker image build -t servicespack/users-service:latest -t servicespack/users-service:$(npm pkg get version | sed 's/"//g') .
-      - run: docker login -u servicespack -p ${{ secrets.DOCKER_HUB_TOKEN }}
-      - run: docker image push -a servicespack/users-service
-      - uses: peter-evans/dockerhub-description@v3
+      - uses: actions/checkout@v7
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
         with:
-          username: servicespack
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: servicespack/users-service
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
+        run: |
+          IMAGE_NAME="ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')"
+          VERSION=$(npm pkg get version | sed 's/"//g')
+          docker image build -t "$IMAGE_NAME:latest" -t "$IMAGE_NAME:$VERSION" .
+          docker image push -a "$IMAGE_NAME"
