@@ -92,6 +92,96 @@ export const swaggerDocument = {
         },
       },
     },
+    '/api/auth/forgot-password': {
+      post: {
+        summary: 'Request password reset',
+        description: 'Initiates password recovery. If the email exists, a password reset link/token is generated.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ForgotPasswordDto',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Success message confirming that if the account exists, instructions were sent.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: {
+                      type: 'string',
+                      example: 'If the email exists, a password reset link has been sent.',
+                    },
+                  },
+                  required: ['message'],
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Bad request: validation error or invalid email payload.',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/auth/reset-password': {
+      post: {
+        summary: 'Reset password',
+        description: 'Resets user password using a valid and non-expired reset token.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ResetPasswordDto',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Password successfully updated.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: {
+                      type: 'string',
+                      example: 'Password successfully reset.',
+                    },
+                  },
+                  required: ['message'],
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Bad request: invalid or expired reset token, or password too short.',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     '/api/users': {
       post: {
         summary: 'Create user',
@@ -741,6 +831,36 @@ export const swaggerDocument = {
           },
         },
         required: ['error'],
+      },
+      ForgotPasswordDto: {
+        type: 'object',
+        properties: {
+          email: {
+            type: 'string',
+            format: 'email',
+            description: 'User email address',
+            example: 'john@example.com',
+          },
+        },
+        required: ['email'],
+      },
+      ResetPasswordDto: {
+        type: 'object',
+        properties: {
+          token: {
+            type: 'string',
+            description: 'Reset password token received via email',
+            example: 'd3b07384d113edec49eaa6238ad5ff00',
+          },
+          password: {
+            type: 'string',
+            format: 'password',
+            minLength: 8,
+            description: 'New password (minimum 8 characters)',
+            example: 'newSecurePassword123',
+          },
+        },
+        required: ['token', 'password'],
       },
     },
   },

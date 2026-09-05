@@ -13,6 +13,8 @@ export class UserMapper {
       password: doc.password,
       isEmailVerified: doc.isEmailVerified,
       emailVerificationKey: doc.emailVerificationKey,
+      passwordResetToken: doc.passwordResetToken,
+      passwordResetExpiresAt: doc.passwordResetExpiresAt,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     })
@@ -26,6 +28,8 @@ export class UserMapper {
       password: user.password,
       isEmailVerified: user.isEmailVerified,
       emailVerificationKey: user.emailVerificationKey,
+      passwordResetToken: user.passwordResetToken,
+      passwordResetExpiresAt: user.passwordResetExpiresAt,
     }
   }
 }

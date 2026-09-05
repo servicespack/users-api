@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   EmailAlreadyVerifiedError,
+  InvalidResetTokenError,
+  ResetTokenExpiredError,
   WrongVerificationKeyError,
 } from '../errors'
 import { User } from './user.entity'
@@ -120,5 +122,63 @@ describe('user Entity', () => {
       username: 'john',
       isEmailVerified: false,
     })
+  })
+
+  it('should set password reset token and expiresAt', () => {
+    const user = new User({
+      name: 'John',
+      email: 'john@example.com',
+      username: 'john',
+      password: 'password',
+    })
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000)
+    user.requestPasswordReset('reset-token-123', expiresAt)
+
+    expect(user.passwordResetToken).toBe('reset-token-123')
+    expect(user.passwordResetExpiresAt).toBe(expiresAt)
+  })
+
+  it('should throw InvalidResetTokenError if reset token does not match', () => {
+    const user = new User({
+      name: 'John',
+      email: 'john@example.com',
+      username: 'john',
+      password: 'old-password',
+      passwordResetToken: 'valid-token',
+      passwordResetExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
+    })
+
+    expect(() => user.resetPassword('wrong-token', 'new-password')).toThrow(InvalidResetTokenError)
+  })
+
+  it('should throw ResetTokenExpiredError if reset token has expired', () => {
+    const user = new User({
+      name: 'John',
+      email: 'john@example.com',
+      username: 'john',
+      password: 'old-password',
+      passwordResetToken: 'valid-token',
+      passwordResetExpiresAt: new Date(Date.now() - 1000),
+    })
+
+    expect(() => user.resetPassword('valid-token', 'new-password')).toThrow(ResetTokenExpiredError)
+  })
+
+  it('should reset password and clear token and expiry when valid', () => {
+    const user = new User({
+      name: 'John',
+      email: 'john@example.com',
+      username: 'john',
+      password: 'old-password',
+      passwordResetToken: 'valid-token',
+      passwordResetExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
+    })
+
+    user.resetPassword('valid-token', 'new-hashed-password')
+
+    expect(user.password).toBe('new-hashed-password')
+    expect(user.passwordResetToken).toBeUndefined()
+    expect(user.passwordResetExpiresAt).toBeUndefined()
   })
 })

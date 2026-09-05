@@ -1,5 +1,7 @@
 import {
   EmailAlreadyVerifiedError,
+  InvalidResetTokenError,
+  ResetTokenExpiredError,
   WrongVerificationKeyError,
 } from '../errors'
 
@@ -11,6 +13,8 @@ export interface UserProps {
   password: string
   isEmailVerified?: boolean
   emailVerificationKey?: string
+  passwordResetToken?: string
+  passwordResetExpiresAt?: Date
   createdAt?: Date
   updatedAt?: Date
 }
@@ -23,6 +27,8 @@ export class User {
   private _password: string
   private _isEmailVerified: boolean
   private _emailVerificationKey: string
+  private _passwordResetToken?: string
+  private _passwordResetExpiresAt?: Date
   private readonly _createdAt?: Date
   private readonly _updatedAt?: Date
 
@@ -34,6 +40,8 @@ export class User {
     this._password = props.password
     this._isEmailVerified = props.isEmailVerified ?? false
     this._emailVerificationKey = props.emailVerificationKey ?? ''
+    this._passwordResetToken = props.passwordResetToken
+    this._passwordResetExpiresAt = props.passwordResetExpiresAt
     this._createdAt = props.createdAt
     this._updatedAt = props.updatedAt
   }
@@ -64,6 +72,14 @@ export class User {
 
   get emailVerificationKey(): string {
     return this._emailVerificationKey
+  }
+
+  get passwordResetToken(): string | undefined {
+    return this._passwordResetToken
+  }
+
+  get passwordResetExpiresAt(): Date | undefined {
+    return this._passwordResetExpiresAt
   }
 
   get createdAt(): Date | undefined {
@@ -99,6 +115,23 @@ export class User {
     }
     this._isEmailVerified = true
     this._emailVerificationKey = ''
+  }
+
+  requestPasswordReset(token: string, expiresAt: Date): void {
+    this._passwordResetToken = token
+    this._passwordResetExpiresAt = expiresAt
+  }
+
+  resetPassword(token: string, newHashedPassword: string): void {
+    if (!this._passwordResetToken || this._passwordResetToken !== token) {
+      throw new InvalidResetTokenError()
+    }
+    if (!this._passwordResetExpiresAt || this._passwordResetExpiresAt < new Date()) {
+      throw new ResetTokenExpiredError()
+    }
+    this._password = newHashedPassword
+    this._passwordResetToken = undefined
+    this._passwordResetExpiresAt = undefined
   }
 
   toJSON() {

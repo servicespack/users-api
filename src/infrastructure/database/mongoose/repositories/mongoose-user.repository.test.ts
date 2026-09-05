@@ -14,6 +14,17 @@ describe(MongooseUserRepository.name, () => {
     expect(result).toBeNull()
   })
 
+  it('should return null when finding by reset token and document is not found', async () => {
+    const mockModel = {
+      findOne: vi.fn().mockResolvedValue(null),
+    } as any
+    const repository = new MongooseUserRepository(mockModel)
+
+    const result = await repository.findByResetToken('nonexistent-token')
+    expect(result).toBeNull()
+    expect(mockModel.findOne).toHaveBeenCalledWith({ passwordResetToken: 'nonexistent-token' })
+  })
+
   it('should throw UserNotFoundError when updating non-existent user', async () => {
     const mockModel = {
       findById: vi.fn().mockResolvedValue(null),

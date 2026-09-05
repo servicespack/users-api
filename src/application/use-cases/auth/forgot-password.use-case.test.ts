@@ -1,0 +1,80 @@
+import type { IUserRepository } from '../../../domain/repositories/user.repository.interface'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { User } from '../../../domain/entities/user.entity'
+import { ForgotPasswordUseCase } from './forgot-password.use-case'
+
+describe(ForgotPasswordUseCase.name, () => {
+  let userRepository: IUserRepository
+  let useCase: ForgotPasswordUseCase
+
+  beforeEach(() => {
+    userRepository = {
+      create: vi.fn(),
+      findById: vi.fn(),
+      findByUsername: vi.fn(),
+      findByEmail: vi.fn(),
+      list: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    }
+    useCase = new ForgotPasswordUseCase(userRepository)
+  })
+
+  it('should return empty response and not update when user is not found (anti-enumeration)', async () => {
+    vi.mocked(userRepository.findByEmail).mockResolvedValue(null)
+
+    const result = await useCase.execute({ email: 'nonexistent@example.com' })
+
+    expect(result.resetToken).toBeUndefined()
+    expect(userRepository.update).not.toHaveBeenCalled()
+  })
+
+  it('should generate a reset token, set 15 minutes expiration and persist user when user exists', async () => {
+    const user = new User({
+      id: 'u1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      username: 'johndoe',
+      password: 'hashed-password',
+    })
+    vi.mocked(userRepository.findByEmail).mockResolvedValue(user)
+
+    const beforeCall = Date.now()
+    const result = await useCase.execute({ email: 'john@example.com' })
+    const afterCall = Date.now()
+
+    expect(result.resetToken).toBeDefined()
+    expect(user.passwordResetToken).toBe(result.resetToken)
+    expect(user.passwordResetExpiresAt).toBeDefined()
+
+    const expiryTime = user.passwordResetExpiresAt!.getTime()
+    const expectedMinExpiry = beforeCall + 15 * 60 * 1000
+    const expectedMaxExpiry = afterCall + 15 * 60 * 1000
+
+    expect(expiryTime).toBeGreaterThanOrEqual(expectedMinExpiry)
+    expect(expiryTime).toBeLessThanOrEqual(expectedMaxExpiry)
+    expect(userRepository.update).toHaveBeenCalledWith(user)
+  })
+
+  it('should use custom token generator if provided', async () => {
+    const user = new User({
+      id: 'u1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      username: 'johndoe',
+      password: 'hashed-password',
+    })
+    vi.mocked(userRepository.findByEmail).mockResolvedValue(user)
+
+    const customUseCase = new ForgotPasswordUseCase(
+      userRepository,
+      () => 'fixed-custom-token',
+    )
+
+    const result = await customUseCase.execute({ email: 'john@example.com' })
+
+    expect(result.resetToken).toBe('fixed-custom-token')
+    expect(user.passwordResetToken).toBe('fixed-custom-token')
+    expect(userRepository.update).toHaveBeenCalledWith(user)
+  })
+})
