@@ -77,4 +77,50 @@ describe(ForgotPasswordUseCase.name, () => {
     expect(user.passwordResetToken).toBe('fixed-custom-token')
     expect(userRepository.update).toHaveBeenCalledWith(user)
   })
+
+  it('should call notificationSender.sendEmail when notificationSender is provided and user exists', async () => {
+    const user = new User({
+      id: 'u1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      username: 'johndoe',
+      password: 'hashed-password',
+    })
+    vi.mocked(userRepository.findByEmail).mockResolvedValue(user)
+
+    const notificationSender = {
+      sendEmail: vi.fn().mockResolvedValue(undefined),
+    }
+
+    const useCaseWithNotifier = new ForgotPasswordUseCase(
+      userRepository,
+      notificationSender,
+      () => 'fixed-token',
+    )
+
+    await useCaseWithNotifier.execute({ email: 'john@example.com' })
+
+    expect(notificationSender.sendEmail).toHaveBeenCalledWith({
+      to: 'john@example.com',
+      subject: 'Reset your password',
+      content: expect.stringContaining('fixed-token'),
+    })
+  })
+
+  it('should not call notificationSender.sendEmail when user is not found', async () => {
+    vi.mocked(userRepository.findByEmail).mockResolvedValue(null)
+
+    const notificationSender = {
+      sendEmail: vi.fn().mockResolvedValue(undefined),
+    }
+
+    const useCaseWithNotifier = new ForgotPasswordUseCase(
+      userRepository,
+      notificationSender,
+    )
+
+    await useCaseWithNotifier.execute({ email: 'nonexistent@example.com' })
+
+    expect(notificationSender.sendEmail).not.toHaveBeenCalled()
+  })
 })

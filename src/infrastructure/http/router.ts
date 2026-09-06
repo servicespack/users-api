@@ -24,8 +24,10 @@ import { ListUsersUseCase } from '../../application/use-cases/users/list-users.u
 import { UpdateUserPasswordUseCase } from '../../application/use-cases/users/update-user-password.use-case'
 import { UpdateUserUseCase } from '../../application/use-cases/users/update-user.use-case'
 import { VerifyEmailUseCase } from '../../application/use-cases/verifications/verify-email.use-case'
+import { configuration } from '../../config'
 import { UserModel } from '../database/mongoose/models/user.model'
 import { MongooseUserRepository } from '../database/mongoose/repositories/mongoose-user.repository'
+import { HttpNotificationSender } from '../notifications/http-notification-sender'
 import { Argon2PasswordHasher } from '../security/argon2-password-hasher'
 import { JwtTokenProvider } from '../security/jwt-token-provider'
 
@@ -35,9 +37,13 @@ const router = express.Router()
 const userRepository = new MongooseUserRepository(UserModel)
 const passwordHasher = new Argon2PasswordHasher()
 const tokenProvider = new JwtTokenProvider()
+const notificationSender = new HttpNotificationSender({
+  baseUrl: configuration.notifications.url,
+  suppressErrors: configuration.environment !== 'production',
+})
 
 // Application Use Cases
-const createUserUseCase = new CreateUserUseCase(userRepository, passwordHasher)
+const createUserUseCase = new CreateUserUseCase(userRepository, passwordHasher, notificationSender)
 const listUsersUseCase = new ListUsersUseCase(userRepository)
 const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
 const updateUserUseCase = new UpdateUserUseCase(userRepository)
@@ -45,7 +51,7 @@ const updateUserPasswordUseCase = new UpdateUserPasswordUseCase(userRepository, 
 const deleteUserUseCase = new DeleteUserUseCase(userRepository)
 const createTokenUseCase = new CreateTokenUseCase(userRepository, passwordHasher, tokenProvider)
 const verifyEmailUseCase = new VerifyEmailUseCase(userRepository)
-const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository)
+const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, notificationSender)
 const resetPasswordUseCase = new ResetPasswordUseCase(userRepository, passwordHasher)
 
 // Controllers

@@ -5,6 +5,7 @@ const {
   DATABASE_URI,
   HTTP_SERVER_PORT,
   NODE_ENV,
+  NOTIFICATIONS_API_URL,
   TOKEN_SECRET,
   TOKEN_EXPIRATION,
 } = process.env
@@ -22,6 +23,9 @@ const configuration = plainToInstance(ConfigurationDto, {
   auth: {
     jwtSecret: TOKEN_SECRET || 'abcdef',
     jwtExpiration: TOKEN_EXPIRATION || '60',
+  },
+  notifications: {
+    url: NOTIFICATIONS_API_URL || 'http://localhost:3001',
   },
 } as ConfigurationDto)
 

@@ -57,6 +57,35 @@ describe('users Use Cases', () => {
       expect(userRepository.create).toHaveBeenCalledWith(expect.any(User))
       expect(result).toBe(createdMockUser)
     })
+
+    it('should call notificationSender.sendEmail when notificationSender is provided', async () => {
+      const notificationSender = {
+        sendEmail: vi.fn().mockResolvedValue(undefined),
+      }
+      const useCase = new CreateUserUseCase(userRepository, passwordHasher, notificationSender)
+      const createdMockUser = new User({
+        id: 'u1',
+        name: 'Clean Name',
+        email: 'test@example.com',
+        username: 'cleanuser',
+        password: 'hashed-pass',
+        emailVerificationKey: 'key-123',
+      })
+      vi.mocked(userRepository.create).mockResolvedValue(createdMockUser)
+
+      await useCase.execute({
+        name: 'Clean Name',
+        email: 'test@example.com',
+        username: 'cleanuser',
+        password: 'raw-password',
+      })
+
+      expect(notificationSender.sendEmail).toHaveBeenCalledWith({
+        to: 'test@example.com',
+        subject: 'Verify your email',
+        content: expect.stringContaining('key-123'),
+      })
+    })
   })
 
   describe(ListUsersUseCase.name, () => {

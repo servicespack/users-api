@@ -3,15 +3,29 @@ import type {
   ForgotPasswordRequest,
   ForgotPasswordResponse,
 } from '../../dtos/forgot-password.model'
+import type { INotificationSender } from '../../ports/notification-sender.port'
 import { randomUUID } from 'node:crypto'
 
 const FIFTEEN_MINUTES_MS = 15 * 60 * 1000
 
 export class ForgotPasswordUseCase {
+  private readonly notificationSender?: INotificationSender
+  private readonly tokenGenerator: () => string
+
   constructor(
     private readonly userRepository: IUserRepository,
-    private readonly tokenGenerator: () => string = randomUUID,
-  ) {}
+    notificationSenderOrTokenGenerator?: INotificationSender | (() => string),
+    tokenGenerator: () => string = randomUUID,
+  ) {
+    if (typeof notificationSenderOrTokenGenerator === 'function') {
+      this.tokenGenerator = notificationSenderOrTokenGenerator
+      this.notificationSender = undefined
+    }
+    else {
+      this.notificationSender = notificationSenderOrTokenGenerator
+      this.tokenGenerator = tokenGenerator
+    }
+  }
 
   async execute(request: ForgotPasswordRequest): Promise<ForgotPasswordResponse> {
     const user = await this.userRepository.findByEmail(request.email)
@@ -26,6 +40,14 @@ export class ForgotPasswordUseCase {
     user.requestPasswordReset(token, expiresAt)
 
     await this.userRepository.update(user)
+
+    if (this.notificationSender) {
+      await this.notificationSender.sendEmail({
+        to: user.email,
+        subject: 'Reset your password',
+        content: `You requested a password reset. Your reset token is: ${token} (expires in 15 minutes).`,
+      })
+    }
 
     return { resetToken: token }
   }
