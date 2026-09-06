@@ -4,7 +4,7 @@ import type { IHealthcheckUseCase } from '../../application/ports/healthcheck.po
 export class HealthcheckController {
   constructor(private readonly healthcheckUseCase: IHealthcheckUseCase) {}
 
-  get = async (_request: Request, response: Response): Promise<void> => {
+  async get(_request: Request, response: Response): Promise<void> {
     const result = await this.healthcheckUseCase.execute()
     const statusCode = result.status === 'error' ? 503 : 200
     response.status(statusCode).json(result)

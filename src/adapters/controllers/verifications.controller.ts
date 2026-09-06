@@ -5,7 +5,7 @@ import { handleHttpError } from '../helpers/http-error.helper'
 export class VerificationsController {
   constructor(private readonly verifyEmailUseCase: VerifyEmailUseCase) {}
 
-  create = async (request: Request, response: Response) => {
+  async create(request: Request, response: Response) {
     try {
       const { user_id: userId, key } = request.body
 

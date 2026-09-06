@@ -28,7 +28,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.get('/api/docs/swagger.json', (_req, res) => res.redirect('/docs/swagger.json'))
 app.get('/api/docs', (_req, res) => res.redirect('/docs'))
 
-app.get('/healthcheck', healthcheckController.get)
+app.get('/healthcheck', (req, res) => healthcheckController.get(req, res))
 app.use('/api', router)
 
 // Global Error Handler

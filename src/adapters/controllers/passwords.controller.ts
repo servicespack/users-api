@@ -11,7 +11,7 @@ export interface PasswordsControllerDependencies {
 export class PasswordsController {
   constructor(private readonly dependencies: PasswordsControllerDependencies) {}
 
-  forgotPassword = async (request: Request, response: Response) => {
+  async forgotPassword(request: Request, response: Response) {
     try {
       const { email } = request.body
       await this.dependencies.forgotPasswordUseCase.execute({ email })
@@ -25,7 +25,7 @@ export class PasswordsController {
     }
   }
 
-  resetPassword = async (request: Request, response: Response) => {
+  async resetPassword(request: Request, response: Response) {
     try {
       const { token, password } = request.body
       await this.dependencies.resetPasswordUseCase.execute({ token, password })

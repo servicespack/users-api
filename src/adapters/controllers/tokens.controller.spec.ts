@@ -23,7 +23,11 @@ describe(TokensController.name, () => {
     createTokenUseCase = {
       execute: vi.fn(),
     }
-    tokensController = new TokensController(createTokenUseCase as unknown as CreateTokenUseCase)
+    tokensController = new TokensController(
+      createTokenUseCase as unknown as CreateTokenUseCase,
+      {} as any,
+      {} as any,
+    )
     request = {
       body: { username: 'testuser', password: 'password123' },
     } as Request
@@ -44,13 +48,16 @@ describe(TokensController.name, () => {
     })
 
     it('should return 201 with token if credentials are correct', async () => {
-      createTokenUseCase.execute.mockResolvedValue({ token: 'jwt-token-123' })
-
+      vi.mocked(createTokenUseCase.execute).mockResolvedValue({
+        accessToken: 'jwt-token-123',
+        refreshToken: 'refresh-token-123',
+      })
       await tokensController.create(request, response)
 
       expect(response.status).toHaveBeenCalledWith(201)
       expect(response.json).toHaveBeenCalledWith({
         Authorization: 'Bearer jwt-token-123',
+        RefreshToken: 'refresh-token-123',
       })
     })
   })

@@ -91,8 +91,12 @@ export const swaggerDocument = {
                       type: 'string',
                       example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
                     },
+                    RefreshToken: {
+                      type: 'string',
+                      example: 'ad7e04392e999fe722eb486569ccd8a6d26a3a806842bda76589089f25bb2bab3855e6931017f134',
+                    },
                   },
-                  required: ['Authorization'],
+                  required: ['Authorization', 'RefreshToken'],
                 },
               },
             },
@@ -116,6 +120,62 @@ export const swaggerDocument = {
                 },
               },
             },
+          },
+        },
+      },
+    },
+    '/api/auth/refresh-token': {
+      post: {
+        summary: 'Refresh session',
+        description: 'Refreshes an expired access token using a valid refresh token.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/RefreshTokenDto',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'Successfully refreshed token.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    Authorization: { type: 'string', example: 'Bearer eyJhbGci...' },
+                    RefreshToken: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Invalid or expired refresh token',
+          },
+        },
+      },
+    },
+    '/api/auth/logout': {
+      post: {
+        summary: 'Logout session',
+        description: 'Revokes a refresh token, ending the session.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/LogoutDto',
+              },
+            },
+          },
+        },
+        responses: {
+          204: {
+            description: 'Successfully logged out.',
           },
         },
       },
@@ -826,6 +886,26 @@ export const swaggerDocument = {
           },
         },
         required: ['username', 'password'],
+      },
+      RefreshTokenDto: {
+        type: 'object',
+        properties: {
+          refreshToken: {
+            type: 'string',
+            description: 'The refresh token obtained during login',
+          },
+        },
+        required: ['refreshToken'],
+      },
+      LogoutDto: {
+        type: 'object',
+        properties: {
+          refreshToken: {
+            type: 'string',
+            description: 'The refresh token to revoke',
+          },
+        },
+        required: ['refreshToken'],
       },
       CreateVerificationDto: {
         type: 'object',

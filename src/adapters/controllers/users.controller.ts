@@ -21,7 +21,7 @@ export interface UsersControllerDependencies {
 export class UsersController {
   constructor(private readonly dependencies: UsersControllerDependencies) {}
 
-  list = async (request: Request, response: Response) => {
+  async list(request: Request, response: Response) {
     try {
       const { page, size, search } = request.query
       const result = await this.dependencies.listUsersUseCase.execute({
@@ -36,7 +36,7 @@ export class UsersController {
     }
   }
 
-  show = async (request: Request, response: Response) => {
+  async show(request: Request, response: Response) {
     try {
       const user = await this.dependencies.getUserByIdUseCase.execute(request.params.id as string)
       return response.status(200).json(user)
@@ -46,7 +46,7 @@ export class UsersController {
     }
   }
 
-  create = async (request: Request, response: Response) => {
+  async create(request: Request, response: Response) {
     try {
       const user = await this.dependencies.createUserUseCase.execute(request.body)
       return response.status(201).json(user)
@@ -56,7 +56,7 @@ export class UsersController {
     }
   }
 
-  update = async (request: Request<{ id: string }, unknown, UpdateUserDto>, response: Response) => {
+  async update(request: Request<{ id: string }, unknown, UpdateUserDto>, response: Response) {
     try {
       const user = await this.dependencies.updateUserUseCase.execute({
         id: request.params.id,
@@ -71,7 +71,7 @@ export class UsersController {
     }
   }
 
-  updatePassword = async (request: Request<{ id: string }, unknown, UpdatePasswordDto>, response: Response) => {
+  async updatePassword(request: Request<{ id: string }, unknown, UpdatePasswordDto>, response: Response) {
     try {
       await this.dependencies.updateUserPasswordUseCase.execute({
         id: request.params.id,
@@ -87,7 +87,7 @@ export class UsersController {
     }
   }
 
-  delete = async (request: Request, response: Response) => {
+  async delete(request: Request, response: Response) {
     try {
       await this.dependencies.deleteUserUseCase.execute(request.params.id as string)
       return response.status(204).json({})

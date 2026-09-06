@@ -32,6 +32,7 @@ describe('tokens (e2e)', () => {
     expect(body).toEqual({
       // eslint-disable-next-line regexp/no-super-linear-backtracking, regexp/strict
       Authorization: expect.stringMatching(/^Bearer [\w-.~+/]+=*(?:\.[\w-.~+/]+=*)*$/),
+      RefreshToken: expect.any(String),
     })
   })
 

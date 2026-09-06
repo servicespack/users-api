@@ -30,7 +30,7 @@ describe(CreateTokenUseCase.name, () => {
     tokenProvider = {
       generate: vi.fn().mockReturnValue('mocked.jwt.token'),
     }
-    useCase = new CreateTokenUseCase(userRepository, passwordHasher, tokenProvider)
+    useCase = new CreateTokenUseCase(userRepository, passwordHasher, tokenProvider, { create: vi.fn() } as any)
   })
 
   it('should throw InvalidCredentialsError if user does not exist', async () => {
@@ -79,6 +79,8 @@ describe(CreateTokenUseCase.name, () => {
       iss: 'users-service',
       sub: 'u1',
     })
-    expect(result).toEqual({ token: 'mocked.jwt.token' })
+    expect(result.accessToken).toBe('mocked.jwt.token')
+    expect(result.refreshToken).toBeTypeOf('string')
+    expect(result.refreshToken).toHaveLength(80)
   })
 })
