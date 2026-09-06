@@ -82,12 +82,12 @@ The codebase adheres to a Clean Architecture layout designed for strict separati
 └── tests/                      # End-to-end tests, unit tests, and test utilities
     ├── __mocks__/              # Mock factories and fixtures
     ├── e2e/                    # Integration / E2E endpoint tests using supertest
-    │   ├── docs.test.ts
-    │   ├── tokens.test.ts
-    │   ├── update-password.test.ts
-    │   └── users.test.ts
-    ├── configuration.test.ts
-    ├── server.test.ts
+    │   ├── docs.spec.ts
+    │   ├── tokens.spec.ts
+    │   ├── update-password.spec.ts
+    │   └── users.spec.ts
+    ├── configuration.spec.ts
+    ├── server.spec.ts
     ├── setup.ts                # Global test setup (spawns mongodb-memory-server)
     └── teardown.ts             # Global test teardown (disconnects and stops mongo server)
 ```
@@ -157,7 +157,7 @@ The project strictly follows the `@antfu/eslint-config` rules documented in `.ag
 
 - **Coverage Target**: Maintain high test coverage (>95% lines, statements, functions, and branches).
 - **Unit Tests**:
-  - Located side-by-side with source files (e.g., `src/controllers/users.controller.test.ts`).
+  - Located side-by-side with source files (e.g., `src/controllers/users.controller.spec.ts`).
   - Unit tests must mock external libraries, databases, and encryption utilities (`vi.mock('@node-rs/argon2')`, mocked Mongoose models).
 - **End-to-End (E2E) Tests**:
   - Located in `tests/e2e/`.
@@ -176,7 +176,7 @@ Whenever an AI agent modifies or adds code in this repository, it must adhere to
 
 1. **Preserve Code & Documentation Integrity**:
    - Do not remove or alter existing comments, docstrings, or type definitions unless directly required by the task.
-   - Maintain naming conventions (`kebab-case` for DTOs and middlewares, `*.controller.ts` for controllers, `*.test.ts` for unit tests).
+   - Maintain naming conventions (`kebab-case` for DTOs and middlewares, `*.controller.ts` for controllers, `*.spec.ts` for unit tests).
 2. **Mandatory Verification Routine**:
    Before marking any task as complete, you must run and ensure zero errors on:
    ```bash
