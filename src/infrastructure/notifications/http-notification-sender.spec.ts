@@ -28,7 +28,7 @@ describe(HttpNotificationSender.name, () => {
       content: 'Hello World',
     })
 
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3001/api/emails', {
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3001/api/emails', expect.objectContaining({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ describe(HttpNotificationSender.name, () => {
         subject: 'Welcome',
         content: 'Hello World',
       }),
-    })
+    }))
   })
 
   it('should use input from when provided', async () => {
@@ -143,6 +143,80 @@ describe(HttpNotificationSender.name, () => {
         content: 'Fail',
       }),
     ).resolves.toBeUndefined()
+
+    expect(logger.error).toHaveBeenCalled()
+  })
+
+  it('should retry on 5xx server error and succeed eventually', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 503,
+        statusText: 'Service Unavailable',
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const sender = new HttpNotificationSender({ baseUrl, retries: 2, retryDelay: 10, suppressErrors: false })
+
+    await expect(
+      sender.sendEmail({
+        to: 'john@example.com',
+        subject: 'Retry',
+        content: 'Content',
+      }),
+    ).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should retry on network error and succeed eventually', async () => {
+    const fetchMock = vi.fn()
+      .mockRejectedValueOnce(new Error('Temporary network glitch'))
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const sender = new HttpNotificationSender({ baseUrl, retries: 2, retryDelay: 10, suppressErrors: false })
+
+    await expect(
+      sender.sendEmail({
+        to: 'john@example.com',
+        subject: 'Retry',
+        content: 'Content',
+      }),
+    ).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should timeout and abort request when request exceeds timeout', async () => {
+    const fetchMock = vi.fn().mockImplementation(async (_url, options) => {
+      return new Promise((resolve, reject) => {
+        const signal = options?.signal
+        if (signal) {
+          signal.addEventListener('abort', () => {
+            reject(new Error('aborted'))
+          })
+        }
+      })
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const sender = new HttpNotificationSender({ baseUrl, timeout: 50, retries: 0, suppressErrors: false })
+
+    await expect(
+      sender.sendEmail({
+        to: 'john@example.com',
+        subject: 'Timeout',
+        content: 'Content',
+      }),
+    ).rejects.toThrow()
 
     expect(logger.error).toHaveBeenCalled()
   })

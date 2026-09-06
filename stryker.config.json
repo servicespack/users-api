@@ -8,6 +8,7 @@
   ],
   "testRunner": "vitest",
   "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
   "mutate": [
     "src/**/*.ts",
     "!src/**/*.spec.ts"
