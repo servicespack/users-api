@@ -3,7 +3,7 @@ import type { Mock } from 'vitest'
 import type { ForgotPasswordUseCase } from '../../application/use-cases/auth/forgot-password.use-case'
 import type { ResetPasswordUseCase } from '../../application/use-cases/auth/reset-password.use-case'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { InvalidResetTokenError, ResetTokenExpiredError } from '../../domain/errors'
+import { EmailAlreadyVerifiedError, InvalidResetTokenError, ResetTokenExpiredError } from '../../domain/errors'
 import { PasswordsController } from './passwords.controller'
 
 describe(PasswordsController.name, () => {
@@ -40,16 +40,13 @@ describe(PasswordsController.name, () => {
       })
     })
 
-    it('should return 200 with generic message when user exists', async () => {
+    it('should handle DomainError when forgotPasswordUseCase throws', async () => {
       request.body = { email: 'john@example.com' }
-      forgotPasswordUseCase.execute.mockResolvedValue({ resetToken: 'token-123' })
+      forgotPasswordUseCase.execute.mockRejectedValue(new EmailAlreadyVerifiedError())
 
       await controller.forgotPassword(request, response)
 
-      expect(response.status).toHaveBeenCalledWith(200)
-      expect(response.json).toHaveBeenCalledWith({
-        message: 'If the email exists, a password reset link has been sent.',
-      })
+      expect(response.status).toHaveBeenCalledWith(400)
     })
   })
 
