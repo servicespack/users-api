@@ -12,6 +12,34 @@ export const swaggerDocument = {
     },
   ],
   paths: {
+    '/healthcheck': {
+      get: {
+        summary: 'Service healthcheck',
+        description: 'Returns the health status of the service, database and external dependencies.',
+        responses: {
+          200: {
+            description: 'Service is operational.',
+          },
+          503: {
+            description: 'Service is unavailable.',
+          },
+        },
+      },
+    },
+    '/api/healthcheck': {
+      get: {
+        summary: 'Service healthcheck',
+        description: 'Returns the health status of the service, database and external dependencies.',
+        responses: {
+          200: {
+            description: 'Service is operational.',
+          },
+          503: {
+            description: 'Service is unavailable.',
+          },
+        },
+      },
+    },
     '/api': {
       get: {
         summary: 'Service healthcheck',

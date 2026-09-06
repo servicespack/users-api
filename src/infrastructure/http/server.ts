@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express'
 
 import { options } from '../../config'
 import { swaggerDocument } from '../../docs/swagger'
-import router from './router'
+import router, { healthcheckController } from './router'
 
 const app = express()
 
@@ -28,6 +28,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.get('/api/docs/swagger.json', (_req, res) => res.redirect('/docs/swagger.json'))
 app.get('/api/docs', (_req, res) => res.redirect('/docs'))
 
+app.get('/healthcheck', healthcheckController.get)
 app.use('/api', router)
 
 // Global Error Handler

@@ -1,5 +1,8 @@
+import process from 'node:process'
 import express from 'express'
+import mongoose from 'mongoose'
 
+import { HealthcheckController } from '../../adapters/controllers/healthcheck.controller'
 import { PasswordsController } from '../../adapters/controllers/passwords.controller'
 import { RootController } from '../../adapters/controllers/root.controller'
 import { TokensController } from '../../adapters/controllers/tokens.controller'
@@ -17,6 +20,7 @@ import { validator } from '../../adapters/middlewares/validator'
 import { CreateTokenUseCase } from '../../application/use-cases/auth/create-token.use-case'
 import { ForgotPasswordUseCase } from '../../application/use-cases/auth/forgot-password.use-case'
 import { ResetPasswordUseCase } from '../../application/use-cases/auth/reset-password.use-case'
+import { HealthcheckUseCase } from '../../application/use-cases/healthcheck/healthcheck.use-case'
 import { CreateUserUseCase } from '../../application/use-cases/users/create-user.use-case'
 import { DeleteUserUseCase } from '../../application/use-cases/users/delete-user.use-case'
 import { GetUserByIdUseCase } from '../../application/use-cases/users/get-user-by-id.use-case'
@@ -71,7 +75,31 @@ const passwordsController = new PasswordsController({
   resetPasswordUseCase,
 })
 
+const checkDatabase = () => (mongoose.connection.readyState === 1 ? 'up' as const : 'down' as const)
+async function checkNotifications(): Promise<'up' | 'down'> {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 1500)
+    const res = await fetch(`${configuration.notifications.url.replace(/\/$/, '')}/api/healthcheck`, {
+      signal: controller.signal,
+    })
+    clearTimeout(timeoutId)
+    return res.ok ? 'up' : 'down'
+  }
+  catch {
+    return 'down'
+  }
+}
+
+const healthcheckUseCase = new HealthcheckUseCase({
+  checkDatabase,
+  checkNotifications,
+  getUptime: () => process.uptime(),
+})
+export const healthcheckController = new HealthcheckController(healthcheckUseCase)
+
 router.get('/', rootController.get)
+router.get('/healthcheck', healthcheckController.get)
 
 router.post('/tokens', [validator({ Dto: CreateTokenDto })], tokensController.create)
 
