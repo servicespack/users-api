@@ -29,6 +29,11 @@ export class CreateUserUseCase {
     if (this.notificationSender) {
       await this.notificationSender.sendEmail({
         to: createdUser.email,
+        templateCode: 'verify-email',
+        variables: {
+          name: createdUser.name,
+          verificationUrl: createdUser.emailVerificationKey,
+        },
         subject: 'Verify your email',
         content: `Welcome to ServicesPack! Your verification key is: ${createdUser.emailVerificationKey}`,
       })

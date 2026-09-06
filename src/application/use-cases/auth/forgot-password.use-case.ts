@@ -44,6 +44,12 @@ export class ForgotPasswordUseCase {
     if (this.notificationSender) {
       await this.notificationSender.sendEmail({
         to: user.email,
+        templateCode: 'reset-password',
+        variables: {
+          name: user.name,
+          token,
+          resetUrl: `https://servicespack.com/reset-password?token=${token}`,
+        },
         subject: 'Reset your password',
         content: `You requested a password reset. Your reset token is: ${token} (expires in 15 minutes).`,
       })

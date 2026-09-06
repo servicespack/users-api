@@ -27,6 +27,8 @@ export class HttpNotificationSender implements INotificationSender {
           to: input.to,
           subject: input.subject,
           content: input.content,
+          templateCode: input.templateCode,
+          variables: input.variables,
         }),
       })
 
