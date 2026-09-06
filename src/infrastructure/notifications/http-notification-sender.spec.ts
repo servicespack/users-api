@@ -13,7 +13,7 @@ describe(HttpNotificationSender.name, () => {
     vi.restoreAllMocks()
   })
 
-  it('should successfully post email to notifications-api', async () => {
+  it('should successfully post email to notifications-service', async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,

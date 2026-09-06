@@ -40,7 +40,7 @@ export class HttpNotificationSender implements INotificationSender {
       }
     }
     catch (error) {
-      logger.error({ error }, 'Failed to communicate with notifications-api')
+      logger.error({ error }, 'Failed to communicate with notifications-service')
       if (this.options.suppressErrors === false) {
         throw error
       }
