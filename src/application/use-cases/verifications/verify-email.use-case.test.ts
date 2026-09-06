@@ -18,6 +18,7 @@ describe(VerifyEmailUseCase.name, () => {
       findById: vi.fn(),
       findByUsername: vi.fn(),
       findByEmail: vi.fn(),
+      findByResetToken: vi.fn(),
       list: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
