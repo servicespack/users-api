@@ -101,11 +101,14 @@ describe(ForgotPasswordUseCase.name, () => {
 
     await useCaseWithNotifier.execute({ email: 'john@example.com' })
 
-    expect(notificationSender.sendEmail).toHaveBeenCalledWith({
-      to: 'john@example.com',
-      subject: 'Reset your password',
-      content: expect.stringContaining('fixed-token'),
-    })
+    expect(notificationSender.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'john@example.com',
+        templateCode: 'reset-password',
+        subject: 'Reset your password',
+        content: expect.stringContaining('fixed-token'),
+      }),
+    )
   })
 
   it('should not call notificationSender.sendEmail when user is not found', async () => {

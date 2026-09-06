@@ -81,11 +81,14 @@ describe('users Use Cases', () => {
         password: 'raw-password',
       })
 
-      expect(notificationSender.sendEmail).toHaveBeenCalledWith({
-        to: 'test@example.com',
-        subject: 'Verify your email',
-        content: expect.stringContaining('key-123'),
-      })
+      expect(notificationSender.sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: 'test@example.com',
+          templateCode: 'verify-email',
+          subject: 'Verify your email',
+          content: expect.stringContaining('key-123'),
+        }),
+      )
     })
   })
 

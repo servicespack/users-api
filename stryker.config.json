@@ -10,6 +10,6 @@
   "coverageAnalysis": "perTest",
   "mutate": [
     "src/**/*.ts",
-    "!src/**/*.test.ts"
+    "!src/**/*.spec.ts"
   ]
 }
