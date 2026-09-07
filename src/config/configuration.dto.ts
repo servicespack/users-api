@@ -29,6 +29,11 @@ export class ConfigurationAuthDto {
   jwtExpiration!: string
 }
 
+export class ConfigurationNotificationsDto {
+  @IsString()
+  url!: string
+}
+
 export class ConfigurationDto {
   @IsIn(['development', 'production'])
   environment!: 'development' | 'production'
@@ -41,4 +46,7 @@ export class ConfigurationDto {
 
   @Type(() => ConfigurationAuthDto)
   @ValidateNested() auth!: ConfigurationAuthDto
+
+  @Type(() => ConfigurationNotificationsDto)
+  @ValidateNested() notifications!: ConfigurationNotificationsDto
 }

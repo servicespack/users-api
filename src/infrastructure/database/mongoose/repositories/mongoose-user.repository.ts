@@ -32,6 +32,11 @@ export class MongooseUserRepository implements IUserRepository {
     return doc ? UserMapper.toDomain(doc) : null
   }
 
+  async findByResetToken(passwordResetToken: string): Promise<User | null> {
+    const doc = await this.model.findOne({ passwordResetToken })
+    return doc ? UserMapper.toDomain(doc) : null
+  }
+
   async list(params: ListUsersParams): Promise<PaginatedUsersResult> {
     let query = {}
 
@@ -69,6 +74,8 @@ export class MongooseUserRepository implements IUserRepository {
     doc.password = user.password
     doc.isEmailVerified = user.isEmailVerified
     doc.emailVerificationKey = user.emailVerificationKey
+    doc.passwordResetToken = user.passwordResetToken
+    doc.passwordResetExpiresAt = user.passwordResetExpiresAt
 
     await doc.save()
 

@@ -1,5 +1,6 @@
 import type { IUserRepository } from '../../../domain/repositories/user.repository.interface'
 import type { CreateUserRequest } from '../../dtos/create-user.model'
+import type { INotificationSender } from '../../ports/notification-sender.port'
 import type { IPasswordHasher } from '../../ports/password-hasher.port'
 import crypto from 'node:crypto'
 import xss from 'xss'
@@ -9,6 +10,7 @@ export class CreateUserUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly passwordHasher: IPasswordHasher,
+    private readonly notificationSender?: INotificationSender,
   ) {}
 
   async execute(request: CreateUserRequest): Promise<User> {
@@ -22,6 +24,21 @@ export class CreateUserUseCase {
       emailVerificationKey: crypto.randomUUID(),
     })
 
-    return this.userRepository.create(user)
+    const createdUser = await this.userRepository.create(user)
+
+    if (this.notificationSender) {
+      await this.notificationSender.sendEmail({
+        to: createdUser.email,
+        templateCode: 'verify-email',
+        variables: {
+          name: createdUser.name,
+          verificationUrl: createdUser.emailVerificationKey,
+        },
+        subject: 'Verify your email',
+        content: `Welcome to ServicesPack! Your verification key is: ${createdUser.emailVerificationKey}`,
+      })
+    }
+
+    return createdUser
   }
 }
